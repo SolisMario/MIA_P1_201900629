@@ -1,0 +1,3 @@
+/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir

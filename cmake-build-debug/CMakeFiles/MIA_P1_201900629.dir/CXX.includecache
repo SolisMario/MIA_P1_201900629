@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mario/CLionProjects/MIA_P1_201900629/fdisk.cpp
+iostream
+-
+algorithm
+-
+fdisk.h
+/home/mario/CLionProjects/MIA_P1_201900629/fdisk.h
+
+/home/mario/CLionProjects/MIA_P1_201900629/fdisk.h
+iostream
+-
+
