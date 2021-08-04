@@ -6,15 +6,29 @@
 
 #IncludeRegexTransform: 
 
-/home/mario/CLionProjects/MIA_P1_201900629/fdisk.cpp
+/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp
 iostream
 -
 algorithm
 -
+cstring
+-
 fdisk.h
-/home/mario/CLionProjects/MIA_P1_201900629/fdisk.h
+/home/mario/Repositorios/MIA_P1_201900629/fdisk.h
 
-/home/mario/CLionProjects/MIA_P1_201900629/fdisk.h
+/home/mario/Repositorios/MIA_P1_201900629/fdisk.h
+iostream
+-
+mbr.h
+/home/mario/Repositorios/MIA_P1_201900629/mbr.h
+
+/home/mario/Repositorios/MIA_P1_201900629/mbr.h
+iostream
+-
+partition.h
+/home/mario/Repositorios/MIA_P1_201900629/partition.h
+
+/home/mario/Repositorios/MIA_P1_201900629/partition.h
 iostream
 -
 

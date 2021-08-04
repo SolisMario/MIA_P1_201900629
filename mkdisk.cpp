@@ -54,12 +54,16 @@ void MKDISK::mkdisk() {
 
     if (this->size <= 0) {
         cout << "ERROR al crear el disco: el parametro size debe ser positivo y mayor a 0." << endl;
+        return;
     } else if (this->path.empty()) {
         cout << "ERROR al crear el disco: el parametro path es obligatorio." << endl;
+        return;
     } else if (this->fit != "bf" && this->fit != "ff" && this->fit != "wf") {
         cout << "ERROR al crear el disco: el tipo de fit no es correcto." << endl;
+        return;
     } else if (this->unit != "m" && this->unit != "k") {
         cout << "ERROR al crear el disco: el tipo de unit no es correcto." << endl;
+        return;
     } else {
         char sc[this->path.size() + 1];
         strcpy(sc, this->path.c_str());
@@ -124,6 +128,9 @@ void MKDISK::mkdisk() {
         cout << "Tamaño: " << mbr.mbr_tamano << endl;
         cout << "Fit: " << mbr.disk_fit << endl;
 
+        for (int i = 0; i < 4; ++i) {
+            cout << mbr.particiones[i].part_size << endl;
+        }
     }
 }
 

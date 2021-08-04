@@ -1,4 +1,4 @@
-# Install script for directory: /home/mario/CLionProjects/MIA_P1_201900629
+# Install script for directory: /home/mario/Repositorios/MIA_P1_201900629
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -6,6 +6,7 @@
 #define MIA_P1_201900629_FDISK_H
 
 #include <iostream>
+#include "mbr.h"
 
 using namespace std;
 
@@ -37,6 +38,8 @@ public:
     void setAdd(int add);
 
     void fdisk();
+
+    MBR leer_MBR(char const *path);
 
     string toLowerCase(string str);
 };

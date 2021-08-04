@@ -54,10 +54,10 @@ RM = /home/mario/Descargas/CLion-2021.2/clion-2021.2/bin/cmake/linux/bin/cmake -
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mario/CLionProjects/MIA_P1_201900629
+CMAKE_SOURCE_DIR = /home/mario/Repositorios/MIA_P1_201900629
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug
+CMAKE_BINARY_DIR = /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/MIA_P1_201900629.dir/clean
 CMakeFiles/MIA_P1_201900629.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target MIA_P1_201900629"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target MIA_P1_201900629"
 .PHONY : CMakeFiles/MIA_P1_201900629.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/MIA_P1_201900629.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/MIA_P1_201900629.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/MIA_P1_201900629.dir/rule
 
 # Convenience name for target.

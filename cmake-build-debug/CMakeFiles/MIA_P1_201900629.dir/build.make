@@ -53,10 +53,10 @@ RM = /home/mario/Descargas/CLion-2021.2/clion-2021.2/bin/cmake/linux/bin/cmake -
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mario/CLionProjects/MIA_P1_201900629
+CMAKE_SOURCE_DIR = /home/mario/Repositorios/MIA_P1_201900629
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug
+CMAKE_BINARY_DIR = /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/MIA_P1_201900629.dir/depend.make
@@ -68,81 +68,81 @@ include CMakeFiles/MIA_P1_201900629.dir/flags.make
 
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/main.cpp.o -c /home/mario/CLionProjects/MIA_P1_201900629/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/main.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/main.cpp
 
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/CLionProjects/MIA_P1_201900629/main.cpp > CMakeFiles/MIA_P1_201900629.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/main.cpp > CMakeFiles/MIA_P1_201900629.dir/main.cpp.i
 
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/CLionProjects/MIA_P1_201900629/main.cpp -o CMakeFiles/MIA_P1_201900629.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/main.cpp -o CMakeFiles/MIA_P1_201900629.dir/main.cpp.s
 
 CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
 CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: ../parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o -c /home/mario/CLionProjects/MIA_P1_201900629/parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/parser.cpp
 
 CMakeFiles/MIA_P1_201900629.dir/parser.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/parser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/CLionProjects/MIA_P1_201900629/parser.cpp > CMakeFiles/MIA_P1_201900629.dir/parser.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/parser.cpp > CMakeFiles/MIA_P1_201900629.dir/parser.cpp.i
 
 CMakeFiles/MIA_P1_201900629.dir/parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/parser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/CLionProjects/MIA_P1_201900629/parser.cpp -o CMakeFiles/MIA_P1_201900629.dir/parser.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/parser.cpp -o CMakeFiles/MIA_P1_201900629.dir/parser.cpp.s
 
 CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
 CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o: ../scanner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o -c /home/mario/CLionProjects/MIA_P1_201900629/scanner.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/scanner.cpp
 
 CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/CLionProjects/MIA_P1_201900629/scanner.cpp > CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/scanner.cpp > CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.i
 
 CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/CLionProjects/MIA_P1_201900629/scanner.cpp -o CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/scanner.cpp -o CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.s
 
 CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
 CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o: ../mkdisk.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o -c /home/mario/CLionProjects/MIA_P1_201900629/mkdisk.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/mkdisk.cpp
 
 CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/CLionProjects/MIA_P1_201900629/mkdisk.cpp > CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/mkdisk.cpp > CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.i
 
 CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/CLionProjects/MIA_P1_201900629/mkdisk.cpp -o CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/mkdisk.cpp -o CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.s
 
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o: ../rmdisk.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o -c /home/mario/CLionProjects/MIA_P1_201900629/rmdisk.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/rmdisk.cpp
 
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/CLionProjects/MIA_P1_201900629/rmdisk.cpp > CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/rmdisk.cpp > CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.i
 
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/CLionProjects/MIA_P1_201900629/rmdisk.cpp -o CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/rmdisk.cpp -o CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.s
 
 CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
 CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o: ../fdisk.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o -c /home/mario/CLionProjects/MIA_P1_201900629/fdisk.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp
 
 CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/CLionProjects/MIA_P1_201900629/fdisk.cpp > CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp > CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.i
 
 CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/CLionProjects/MIA_P1_201900629/fdisk.cpp -o CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp -o CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.s
 
 # Object files for target MIA_P1_201900629
 MIA_P1_201900629_OBJECTS = \
@@ -164,7 +164,7 @@ MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/build.make
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable MIA_P1_201900629"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable MIA_P1_201900629"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MIA_P1_201900629.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -176,6 +176,6 @@ CMakeFiles/MIA_P1_201900629.dir/clean:
 .PHONY : CMakeFiles/MIA_P1_201900629.dir/clean
 
 CMakeFiles/MIA_P1_201900629.dir/depend:
-	cd /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mario/CLionProjects/MIA_P1_201900629 /home/mario/CLionProjects/MIA_P1_201900629 /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug /home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mario/Repositorios/MIA_P1_201900629 /home/mario/Repositorios/MIA_P1_201900629 /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug /home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/MIA_P1_201900629.dir/depend
 

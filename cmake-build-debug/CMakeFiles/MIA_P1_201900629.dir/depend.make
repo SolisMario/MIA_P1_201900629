@@ -3,7 +3,9 @@
 
 CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o: \
  ../fdisk.cpp \
- ../fdisk.h
+ ../fdisk.h \
+ ../mbr.h \
+ ../partition.h
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.o: \
  ../main.cpp \
  ../parser.h \
@@ -15,8 +17,10 @@ CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o: \
  ../partition.h
 CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: \
  ../fdisk.h \
+ ../mbr.h \
  ../mkdisk.h \
  ../parser.cpp \
+ ../partition.h \
  ../rmdisk.h \
  ../scanner.h
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o: \

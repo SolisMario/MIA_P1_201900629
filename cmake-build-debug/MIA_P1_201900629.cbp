@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug"/>
+				<Option working_dir="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug"/>
+				<Option working_dir="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug"/>
+				<Option working_dir="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="MIA_P1_201900629">
-				<Option output="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/MIA_P1_201900629" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug"/>
+				<Option output="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/MIA_P1_201900629" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -53,15 +53,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 MIA_P1_201900629"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 MIA_P1_201900629"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="MIA_P1_201900629/fast">
-				<Option output="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/MIA_P1_201900629" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug"/>
+				<Option output="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/MIA_P1_201900629" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -75,53 +75,53 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 MIA_P1_201900629/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/CLionProjects/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 MIA_P1_201900629/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/fdisk.cpp">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/fdisk.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/fdisk.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/main.cpp">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/main.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/mbr.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mbr.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/mkdisk.cpp">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mkdisk.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/mkdisk.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mkdisk.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/parser.cpp">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/parser.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/parser.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/parser.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/partition.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/partition.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/rmdisk.cpp">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rmdisk.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/rmdisk.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rmdisk.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/scanner.cpp">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/scanner.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/scanner.h">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/scanner.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
-		<Unit filename="/home/mario/CLionProjects/MIA_P1_201900629/CMakeLists.txt">
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
