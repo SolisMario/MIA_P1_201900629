@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "mbr.h"
+#include "ebr.h"
 
 using namespace std;
 
@@ -40,6 +41,26 @@ public:
     void fdisk();
 
     MBR leer_MBR(char const *path);
+
+    int set_start(MBR &mbr);
+
+    void mostrar_particiones(MBR &mbr);
+
+    void mover_vacias(MBR &mbr);
+
+    void ordenar_particiones(MBR &mbr);
+
+    void delete_partition(string name, string path, string delete_type);
+
+    void create_logic_partition(MBR &mbr_leido, partition_ &part_extendida);
+
+    EBR leer_ebr(char const *path, int seek);
+
+    void add_size(int size_change);
+
+    void escribir_MBR(MBR &mbr);
+
+    void escribir_EBR(EBR &ebr);
 
     string toLowerCase(string str);
 };

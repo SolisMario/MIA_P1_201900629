@@ -128,9 +128,6 @@ void MKDISK::mkdisk() {
         cout << "Tamaño: " << mbr.mbr_tamano << endl;
         cout << "Fit: " << mbr.disk_fit << endl;
 
-        for (int i = 0; i < 4; ++i) {
-            cout << mbr.particiones[i].part_size << endl;
-        }
     }
 }
 
