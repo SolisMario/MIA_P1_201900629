@@ -28,9 +28,7 @@ void FDISK::setType(const string &type) {
 }
 
 void FDISK::setFit(string fit_set) {
-    cout << fit_set << endl;
     this->fit = toLowerCase(fit_set);
-    cout << this->fit << endl;
 }
 
 void FDISK::setDelete(string delete_) {
@@ -50,6 +48,14 @@ void FDISK::setAdd(int add) {
 }
 
 void FDISK::fdisk() {
+
+    //se dimensiona el size
+    if (this->unit == "k") {
+        this->size = this->size * 1024;
+    } else if (this->unit == "m") {
+        this->size = this->size * 1024 * 1024;
+    }
+
     //comrpobar que los parametros sean correctos
     if (this->path.empty()) {
         cout << "ERROR el parametro path es obligatorio." << endl;
@@ -78,26 +84,11 @@ void FDISK::fdisk() {
     }
 
     //verificar si el disco existe
-    char sc[this->path.size() + 1];
-    strcpy(sc, this->path.c_str());
-
-    FILE *file_struct;
-    file_struct = fopen(sc, "r"); //r= read = si el disco ya existia
-    if (file_struct == NULL) {
-        cout << "El disco no existe." << endl;
-        return;
-    }
-    fclose(file_struct);
+    if(!verificar_disco(this->path)) return;
 
     //si existe el disco se recupera el MBR
-    MBR mbr_leido = leer_MBR(sc);
+    MBR mbr_leido = leer_MBR(this->path.c_str());
 
-    //se dimensiona el size
-    if (this->unit == "k") {
-        this->size = this->size * 1024;
-    } else if (this->unit == "m") {
-        this->size = this->size * 1024 * 1024;
-    }
     //si se desea crear una particion primaria se revisa que haya una de las 4 libres
     //si es extendida no debe haber otra extendida ni estar ocupadas las 4
     //si es una logica debe haber una extendida
@@ -145,15 +136,9 @@ void FDISK::fdisk() {
         return;
     }
 
-    char nombre_particion[16];
-    strcpy(nombre_particion, this->name.c_str());
     //si hay espacio suficiente se busca si el nombre existe
-    for (auto &particione : mbr_leido.particiones) {
-        if (strcmp(nombre_particion, particione.part_name) == 0 && particione.part_status == 'a') {
-            cout << "ERROR al crear la particion: ya existe una particion con este nombre." << endl;
-            return;
-        }
-    }
+
+    if(nombre_repetido(mbr_leido)) return;
 
     //se revisa que particion esta libre
     int particion_seleccionada = 0;
@@ -215,7 +200,7 @@ void FDISK::fdisk() {
     mostrar_particiones(mbr_leido);
 }
 
-MBR FDISK::leer_MBR(char const *ruta) {
+MBR FDISK::leer_MBR(const char* ruta) {
     FILE *file_struct;
     file_struct = fopen(ruta, "r");
     MBR mbr_recuperado;
@@ -290,10 +275,8 @@ void FDISK::mostrar_particiones(MBR &mbr) {
 
             if (particion.part_type == 'e') {
                 EBR ebr_inicial;
-                char sc[this->path.size() + 1];
-                strcpy(sc, this->path.c_str());
                 FILE *file_struct;
-                file_struct = fopen(sc, "rb+");
+                file_struct = fopen(this->path.c_str(), "rb+");
                 fseek(file_struct, particion.part_start, SEEK_SET);
                 fread(&ebr_inicial, sizeof(EBR), 1, file_struct);
                 while (true) {
@@ -352,24 +335,16 @@ void FDISK::ordenar_particiones(MBR &mbr) {
 }
 
 void FDISK::delete_partition(string name, string path, string delete_type) {
-    char sc[this->path.size() + 1];
-    strcpy(sc, this->path.c_str());
-
-    FILE *file_struct;
-    file_struct = fopen(sc, "rb+"); //r= read = si el disco ya existia
-    if (file_struct == NULL) {
-        cout << "El disco no existe." << endl;
-        return;
-    }
-    fclose(file_struct);
+    if(!verificar_disco(this->path)) return;
+    //FILE *file_struct;
 
     //si existe el disco se recupera el MBR
-    MBR mbr_leido = leer_MBR(sc);
+    MBR mbr_leido = leer_MBR(this->path.c_str());
 
     char nombre_particion[16];
     strcpy(nombre_particion, this->name.c_str());
     for (auto &particione : mbr_leido.particiones) {
-        if (strcmp(nombre_particion, particione.part_name) == 0) {
+        if (strcmp(nombre_particion, particione.part_name) == 0 && particione.part_status == 'a') {
             cout << "Se encontro la particion " << this->name << " en el disco " << this->path << endl;
             cout << "Por favor confirme que desea eliminar la particion[S/n]." << endl;
             string confirmacion;
@@ -379,7 +354,7 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
                     int inicio_part = particione.part_start;
                     int final_part = particione.part_start + particione.part_size;
                     //se llena de 0 el espacio del archivo que ocupaba la particion
-                    file_struct = fopen(sc, "rb+");
+                    FILE *file_struct = fopen(this->path.c_str(), "rb+");
                     for (int i = inicio_part; i < final_part; ++i) {
                         fseek(file_struct, i, SEEK_SET);
                         fwrite("\0", 1, 1, file_struct);
@@ -397,10 +372,10 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
                 mostrar_particiones(mbr_leido);
 
                 // se reescribe el archivo actualizado
-                file_struct = fopen(sc, "rb+");
-                rewind(file_struct);
-                fwrite(&mbr_leido, sizeof(MBR), 1, file_struct);
-                fclose(file_struct);
+                FILE *reescribir = fopen(this->path.c_str(), "rb+");
+                rewind(reescribir);
+                fwrite(&mbr_leido, sizeof(MBR), 1, reescribir);
+                fclose(reescribir);
                 return;
             } else {
                 cout << "La eliminacion de la particion se ha cancelado." << endl;
@@ -411,14 +386,12 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
             int posicion_eliminada = 0;
             EBR ebr_actual;
             EBR ebr_anterior;
-            EBR ebr_siguiente;
-            char sc[this->path.size() + 1];
-            strcpy(sc, this->path.c_str());
-            ebr_actual = leer_ebr(sc, particione.part_start);
+            ebr_actual = leer_ebr(this->path.c_str(), particione.part_start);
             ebr_anterior = ebr_actual;
 
             while (true) {
-                if (strcmp(nombre_particion, ebr_actual.part_name) == 0) {
+                EBR ebr_siguiente;
+                if (strcmp(nombre_particion, ebr_actual.part_name) == 0 && ebr_actual.part_status == 'a') {
                     cout << "Se encontro la particion " << this->name << " en el disco " << this->path << endl;
                     cout << "Por favor confirme que desea eliminar la particion[S/n]." << endl;
                     string confirmacion;
@@ -426,21 +399,18 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
                     if (confirmacion == "s") {
                         //debemos llamar ebr siguiente
                         if (ebr_actual.part_next != -1) {
-                            //fseek(file_struct, ebr_actual.part_next, SEEK_SET);
-                            //fread(&ebr_siguiente, sizeof(EBR), 1, file_struct);
-                            ebr_siguiente = leer_ebr(sc, ebr_actual.part_next);
+                            ebr_siguiente = leer_ebr(this->path.c_str(), ebr_actual.part_next);
                         }
                         if (delete_type == "full") {
                             int inicio_part = ebr_actual.part_start - sizeof(EBR);
-                            int final_part = inicio_part + ebr_actual.part_size;
+                            int final_part = inicio_part + ebr_actual.part_size + sizeof(EBR);
                             //se llena de 0 el espacio del archivo que ocupaba la particion
-                            file_struct = fopen(sc, "rb+");
+                            FILE *ceros = fopen(this->path.c_str(), "rb+");
                             for (int i = inicio_part; i < final_part; ++i) {
-                                fseek(file_struct, i, SEEK_SET);
-                                fwrite("\0", 1, 1, file_struct);
-                                fflush(file_struct);
+                                fseek(ceros, i, SEEK_SET);
+                                fwrite("0", 1, 1, ceros);
                             }
-                            fclose(file_struct);
+                            fclose(ceros);
                         }
                         if (ebr_siguiente.part_status != 'i') {
                             ebr_anterior.part_next = ebr_siguiente.part_start - sizeof(EBR);
@@ -452,10 +422,11 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
                         }
 
                         // se reescribe el archivo actualizado
-                        file_struct = fopen(sc, "rb+");
-                        fseek(file_struct, ebr_anterior.part_start - sizeof(EBR), SEEK_SET);
-                        fwrite(&ebr_anterior, sizeof(MBR), 1, file_struct);
-                        fclose(file_struct);
+                        FILE *reescribir = fopen(this->path.c_str(), "rb+");
+                        int puntero = ebr_anterior.part_start - sizeof(EBR);
+                        fseek(reescribir, puntero, SEEK_SET);
+                        fwrite(&ebr_anterior, sizeof(MBR), 1, reescribir);
+                        fclose(reescribir);
                         return;
                     } else {
                         cout << "La eliminacion de la particion se ha cancelado." << endl;
@@ -465,12 +436,9 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
                 if (ebr_actual.part_next == -1) break;
 
                 ebr_anterior = ebr_actual;
-                ebr_actual = leer_ebr(sc, ebr_actual.part_next);
-                //fseek(file_struct, ebr_actual.part_next, SEEK_SET);
-                //fread(&ebr_actual, sizeof(EBR), 1, file_struct);
+                ebr_actual = leer_ebr(this->path.c_str(), ebr_actual.part_next);
                 posicion_eliminada++;
             }
-            //fclose(file_struct);
         }
     }
     cout << "La particion requerida no existe." << endl;
@@ -483,27 +451,12 @@ void FDISK::create_logic_partition(MBR &mbr_leido, partition_ &part_extendida) {
     int part_next = -1;
 
     //se recupera el ebr inicial
-    char sc[this->path.size() + 1];
-    strcpy(sc, this->path.c_str());
 
     EBR ebr_inicial;
-    ebr_inicial = leer_ebr(sc, part_extendida.part_start);
+    ebr_inicial = leer_ebr(this->path.c_str(), part_extendida.part_start);
 
     //se busca el nombre para ver si existe
-    char nombre_particion[16];
-    strcpy(nombre_particion, this->name.c_str());
-    EBR ebr_aux;
-    ebr_aux = ebr_inicial;
-
-    while (true) {
-        if (strcmp(nombre_particion, ebr_aux.part_name) == 0) {
-            cout << "Ya existe una particion logica con este nombre." << endl;
-            return;
-        }
-        if (ebr_aux.part_next == -1) break;
-
-        ebr_aux = leer_ebr(sc, ebr_aux.part_next);
-    }
+    if(nombre_repetido(mbr_leido)) return;
 
     //se revisa si el ebr inicial esta activo, si no se revisa el siguiente, si no hay es la primera logica
     if (ebr_inicial.part_status == 'i') {
@@ -554,7 +507,6 @@ void FDISK::create_logic_partition(MBR &mbr_leido, partition_ &part_extendida) {
     while (true) {
         if (ebr_actual.part_next == -1) {
             //significa que es el ultimo ebr
-            cout << "es el ultimo ebr" << endl;
             int fin_part_actual = ebr_actual.part_start + ebr_actual.part_size;
             int entre_final = part_extendida.part_start + part_extendida.part_size - fin_part_actual;
             int espacio_util = entre_final - sizeof(EBR);
@@ -586,7 +538,7 @@ void FDISK::create_logic_partition(MBR &mbr_leido, partition_ &part_extendida) {
             //no es el ultimo ebr
             //se recupera el siguiente ebr
 
-            ebr_siguiente = leer_ebr(sc, ebr_actual.part_next);
+            ebr_siguiente = leer_ebr(this->path.c_str(), ebr_actual.part_next);
 
             //se revisa el espacio entre particiones
             int fin_part_actual = ebr_actual.part_start + ebr_actual.part_size;
@@ -681,18 +633,10 @@ void FDISK::escribir_EBR(EBR &ebr) {
 
 void FDISK::add_size(int size_change) {
     //se reivsa si el disco existe
-    char sc[this->path.size() + 1];
-    strcpy(sc, this->path.c_str());
-    FILE *file_struct;
-    file_struct = fopen(sc, "rb+");
-    if (file_struct == NULL) {
-        cout << "El disco no existe." << endl;
-        return;
-    }
-    fclose(file_struct);
+    if(!verificar_disco(this->path)) return;
 
     //si existe el disco se recupera el MBR
-    MBR mbr_leido = leer_MBR(sc);
+    MBR mbr_leido = leer_MBR(this->path.c_str());
 
     char nombre_particion[16];
     strcpy(nombre_particion, this->name.c_str());
@@ -746,7 +690,7 @@ void FDISK::add_size(int size_change) {
             EBR ebr_actual;
             //EBR ebr_anterior;
             EBR ebr_siguiente;
-            ebr_actual = leer_ebr(sc, mbr_leido.particiones[i].part_start);
+            ebr_actual = leer_ebr(this->path.c_str(), mbr_leido.particiones[i].part_start);
             //ebr_anterior = ebr_actual;
 
             while (true) {
@@ -770,7 +714,7 @@ void FDISK::add_size(int size_change) {
                         }
                     } else {
                         if (ebr_actual.part_next != -1) {
-                            ebr_siguiente = leer_ebr(sc, ebr_actual.part_next);
+                            ebr_siguiente = leer_ebr(this->path.c_str(), ebr_actual.part_next);
                         }
 
                         int espacio_entre = 0;
@@ -779,7 +723,8 @@ void FDISK::add_size(int size_change) {
                             espacio_entre = ebr_siguiente.part_start - sizeof(EBR) - final_particion;
                         } else {
                             int final_particion = ebr_actual.part_start + ebr_actual.part_size;
-                            espacio_entre = mbr_leido.particiones[i].part_start + mbr_leido.particiones[i].part_size - final_particion;
+                            espacio_entre = mbr_leido.particiones[i].part_start + mbr_leido.particiones[i].part_size -
+                                            final_particion;
                         }
                         if (espacio_entre >= size_change) {
                             cout << "Por favor confirme que desea expandir la particion[S/n]." << endl;
@@ -788,7 +733,7 @@ void FDISK::add_size(int size_change) {
                             if (confirmacion == "s" || confirmacion == "S") {
                                 ebr_actual.part_size = ebr_actual.part_size + size_change;
                                 escribir_EBR(ebr_actual);
-                                cout << "Expandion realizada con exito." << endl;
+                                cout << "Expansion realizada con exito." << endl;
                                 return;
                             } else {
                                 cout << "Se ha cancelado la reduccion." << endl;
@@ -801,9 +746,49 @@ void FDISK::add_size(int size_change) {
                 if (ebr_actual.part_next == -1) break;
 
                 //ebr_anterior = ebr_actual;
-                ebr_actual = leer_ebr(sc, ebr_actual.part_next);
+                ebr_actual = leer_ebr(this->path.c_str(), ebr_actual.part_next);
                 posicion_eliminada++;
             }
         }
     }
+}
+
+bool FDISK::nombre_repetido(MBR &mbr_leido) {
+    char nombre_particion[16];
+    strcpy(nombre_particion, this->name.c_str());
+    for (auto &particione : mbr_leido.particiones) {
+        if (strcmp(nombre_particion, particione.part_name) == 0 && particione.part_status == 'a') {
+            cout << "ERROR al crear la particion: ya existe una particion con este nombre." << endl;
+            return true;
+        } else if (particione.part_type == 'e') {
+            //si es extendida se busca entre las logicas
+            EBR ebr_actual;
+            char sc[this->path.size() + 1];
+            strcpy(sc, this->path.c_str());
+            ebr_actual = leer_ebr(sc, particione.part_start);
+
+            while (true) {
+                if (strcmp(nombre_particion, ebr_actual.part_name) == 0) {
+                    cout << "ERROR al crear la particion: ya existe una particion con este nombre." << endl;
+                    return true;
+                }
+                if (ebr_actual.part_next == -1) break;
+                ebr_actual = leer_ebr(sc, ebr_actual.part_next);
+            }
+        }
+    }
+    return false;
+}
+
+bool FDISK::verificar_disco(string path){
+    char sc[this->path.size() + 1];
+    strcpy(sc, this->path.c_str());
+
+    FILE *verificar = fopen(sc, "r");
+    if (verificar == NULL) {
+        cout << "El disco no existe." << endl;
+        return false;
+    }
+    fclose(verificar);
+    return true;
 }

@@ -1,15 +1,15 @@
 #include "iostream"
-#include "parser.h"  // Nuestro parser
-#include "scanner.h"  // Nuestro scanner
+#include "scanner.h"
+#include "aux_structs.h"
 
 using namespace std;
-
 extern int yyparse();
 int p;
 extern int linea;
 extern int yylineno;
+disco_montado discos_montados[26];
 
-int main(int argc, char *argv[]) {
+int main() {
 
     string ingrese = "------------------------------Ingrese un comando------------------------------\n";
 

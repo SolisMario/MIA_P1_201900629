@@ -38,7 +38,9 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_")*
 "delete" {yylval.STRING = strdup(yytext);return (rdelete);};
 "name" {yylval.STRING = strdup(yytext);return (rname);};
 "add" {yylval.STRING = strdup(yytext);return (radd);};
-
+"mount" {yylval.STRING = strdup(yytext);return (rmount);};
+"umount" {yylval.STRING = strdup(yytext);return (rumount);};
+"id" {yylval.STRING = strdup(yytext);return (rid);};
 {id} {yylval.STRING = strdup(yytext); return (id);};
 {ruta} {yylval.STRING = strdup(yytext); return (ruta);};
 . {}

@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/main.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o"
+  "CMakeFiles/MIA_P1_201900629.dir/mount.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o"

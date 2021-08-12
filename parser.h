@@ -59,14 +59,17 @@ extern int yydebug;
     fit = 265,
     unit = 266,
     path = 267,
-    id = 268,
-    ruta = 269,
-    rmdisk = 270,
-    fdisk = 271,
-    rtype = 272,
-    rdelete = 273,
-    rname = 274,
-    radd = 275
+    rid = 268,
+    id = 269,
+    ruta = 270,
+    rmdisk = 271,
+    fdisk = 272,
+    rtype = 273,
+    rdelete = 274,
+    rname = 275,
+    radd = 276,
+    rmount = 277,
+    rumount = 278
   };
 #endif
 
@@ -74,12 +77,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 56 "parser.y"
+#line 64 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 83 "parser.h"
+#line 86 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

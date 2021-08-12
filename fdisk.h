@@ -62,7 +62,12 @@ public:
 
     void escribir_EBR(EBR &ebr);
 
+    bool nombre_repetido(MBR &mbr_leido);
+
     string toLowerCase(string str);
+
+    bool verificar_disco(string path);
+
 };
 
 #endif //MIA_P1_201900629_FDISK_H

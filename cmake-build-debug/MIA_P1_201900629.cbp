@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/aux_structs.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/ebr.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
@@ -98,6 +104,12 @@
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mkdisk.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mount.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mount.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/parser.cpp">

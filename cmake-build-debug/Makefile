@@ -201,6 +201,30 @@ mkdisk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.s
 .PHONY : mkdisk.cpp.s
 
+mount.o: mount.cpp.o
+.PHONY : mount.o
+
+# target to build an object file
+mount.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mount.cpp.o
+.PHONY : mount.cpp.o
+
+mount.i: mount.cpp.i
+.PHONY : mount.i
+
+# target to preprocess a source file
+mount.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mount.cpp.i
+.PHONY : mount.cpp.i
+
+mount.s: mount.cpp.s
+.PHONY : mount.s
+
+# target to generate assembly for a file
+mount.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mount.cpp.s
+.PHONY : mount.cpp.s
+
 parser.o: parser.cpp.o
 .PHONY : parser.o
 
@@ -291,6 +315,9 @@ help:
 	@echo "... mkdisk.o"
 	@echo "... mkdisk.i"
 	@echo "... mkdisk.s"
+	@echo "... mount.o"
+	@echo "... mount.i"
+	@echo "... mount.s"
 	@echo "... parser.o"
 	@echo "... parser.i"
 	@echo "... parser.s"

@@ -6,27 +6,37 @@
 
 #IncludeRegexTransform: 
 
-/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp
+/home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
 iostream
 -
-algorithm
--
-cstring
--
-fdisk.h
-/home/mario/Repositorios/MIA_P1_201900629/fdisk.h
 
-/home/mario/Repositorios/MIA_P1_201900629/fdisk.h
+/home/mario/Repositorios/MIA_P1_201900629/ebr.h
 iostream
 -
-mbr.h
-/home/mario/Repositorios/MIA_P1_201900629/mbr.h
 
 /home/mario/Repositorios/MIA_P1_201900629/mbr.h
 iostream
 -
 partition.h
 /home/mario/Repositorios/MIA_P1_201900629/partition.h
+
+/home/mario/Repositorios/MIA_P1_201900629/mount.cpp
+string
+-
+iostream
+-
+cstring
+-
+mount.h
+/home/mario/Repositorios/MIA_P1_201900629/mount.h
+
+/home/mario/Repositorios/MIA_P1_201900629/mount.h
+aux_structs.h
+/home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
+mbr.h
+/home/mario/Repositorios/MIA_P1_201900629/mbr.h
+ebr.h
+/home/mario/Repositorios/MIA_P1_201900629/ebr.h
 
 /home/mario/Repositorios/MIA_P1_201900629/partition.h
 iostream
