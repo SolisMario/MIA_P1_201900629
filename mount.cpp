@@ -31,7 +31,7 @@ void MOUNT::mount() {
     if (this->path.empty()) {
         cout << "ERROR: El parametro path es obligatorio." << endl;
         return;
-    } else if (this->path.empty()) {
+    } else if (this->name.empty()) {
         cout << "ERROR: El parametro name es obligatorio." << endl;
         return;
     }
@@ -85,6 +85,7 @@ void MOUNT::mount() {
                     fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
                     fread(&superBloque, sizeof(super_bloque), 1, recuperar);
                     superBloque.s_mtime = time(nullptr);
+                    superBloque.s_mnt_count += 1;
                     fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
                     fwrite(&superBloque, sizeof(super_bloque), 1, recuperar);
                     fflush(recuperar);
@@ -134,7 +135,7 @@ void MOUNT::mount() {
 
 void MOUNT::umount() {
     if (this->id.empty()) {
-        cout << "ERROR: El parametro id es obligatorio";
+        cout << "ERROR: El parametro id es obligatorio" << endl;
         return;
     }
 
@@ -149,6 +150,11 @@ void MOUNT::umount() {
     int part_pos = int(part_letter - 65);
     if (part_pos < 0 || part_pos > 25 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
         cout << "ERROR: La particion indicada no esta montada." << endl;
+        return;
+    }
+
+    if(discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0){
+        cout << "ERROR: el disco indicado no esta montado." << endl;
         return;
     }
 

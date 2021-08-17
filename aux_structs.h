@@ -29,7 +29,7 @@ typedef struct {
     int s_free_inodes_count;
     time_t s_mtime;
     time_t s_umtime;
-    int s_mnt_count;
+    int s_mnt_count = 0;
     int s_magic = 0xEF53;
     int s_inode_size;
     int s_block_size;

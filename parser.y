@@ -9,6 +9,8 @@
 #include "rmdisk.h"
 #include "fdisk.h"
 #include "mount.h"
+#include "rep.h"
+#include "mkfs.h"
 
 using namespace std;
 extern int yylex(void);
@@ -20,6 +22,8 @@ MKDISK * mkdiskV;
 RMDISK * rmdiskV;
 FDISK * fdiskV;
 MOUNT * mountV;
+REP * repV;
+MKFS * mkfsV;
 %}
 
 %start INI
@@ -45,6 +49,11 @@ MOUNT * mountV;
 %token<STRING> radd
 %token<STRING> rmount
 %token<STRING> rumount
+%token<STRING> retruta
+%token<STRING> root
+%token<STRING> rep
+%token<STRING> rmkfs
+%token<STRING> rfs
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -57,6 +66,10 @@ MOUNT * mountV;
 %type<STRING> MOUNTPARAM
 %type<STRING> MOUNTPARAMS
 %type<STRING> UMOUNTPARAM
+%type<STRING> REPPARAMS
+%type<STRING> REPPARAM
+%type<STRING> MKFSPARAMS
+%type<STRING> MKFSPARAM
 
 %define parse.error verbose
 %locations
@@ -83,6 +96,8 @@ INSTRUCCION:
 	| fdisk {fdiskV = new FDISK();} FDISKPARAMS {fdiskV->fdisk();}
 	| rmount {mountV = new MOUNT();} MOUNTPARAMS {mountV->mount();}
 	| rumount {mountV = new MOUNT();} UMOUNTPARAM {mountV->umount();}
+	| rep {repV = new REP();} REPPARAMS {repV->rep();}
+	| rmkfs {mkfsV = new MKFS();} MKFSPARAMS {mkfsV->mkfs();}
 ;
 
 MKDISKPARAMS:
@@ -135,6 +150,31 @@ MOUNTPARAM:
 
 UMOUNTPARAM:
 	guion rid igual id_particion {mountV->setID($4);}
+;
+
+REPPARAMS:
+	REPPARAMS REPPARAM
+	| REPPARAM
+;
+
+REPPARAM:
+	guion rname igual id {repV->setName($4);}
+	| guion path igual ruta {repV->setPath(false, $4);}
+        | guion path igual cadena {repV->setPath(true, $4);}
+        | guion rid igual id_particion {repV->setID($4);}
+        | guion retruta igual id {repV->setRuta($4);}
+        | guion root igual numero {repV->setRoot(atoi($4));}
+;
+
+MKFSPARAMS:
+	MKFSPARAMS MKFSPARAM
+	| MKFSPARAM
+;
+
+MKFSPARAM:
+	guion rid igual id_particion {mkfsV->set_id($4);}
+	| guion rtype igual id {mkfsV->set_type($4);}
+	| guion rfs igual id {mkfsV->set_fs($4);}
 ;
 
 %%

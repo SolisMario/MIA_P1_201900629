@@ -69,7 +69,12 @@ extern int yydebug;
     rname = 275,
     radd = 276,
     rmount = 277,
-    rumount = 278
+    rumount = 278,
+    retruta = 279,
+    root = 280,
+    rep = 281,
+    rmkfs = 282,
+    rfs = 283
   };
 #endif
 
@@ -77,12 +82,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 64 "parser.y"
+#line 77 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 86 "parser.h"
+#line 91 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

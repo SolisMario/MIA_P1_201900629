@@ -106,6 +106,12 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mkdisk.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mkfs.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mkfs.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mount.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
@@ -119,6 +125,12 @@
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/partition.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rep.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rep.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rmdisk.cpp">

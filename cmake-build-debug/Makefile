@@ -201,6 +201,30 @@ mkdisk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.s
 .PHONY : mkdisk.cpp.s
 
+mkfs.o: mkfs.cpp.o
+.PHONY : mkfs.o
+
+# target to build an object file
+mkfs.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mkfs.cpp.o
+.PHONY : mkfs.cpp.o
+
+mkfs.i: mkfs.cpp.i
+.PHONY : mkfs.i
+
+# target to preprocess a source file
+mkfs.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mkfs.cpp.i
+.PHONY : mkfs.cpp.i
+
+mkfs.s: mkfs.cpp.s
+.PHONY : mkfs.s
+
+# target to generate assembly for a file
+mkfs.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mkfs.cpp.s
+.PHONY : mkfs.cpp.s
+
 mount.o: mount.cpp.o
 .PHONY : mount.o
 
@@ -248,6 +272,30 @@ parser.s: parser.cpp.s
 parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/parser.cpp.s
 .PHONY : parser.cpp.s
+
+rep.o: rep.cpp.o
+.PHONY : rep.o
+
+# target to build an object file
+rep.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rep.cpp.o
+.PHONY : rep.cpp.o
+
+rep.i: rep.cpp.i
+.PHONY : rep.i
+
+# target to preprocess a source file
+rep.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rep.cpp.i
+.PHONY : rep.cpp.i
+
+rep.s: rep.cpp.s
+.PHONY : rep.s
+
+# target to generate assembly for a file
+rep.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rep.cpp.s
+.PHONY : rep.cpp.s
 
 rmdisk.o: rmdisk.cpp.o
 .PHONY : rmdisk.o
@@ -315,12 +363,18 @@ help:
 	@echo "... mkdisk.o"
 	@echo "... mkdisk.i"
 	@echo "... mkdisk.s"
+	@echo "... mkfs.o"
+	@echo "... mkfs.i"
+	@echo "... mkfs.s"
 	@echo "... mount.o"
 	@echo "... mount.i"
 	@echo "... mount.s"
 	@echo "... parser.o"
 	@echo "... parser.i"
 	@echo "... parser.s"
+	@echo "... rep.o"
+	@echo "... rep.i"
+	@echo "... rep.s"
 	@echo "... rmdisk.o"
 	@echo "... rmdisk.i"
 	@echo "... rmdisk.s"

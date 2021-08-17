@@ -408,7 +408,7 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
                             FILE *ceros = fopen(this->path.c_str(), "rb+");
                             for (int i = inicio_part; i < final_part; ++i) {
                                 fseek(ceros, i, SEEK_SET);
-                                fwrite("0", 1, 1, ceros);
+                                fwrite("\0", 1, 1, ceros);
                             }
                             fclose(ceros);
                         }

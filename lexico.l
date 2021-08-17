@@ -41,6 +41,11 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_")*
 "mount" {yylval.STRING = strdup(yytext);return (rmount);};
 "umount" {yylval.STRING = strdup(yytext);return (rumount);};
 "id" {yylval.STRING = strdup(yytext);return (rid);};
+"ruta" {yylval.STRING = strdup(yytext);return (retruta);};
+"root" {yylval.STRING = strdup(yytext);return (root);};
+"rep" {yylval.STRING = strdup(yytext);return (rep);};
+"mkfs" {yylval.STRING = strdup(yytext);return (rmkfs);};
+"fs" {yylval.STRING = strdup(yytext);return (rfs);};
 {id} {yylval.STRING = strdup(yytext); return (id);};
 {ruta} {yylval.STRING = strdup(yytext); return (ruta);};
 . {}

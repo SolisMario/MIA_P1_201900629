@@ -8,4 +8,4 @@ add_executable(MIA_P1_201900629
 		parser.cpp
 		parser.h
 		scanner.cpp
-		scanner.h mbr.h partition.h mkdisk.cpp mkdisk.h rmdisk.h rmdisk.cpp fdisk.h fdisk.cpp ebr.h aux_structs.h mount.cpp mount.h)
+		scanner.h mbr.h partition.h mkdisk.cpp mkdisk.h rmdisk.h rmdisk.cpp fdisk.h fdisk.cpp ebr.h aux_structs.h mount.cpp mount.h rep.h rep.cpp mkfs.h mkfs.cpp)

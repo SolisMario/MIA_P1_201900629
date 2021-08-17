@@ -16,6 +16,13 @@ CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o: \
  ../mkdisk.cpp \
  ../mkdisk.h \
  ../partition.h
+CMakeFiles/MIA_P1_201900629.dir/mkfs.cpp.o: \
+ ../aux_structs.h \
+ ../ebr.h \
+ ../mbr.h \
+ ../mkfs.cpp \
+ ../mkfs.h \
+ ../partition.h
 CMakeFiles/MIA_P1_201900629.dir/mount.cpp.o: \
  ../aux_structs.h \
  ../ebr.h \
@@ -29,11 +36,20 @@ CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: \
  ../fdisk.h \
  ../mbr.h \
  ../mkdisk.h \
+ ../mkfs.h \
  ../mount.h \
  ../parser.cpp \
  ../partition.h \
+ ../rep.h \
  ../rmdisk.h \
  ../scanner.h
+CMakeFiles/MIA_P1_201900629.dir/rep.cpp.o: \
+ ../aux_structs.h \
+ ../ebr.h \
+ ../mbr.h \
+ ../partition.h \
+ ../rep.cpp \
+ ../rep.h
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o: \
  ../rmdisk.cpp \
  ../rmdisk.h

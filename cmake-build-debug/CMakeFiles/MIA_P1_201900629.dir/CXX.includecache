@@ -20,17 +20,17 @@ iostream
 partition.h
 /home/mario/Repositorios/MIA_P1_201900629/partition.h
 
-/home/mario/Repositorios/MIA_P1_201900629/mount.cpp
-string
+/home/mario/Repositorios/MIA_P1_201900629/mkfs.cpp
+cmath
 -
-iostream
--
+mkfs.h
+/home/mario/Repositorios/MIA_P1_201900629/mkfs.h
 cstring
 -
-mount.h
-/home/mario/Repositorios/MIA_P1_201900629/mount.h
 
-/home/mario/Repositorios/MIA_P1_201900629/mount.h
+/home/mario/Repositorios/MIA_P1_201900629/mkfs.h
+iostream
+-
 aux_structs.h
 /home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
 mbr.h
