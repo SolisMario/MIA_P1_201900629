@@ -345,6 +345,30 @@ scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.s
 .PHONY : scanner.cpp.s
 
+touch.o: touch.cpp.o
+.PHONY : touch.o
+
+# target to build an object file
+touch.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/touch.cpp.o
+.PHONY : touch.cpp.o
+
+touch.i: touch.cpp.i
+.PHONY : touch.i
+
+# target to preprocess a source file
+touch.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/touch.cpp.i
+.PHONY : touch.cpp.i
+
+touch.s: touch.cpp.s
+.PHONY : touch.s
+
+# target to generate assembly for a file
+touch.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/touch.cpp.s
+.PHONY : touch.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -381,6 +405,9 @@ help:
 	@echo "... scanner.o"
 	@echo "... scanner.i"
 	@echo "... scanner.s"
+	@echo "... touch.o"
+	@echo "... touch.i"
+	@echo "... touch.s"
 .PHONY : help
 
 

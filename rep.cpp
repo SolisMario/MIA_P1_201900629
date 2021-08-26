@@ -33,8 +33,7 @@ void REP::setRuta(string ruta) {
 void REP::rep() {
     if (this->name == "mbr") {
         graficar_MBR();
-    }
-    else if(this->name == "disk"){
+    } else if (this->name == "disk") {
         graficar_disk();
     }
 }
@@ -54,7 +53,7 @@ void REP::graficar_MBR() {
         return;
     }
 
-    if(discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0){
+    if (discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
         cout << "ERROR: el disco indicado no esta montado." << endl;
         return;
     }
@@ -136,9 +135,12 @@ void REP::graficar_MBR() {
         }
     }
 
-    for (int i = 0; i < nodo; i++) {
-        graph += to_string(i) + "->" + to_string(i + 1) + "[style=invisible arrowhead=none];\n";
+    if (nodo > 1) {
+        for (int i = 0; i < nodo; i++) {
+            graph += to_string(i) + "->" + to_string(i + 1) + "[style=invisible arrowhead=none];\n";
+        }
     }
+
     graph += "}";
     archivo_dot(graph, "MBR");
 }
@@ -157,7 +159,7 @@ void REP::graficar_disk() {
         return;
     }
 
-    if(discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0){
+    if (discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
         cout << "ERROR: el disco indicado no esta montado." << endl;
         return;
     }
@@ -198,12 +200,14 @@ void REP::graficar_disk() {
                     cont_ebr++;
                     int final_actual = ebr_actual.part_start + ebr_actual.part_size;
                     porcentaje_ocupado = (ebr_actual.part_size + sizeof(EBR)) * 100 / espacio_disco;
-                    tr_logicas += "<TD ROWSPAN=\"5\">Logica<BR/>" + to_string(porcentaje_ocupado) + "% del disco</TD>\n";
+                    tr_logicas +=
+                            "<TD ROWSPAN=\"5\">Logica<BR/>" + to_string(porcentaje_ocupado) + "% del disco</TD>\n";
                     cont_ebr++;
                     int espacio_entre = ebr_actual.part_next - final_actual;
                     if (espacio_entre > 0) {
                         porcentaje_ocupado = espacio_entre * 100 / espacio_disco;
-                        tr_logicas += "<TD ROWSPAN=\"6\">Libre<BR/>" + to_string(porcentaje_ocupado) + "% del disco</TD>\n";
+                        tr_logicas +=
+                                "<TD ROWSPAN=\"6\">Libre<BR/>" + to_string(porcentaje_ocupado) + "% del disco</TD>\n";
                         cont_ebr++;
                     }
                     if (ebr_actual.part_next == -1) {
@@ -211,7 +215,8 @@ void REP::graficar_disk() {
                         if (entre_final > 0) {
                             porcentaje_ocupado = entre_final * 100 / espacio_disco;
                             tr_logicas +=
-                                    "<TD ROWSPAN=\"5\">Libre<BR/>" + to_string(porcentaje_ocupado) + "% del disco</TD>\n";
+                                    "<TD ROWSPAN=\"5\">Libre<BR/>" + to_string(porcentaje_ocupado) +
+                                    "% del disco</TD>\n";
                             cont_ebr++;
                         }
                         break;
@@ -240,7 +245,12 @@ void REP::graficar_disk() {
             }
         }
     }
-    graph += "</TR>\n<TR>\n" + tr_logicas +  "</TR>\n</TABLE>>];\n}";
+    if (!tr_logicas.empty()) {
+        graph += "</TR>\n<TR>\n" + tr_logicas + "</TR>\n</TABLE>>];\n}";
+    } else {
+        graph += "</TR>\n</TABLE>>];\n}";
+    }
+
     archivo_dot(graph, "disk");
 }
 

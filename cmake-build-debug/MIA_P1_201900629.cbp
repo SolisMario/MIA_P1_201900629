@@ -145,6 +145,12 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/scanner.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/touch.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/touch.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

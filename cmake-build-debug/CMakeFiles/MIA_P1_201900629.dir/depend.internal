@@ -43,6 +43,7 @@ CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o
  /home/mario/Repositorios/MIA_P1_201900629/rep.h
  /home/mario/Repositorios/MIA_P1_201900629/rmdisk.h
  /home/mario/Repositorios/MIA_P1_201900629/scanner.h
+ /home/mario/Repositorios/MIA_P1_201900629/touch.h
 CMakeFiles/MIA_P1_201900629.dir/rep.cpp.o
  /home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
  /home/mario/Repositorios/MIA_P1_201900629/ebr.h
@@ -56,3 +57,10 @@ CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o
 CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o
  /home/mario/Repositorios/MIA_P1_201900629/parser.h
  /home/mario/Repositorios/MIA_P1_201900629/scanner.cpp
+CMakeFiles/MIA_P1_201900629.dir/touch.cpp.o
+ /home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
+ /home/mario/Repositorios/MIA_P1_201900629/ebr.h
+ /home/mario/Repositorios/MIA_P1_201900629/mbr.h
+ /home/mario/Repositorios/MIA_P1_201900629/partition.h
+ /home/mario/Repositorios/MIA_P1_201900629/touch.cpp
+ /home/mario/Repositorios/MIA_P1_201900629/touch.h

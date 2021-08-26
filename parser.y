@@ -11,6 +11,7 @@
 #include "mount.h"
 #include "rep.h"
 #include "mkfs.h"
+#include "touch.h"
 
 using namespace std;
 extern int yylex(void);
@@ -24,6 +25,7 @@ FDISK * fdiskV;
 MOUNT * mountV;
 REP * repV;
 MKFS * mkfsV;
+TOUCH * touchV;
 %}
 
 %start INI
@@ -54,6 +56,10 @@ MKFS * mkfsV;
 %token<STRING> rep
 %token<STRING> rmkfs
 %token<STRING> rfs
+%token<STRING> rr
+%token<STRING> rcont
+%token<STRING> rstdin
+%token<STRING> touch
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -70,6 +76,8 @@ MKFS * mkfsV;
 %type<STRING> REPPARAM
 %type<STRING> MKFSPARAMS
 %type<STRING> MKFSPARAM
+%type<STRING> TOUCHPARAMS
+%type<STRING> TOUCHPARAM
 
 %define parse.error verbose
 %locations
@@ -98,6 +106,7 @@ INSTRUCCION:
 	| rumount {mountV = new MOUNT();} UMOUNTPARAM {mountV->umount();}
 	| rep {repV = new REP();} REPPARAMS {repV->rep();}
 	| rmkfs {mkfsV = new MKFS();} MKFSPARAMS {mkfsV->mkfs();}
+	| touch {touchV = new TOUCH();} TOUCHPARAMS {touchV->touch();}
 ;
 
 MKDISKPARAMS:
@@ -174,7 +183,22 @@ MKFSPARAMS:
 MKFSPARAM:
 	guion rid igual id_particion {mkfsV->set_id($4);}
 	| guion rtype igual id {mkfsV->set_type($4);}
-	| guion rfs igual id {mkfsV->set_fs($4);}
+	| guion rfs igual numero rfs {mkfsV->set_fs(atoi($4));}
+;
+
+TOUCHPARAMS:
+	TOUCHPARAMS TOUCHPARAM
+	| TOUCHPARAM
+;
+
+TOUCHPARAM:
+	guion path igual ruta {touchV->set_path(false, $4);}
+	| guion path igual cadena {touchV->set_path(true, $4);}
+	| guion rr {touchV->set_r(true);}
+	| guion size igual numero {touchV->set_size(atoi($4));}
+	| guion rcont igual ruta {touchV->set_cont(false, $4);}
+       	| guion rcont igual cadena {touchV->set_cont(true, $4);}
+	| guion rstdin {touchV->set_stdin(true);}
 ;
 
 %%

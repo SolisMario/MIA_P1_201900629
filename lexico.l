@@ -46,6 +46,10 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_")*
 "rep" {yylval.STRING = strdup(yytext);return (rep);};
 "mkfs" {yylval.STRING = strdup(yytext);return (rmkfs);};
 "fs" {yylval.STRING = strdup(yytext);return (rfs);};
+"touch" {yylval.STRING = strdup(yytext);return (touch);};
+"r" {yylval.STRING = strdup(yytext);return (rr);};
+"cont" {yylval.STRING = strdup(yytext);return (rcont);};
+"stdin" {yylval.STRING = strdup(yytext);return (rstdin);};
 {id} {yylval.STRING = strdup(yytext); return (id);};
 {ruta} {yylval.STRING = strdup(yytext); return (ruta);};
 . {}

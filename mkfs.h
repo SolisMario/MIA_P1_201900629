@@ -15,13 +15,13 @@ class MKFS {
 private:
     string type;
     string id;
-    string fs = "2fs";
+    int fs = 2;
 public:
     void set_type(string type_set);
 
     void set_id(string id_set);
 
-    void set_fs(string fs_set);
+    void set_fs(int fs_set);
 
     void mkfs();
 
@@ -31,8 +31,9 @@ public:
 
     EBR leer_ebr(char const *sc, int seek);
 
-    partition_ get_particion(char const *nombre);
+    super_bloque editar_super(int n, super_bloque &SB, int part_start);
 
+    void llenar_journal(int part_start, FILE* file);
 };
 
 #endif //MIA_P1_201900629_MKFS_H
