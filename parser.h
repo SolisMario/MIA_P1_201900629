@@ -49,36 +49,38 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    id_particion = 258,
-    numero = 259,
-    cadena = 260,
-    guion = 261,
-    igual = 262,
-    mkdisk = 263,
-    size = 264,
-    fit = 265,
-    unit = 266,
-    path = 267,
-    rid = 268,
-    id = 269,
-    ruta = 270,
-    rmdisk = 271,
-    fdisk = 272,
-    rtype = 273,
-    rdelete = 274,
-    rname = 275,
-    radd = 276,
-    rmount = 277,
-    rumount = 278,
-    retruta = 279,
-    root = 280,
+    numero = 258,
+    cadena = 259,
+    guion = 260,
+    igual = 261,
+    mkdisk = 262,
+    size = 263,
+    fit = 264,
+    unit = 265,
+    rp = 266,
+    rr = 267,
+    path = 268,
+    rmdisk = 269,
+    fdisk = 270,
+    rtype = 271,
+    rdelete = 272,
+    rname = 273,
+    radd = 274,
+    rmount = 275,
+    rumount = 276,
+    rmkfs = 277,
+    id = 278,
+    rfs = 279,
+    ruta = 280,
     rep = 281,
-    rmkfs = 282,
-    rfs = 283,
-    rr = 284,
-    rcont = 285,
-    rstdin = 286,
-    touch = 287
+    rid = 282,
+    retruta = 283,
+    root = 284,
+    id_particion = 285,
+    rmkdir = 286,
+    touch = 287,
+    rcont = 288,
+    rstdin = 289
   };
 #endif
 
@@ -86,12 +88,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 85 "parser.y"
+#line 125 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 95 "parser.h"
+#line 97 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -6,6 +6,7 @@
 #define MIA_P1_201900629_REP_H
 
 #include <iostream>
+#include <cstring>
 #include "aux_structs.h"
 #include "mbr.h"
 #include "ebr.h"
@@ -45,6 +46,18 @@ public:
     void graficar_disk();
 
     string nombre_disco(const char* path);
+
+    void graficar_tree();
+
+    string graficar_inodo(int indice_inodo, int inode_start, int block_start, char const *path);
+
+    string graficar_bloque_carpeta(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path);
+
+    string graficar_bloque_archivo(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path);
+
+    string
+    graficar_bloque_apuntadores(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path,
+                                char tipo, int nivel);
 
 };
 

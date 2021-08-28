@@ -81,5 +81,13 @@ typedef struct
     int size = -1;
 }journal;
 
+typedef struct {
+    string usuario = "root";
+    string pwd = "123";
+    int activo = 1;
+    string particion_loggeada = "291A";
+} usuario_actual;
+
 extern disco_montado discos_montados[26];
+extern usuario_actual usuario_loggeado;
 #endif //MIA_P1_201900629_AUX_STRUCTS_H

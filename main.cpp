@@ -8,6 +8,7 @@ int p;
 extern int linea;
 extern int yylineno;
 disco_montado discos_montados[26];
+usuario_actual usuario_loggeado;
 
 int main() {
 

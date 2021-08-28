@@ -20,6 +20,26 @@ iostream
 partition.h
 /home/mario/Repositorios/MIA_P1_201900629/partition.h
 
+/home/mario/Repositorios/MIA_P1_201900629/mkdir.cpp
+fstream
+-
+mkdir.h
+/home/mario/Repositorios/MIA_P1_201900629/mkdir.h
+
+/home/mario/Repositorios/MIA_P1_201900629/mkdir.h
+iostream
+-
+cstring
+-
+list
+-
+aux_structs.h
+/home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
+mbr.h
+/home/mario/Repositorios/MIA_P1_201900629/mbr.h
+ebr.h
+/home/mario/Repositorios/MIA_P1_201900629/ebr.h
+
 /home/mario/Repositorios/MIA_P1_201900629/partition.h
 iostream
 -

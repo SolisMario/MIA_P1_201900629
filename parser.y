@@ -12,6 +12,7 @@
 #include "rep.h"
 #include "mkfs.h"
 #include "touch.h"
+#include "mkdir.h"
 
 using namespace std;
 extern int yylex(void);
@@ -26,12 +27,12 @@ MOUNT * mountV;
 REP * repV;
 MKFS * mkfsV;
 TOUCH * touchV;
+MKDIR * mkdirV;
 %}
 
 %start INI
 
-%token<STRING> id_particion
-%token<NUM> numero
+/*%token<NUM> numero
 %token<STRING> cadena
 %token<STRING> guion
 %token<STRING> igual
@@ -39,9 +40,10 @@ TOUCH * touchV;
 %token<STRING> size
 %token<STRING> fit
 %token<STRING> unit
+%token<STRING> rp
+%token<STRING> rr
 %token<STRING> path
 %token<STRING> rid
-%token<STRING> id
 %token<STRING> ruta
 %token<STRING> rmdisk
 %token<STRING> fdisk
@@ -56,10 +58,46 @@ TOUCH * touchV;
 %token<STRING> rep
 %token<STRING> rmkfs
 %token<STRING> rfs
-%token<STRING> rr
 %token<STRING> rcont
 %token<STRING> rstdin
 %token<STRING> touch
+%token<STRING> rmkdir
+%token<STRING> id
+%token<STRING> id_particion*/
+
+%token<NUM> numero
+%token<STRING> cadena
+%token<STRING> guion
+%token<STRING> igual
+%token<STRING> mkdisk
+%token<STRING> size
+%token<STRING> fit
+%token<STRING> unit
+%token<STRING> rp
+%token<STRING> rr
+%token<STRING> path
+%token<STRING> rmdisk
+%token<STRING> fdisk
+%token<STRING> rtype
+%token<STRING> rdelete
+%token<STRING> rname
+%token<STRING> radd
+%token<STRING> rmount
+%token<STRING> rumount
+%token<STRING> rmkfs
+%token<STRING> id
+%token<STRING> rfs
+%token<STRING> ruta
+%token<STRING> rep
+%token<STRING> rid
+%token<STRING> retruta
+%token<STRING> root
+%token<STRING> id_particion
+%token<STRING> rmkdir
+%token<STRING> touch
+%token<STRING> rcont
+%token<STRING> rstdin
+
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -78,6 +116,8 @@ TOUCH * touchV;
 %type<STRING> MKFSPARAM
 %type<STRING> TOUCHPARAMS
 %type<STRING> TOUCHPARAM
+%type<STRING> MKDIRPARAMS
+%type<STRING> MKDIRPARAM
 
 %define parse.error verbose
 %locations
@@ -107,6 +147,7 @@ INSTRUCCION:
 	| rep {repV = new REP();} REPPARAMS {repV->rep();}
 	| rmkfs {mkfsV = new MKFS();} MKFSPARAMS {mkfsV->mkfs();}
 	| touch {touchV = new TOUCH();} TOUCHPARAMS {touchV->touch();}
+	| rmkdir {mkdirV = new MKDIR();} MKDIRPARAMS {mkdirV->mkdir();}
 ;
 
 MKDISKPARAMS:
@@ -138,6 +179,7 @@ FDISKPAR:
 	| guion path igual ruta {fdiskV->setPath(false, $4);}
 	| guion path igual cadena {fdiskV->setPath(true, $4);}
 	| guion rtype igual id {fdiskV->setType($4);}
+	| guion rtype igual rp {fdiskV->setType($4);}
 	| guion fit igual id {fdiskV->setFit($4);}
 	| guion rdelete igual id {fdiskV->setDelete($4);}
 	| guion rname igual id {fdiskV->setName(false, $4);}
@@ -199,6 +241,17 @@ TOUCHPARAM:
 	| guion rcont igual ruta {touchV->set_cont(false, $4);}
        	| guion rcont igual cadena {touchV->set_cont(true, $4);}
 	| guion rstdin {touchV->set_stdin(true);}
+;
+
+MKDIRPARAMS:
+	MKDIRPARAMS MKDIRPARAM
+	| MKDIRPARAM
+;
+
+MKDIRPARAM:
+	guion path igual ruta {mkdirV->set_path(false, $4);}
+        | guion path igual cadena {mkdirV->set_path(true, $4);}
+        | guion rp {mkdirV->set_p(true);}
 ;
 
 %%
