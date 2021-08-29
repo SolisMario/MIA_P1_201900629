@@ -84,16 +84,25 @@ void MOUNT::mount() {
                     super_bloque superBloque;
                     fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
                     fread(&superBloque, sizeof(super_bloque), 1, recuperar);
-                    superBloque.s_mtime = time(nullptr);
-                    superBloque.s_mnt_count += 1;
-                    fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
-                    fwrite(&superBloque, sizeof(super_bloque), 1, recuperar);
-                    fflush(recuperar);
+                    if(superBloque.s_filesystem_type == 2 || superBloque.s_filesystem_type == 3){
+                        superBloque.s_mtime = time(nullptr);
+                        superBloque.s_mnt_count++;
+                        fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
+                        fwrite(&superBloque, sizeof(super_bloque), 1, recuperar);
+                        fclose(recuperar);
+                    } else {
+                        super_bloque nuevo;
+                        nuevo.s_mtime = time(nullptr);
+                        nuevo.s_mnt_count++;
+                        fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
+                        fwrite(&nuevo, sizeof(super_bloque), 1, recuperar);
+                        fclose(recuperar);
+                    }
+
                     cout << "La particion 29" << discos_montados[posicion_montar].numero
                          << discos_montados[posicion_montar].particiones[j].letra << " fue montada exitosamente."
                          << endl;
                     mostrar_montadas();
-                    fclose(recuperar);
                     return;
                 }
             }
@@ -112,15 +121,24 @@ void MOUNT::mount() {
                             super_bloque superBloque;
                             fseek(recuperar, ebr_actual.part_start, SEEK_SET);
                             fread(&superBloque, sizeof(super_bloque), 1, recuperar);
-                            superBloque.s_mtime = time(0);
-                            fseek(recuperar, ebr_actual.part_start, SEEK_SET);
-                            fwrite(&superBloque, sizeof(super_bloque), 1, recuperar);
-                            fflush(recuperar);
+                            if(superBloque.s_filesystem_type != -1){
+                                superBloque.s_mtime = time(nullptr);
+                                superBloque.s_mnt_count++;
+                                fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
+                                fwrite(&superBloque, sizeof(super_bloque), 1, recuperar);
+                                fclose(recuperar);
+                            } else {
+                                super_bloque nuevo;
+                                nuevo.s_mtime = time(nullptr);
+                                nuevo.s_mnt_count++;
+                                fseek(recuperar, mbr_leido.particiones[i].part_start, SEEK_SET);
+                                fwrite(&nuevo, sizeof(super_bloque), 1, recuperar);
+                                fclose(recuperar);
+                            }
                             cout << "La particion 29" << discos_montados[posicion_montar].numero
                                  << discos_montados[posicion_montar].particiones[j].letra
                                  << " fue montada exitosamente." << endl;
                             mostrar_montadas();
-                            fclose(recuperar);
                             return;
                         }
                     }

@@ -119,7 +119,30 @@ void MKDIR::mkdir() {
             inodo_abuelo = inodo_padre;
             inodo_padre = inodo_carpeta;
         }
+
+        //crear la ultima carpeta
+        int inodo_nueva = -1;
+        string folder_name = nombre_carpeta(this->path.c_str());
+        inodo_nueva = get_inodo(folder_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
+        if(inodo_nueva != -1){
+            cout << "La carpeta " << folder_name << " ya existe." << endl;
+            return;
+        }
+
+        crear_inodo(folder_name, inodo_carpeta, inodo_abuelo, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
+
     }
+    cout << "Carpeta creada con exito." << endl;
+}
+
+string MKDIR::nombre_carpeta(const char *path) {
+    string nombre_char = path;
+    string nombre_disco;
+    for (int i = nombre_char.length() - 1; i > 0; --i) {
+        if (path[i] == '/') break;
+        nombre_disco = path[i] + nombre_disco;
+    }
+    return nombre_disco;
 }
 
 bool MKDIR::verificar_disco(char const *path) {
@@ -142,7 +165,7 @@ list<string> MKDIR::separar_carpetas(string path) {
     strcpy(ruta, path.c_str());
     string nombre_carpeta;
     for (int i = 0; i < path.length() + 1; i++) {
-        if (ruta[i] == '/' || i == path.length()) {
+        if (ruta[i] == '/') {
             lista_carpetas.push_back(nombre_carpeta);
             nombre_carpeta.clear();
             continue;

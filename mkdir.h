@@ -46,6 +46,8 @@ public:
 
     int crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_carpeta, char const *path, int part_start,
                               int tipo, int inodo_padre, tabla_inodos carpeta_actual);
+
+    string nombre_carpeta(const char *path);
 };
 
 #endif //MIA_P1_201900629_MKDIR_H

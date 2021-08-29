@@ -64,7 +64,7 @@ void MKFS::mkfs() {
             super_bloque SB;
             recuperar = fopen(discos_montados[disk_pos].path, "rb+");
             fseek(recuperar, particione.part_start, SEEK_SET);
-            fread(&SB, sizeof(EBR), 1, recuperar);
+            fread(&SB, sizeof(super_bloque), 1, recuperar);
 
             SB = editar_super(n, SB, particione.part_start);
             fseek(recuperar, particione.part_start, SEEK_SET);

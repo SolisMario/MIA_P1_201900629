@@ -39,7 +39,7 @@ void TOUCH::touch() {
         return;
     }
 
-    string logged_partition = "291A";
+    string logged_partition = usuario_loggeado.particion_loggeada;
 
     //se recupera la posicion del dico y particion, se verifica si estan montados
     string disk_number = logged_partition.substr(2, logged_partition.length() - 3);
@@ -140,9 +140,6 @@ void TOUCH::touch() {
             inodo_padre = inodo_carpeta;
         }
 
-        cout << "abuelo " << inodo_abuelo << endl;
-        cout << "padre " << inodo_padre << endl;
-
         //si llega hasta aqui significa que las carpetas existen o se crearon con exito
         string file_name = nombre_archivo(this->path.c_str());
         int inodo_archivo = -1;
@@ -160,7 +157,7 @@ void TOUCH::touch() {
                 cout << "El archivo no fue creado ni sobreescrito." << endl;
                 return;
             } else {
-
+                //sobreescribir archivo
             }
         } else {
             //crear el inodo del archivo

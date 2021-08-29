@@ -59,6 +59,26 @@ public:
     graficar_bloque_apuntadores(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path,
                                 char tipo, int nivel);
 
+    string recorrer_inodo(int indice_inodo, int inode_start, int block_start, char const *path, char const *name);
+
+    string recorrer_bloque_carpeta(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path);
+
+    void graficar_tabla_inodos();
+
+    void graficar_super();
+
+    string recorrer_apuntadores_inodos(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path, int nivel);
+
+    string graficar_inodo_bloque(int indice_inodo, int inode_start, int block_start, char const *path);
+
+    string graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path);
+
+    string graficar_bloque_archivo_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path);
+
+    string graficar_bloque_apuntadores_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path, char tipo, int nivel);
+
+    void graficar_bloque();
+
 };
 
 #endif //MIA_P1_201900629_REP_H
