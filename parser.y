@@ -13,6 +13,10 @@
 #include "mkfs.h"
 #include "touch.h"
 #include "mkdir.h"
+#include "exec.h"
+#include "cat.h"
+#include "ren.h"
+#include "mv.h"
 
 using namespace std;
 extern int yylex(void);
@@ -28,42 +32,13 @@ REP * repV;
 MKFS * mkfsV;
 TOUCH * touchV;
 MKDIR * mkdirV;
+EXEC * execV;
+CAT * catV;
+REN * renV;
+MV * moveV;
 %}
 
 %start INI
-
-/*%token<NUM> numero
-%token<STRING> cadena
-%token<STRING> guion
-%token<STRING> igual
-%token<STRING> mkdisk
-%token<STRING> size
-%token<STRING> fit
-%token<STRING> unit
-%token<STRING> rp
-%token<STRING> rr
-%token<STRING> path
-%token<STRING> rid
-%token<STRING> ruta
-%token<STRING> rmdisk
-%token<STRING> fdisk
-%token<STRING> rtype
-%token<STRING> rdelete
-%token<STRING> rname
-%token<STRING> radd
-%token<STRING> rmount
-%token<STRING> rumount
-%token<STRING> retruta
-%token<STRING> root
-%token<STRING> rep
-%token<STRING> rmkfs
-%token<STRING> rfs
-%token<STRING> rcont
-%token<STRING> rstdin
-%token<STRING> touch
-%token<STRING> rmkdir
-%token<STRING> id
-%token<STRING> id_particion*/
 
 %token<NUM> numero
 %token<STRING> cadena
@@ -97,7 +72,11 @@ MKDIR * mkdirV;
 %token<STRING> touch
 %token<STRING> rcont
 %token<STRING> rstdin
-
+%token<STRING> rexec
+%token<STRING> rcat
+%token<STRING> rren
+%token<STRING> rmv
+%token<STRING> rdest
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -118,6 +97,12 @@ MKDIR * mkdirV;
 %type<STRING> TOUCHPARAM
 %type<STRING> MKDIRPARAMS
 %type<STRING> MKDIRPARAM
+%type<STRING> CATPARAMS
+%type<STRING> CATPARAM
+%type<STRING> RENPARAMS
+%type<STRING> RENPARAM
+%type<STRING> MVPARAMS
+%type<STRING> MVPARAM
 
 %define parse.error verbose
 %locations
@@ -148,6 +133,10 @@ INSTRUCCION:
 	| rmkfs {mkfsV = new MKFS();} MKFSPARAMS {mkfsV->mkfs();}
 	| touch {touchV = new TOUCH();} TOUCHPARAMS {touchV->touch();}
 	| rmkdir {mkdirV = new MKDIR();} MKDIRPARAMS {mkdirV->mkdir();}
+	| rexec {execV = new EXEC();} EXECPARAM {execV->exec();}
+	| rcat {catV = new CAT();} CATPARAMS {catV->cat();}
+	| rren {renV = new REN();} RENPARAMS {renV->ren();}
+	| rmv {moveV = new MV();} MVPARAMS {moveV->mv();}
 ;
 
 MKDISKPARAMS:
@@ -252,6 +241,42 @@ MKDIRPARAM:
 	guion path igual ruta {mkdirV->set_path(false, $4);}
         | guion path igual cadena {mkdirV->set_path(true, $4);}
         | guion rp {mkdirV->set_p(true);}
+;
+
+EXECPARAM:
+	guion path igual ruta {execV->set_path(false, $4);}
+        | guion path igual cadena {execV->set_path(true, $4);}
+;
+
+CATPARAMS:
+	CATPARAMS CATPARAM
+	| CATPARAM
+;
+
+CATPARAM:
+	guion id igual ruta {catV->add_file(false, $4);}
+	| guion id igual cadena {catV->add_file(true, $4);}
+;
+
+RENPARAMS:
+	RENPARAMS RENPARAM
+	| RENPARAM
+;
+RENPARAM:
+	guion path igual ruta {renV->set_path(false, $4);}
+        | guion path igual cadena {renV->set_path(true, $4);}
+        | guion rname igual id {renV->set_name($4);}
+;
+
+MVPARAMS:
+	MVPARAMS MVPARAM
+	| MVPARAM
+;
+MVPARAM:
+	guion path igual ruta {moveV->set_path(false, $4);}
+        | guion path igual cadena {moveV->set_path(true, $4);}
+        | guion rdest igual ruta {moveV->set_dest(false, $4);}
+        | guion rdest igual cadena {moveV->set_dest(true, $4);}
 ;
 
 %%

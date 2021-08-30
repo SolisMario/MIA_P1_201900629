@@ -16,7 +16,7 @@ numero [-]?[0-9]+
 id_particion "29"[0-9]+[A-Z]
 cadena \"(\\\"|\\n|\\t|\\r|\\\\|[^\"])*\"
 ruta (([/]([a-zA-Z]|[0-9]|"_"|".")+)+)
-id ([a-zA-Z])([a-zA-Z]|[0-9]|"_")*
+id ([a-zA-Z])([a-zA-Z]|[0-9]|"_"|".")*
 
 %%
 ('\s'|'\r'|'\t')+ {};
@@ -52,6 +52,11 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_")*
 "cont" {yylval.STRING = strdup(yytext);return (rcont);};
 "stdin" {yylval.STRING = strdup(yytext);return (rstdin);};
 "mkdir" {yylval.STRING = strdup(yytext);return (rmkdir);};
+"exec" {yylval.STRING = strdup(yytext);return (rexec);};
+"cat" {yylval.STRING = strdup(yytext);return (rcat);};
+"ren" {yylval.STRING = strdup(yytext);return (rren);};
+"mv" {yylval.STRING = strdup(yytext);return (rmv);};
+"dest" {yylval.STRING = strdup(yytext);return (rdest);};
 {id} {yylval.STRING = strdup(yytext); return (id);};
 {ruta} {yylval.STRING = strdup(yytext); return (ruta);};
 . {}

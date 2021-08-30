@@ -81,9 +81,8 @@ void TOUCH::touch() {
             break;
         } else if (mbr_leido.particiones[i].part_type == 'e') {
             //si es extendida se busca entre las logicas
-            int posicion_eliminada = 0;
             EBR ebr_actual;
-            ebr_actual = leer_ebr(this->path.c_str(), mbr_leido.particiones[i].part_start);
+            ebr_actual = leer_ebr(discos_montados[disk_pos].path, mbr_leido.particiones[i].part_start);
 
             while (true) {
                 if (strcmp(nombre_particion, ebr_actual.part_name) == 0 && ebr_actual.part_status == 'a') {
@@ -91,8 +90,7 @@ void TOUCH::touch() {
                 }
                 if (ebr_actual.part_next == -1) break;
 
-                ebr_actual = leer_ebr(this->path.c_str(), ebr_actual.part_next);
-                posicion_eliminada++;
+                ebr_actual = leer_ebr(discos_montados[disk_pos].path, ebr_actual.part_next);
                 break;
             }
         }
@@ -416,16 +414,17 @@ int TOUCH::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char con
 int TOUCH::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo, tabla_inodos carpeta_actual,
                        char const *path, int part_start, char tipo) {
     int inodo_creado = -1;
+
     FILE *file;
+    super_bloque superBloque;
+    file = fopen(path, "rb+");
+    fseek(file, part_start, SEEK_SET);
+    fread(&superBloque, sizeof(super_bloque), 1, file);
+    fclose(file);
+
     //for que itera los 12 apuntadores directos del inodo
     for (int i = 0; i < 12; ++i) {
         if (carpeta_actual.i_block[i] != -1) {//se ve si hay un bloque de carpeta ya creado con espacio libre
-            super_bloque superBloque;
-            file = fopen(path, "rb+");
-            fseek(file, part_start, SEEK_SET);
-            fread(&superBloque, sizeof(super_bloque), 1, file);
-            fclose(file);
-
             bloque_carpeta carpeta_tmp;
             file = fopen(path, "rb+");
             fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * carpeta_actual.i_block[i], SEEK_SET);
@@ -535,21 +534,90 @@ int TOUCH::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
         }
     }
 
-    if (carpeta_actual.i_block[12] != -1) {
-        inodo_creado = crear_inodo_indirecto(1, carpeta_actual.i_block[12], nombre_carpeta, path, part_start, tipo,
-                                             inodo_padre, carpeta_actual);
-        if (inodo_creado != -1) return inodo_creado;
+    if(carpeta_actual.i_block[12] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+        carpeta_actual.i_block[12] = superBloque.s_first_blo;// actualizamos el inodo
+        file = fopen(path, "rb+");
+        fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_padre, SEEK_SET);
+        fwrite(&carpeta_actual, sizeof(tabla_inodos), 1, file);//escribimos el inodo actualizado
+
+        bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
+        fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
+        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+
+        //marcamos como usado el bitmap del bloque y del inodo
+        fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
+        fwrite("1", 1, 1, file);
+        fclose(file);
+
+        //actualizamos el superbloque y lo escribimos
+        superBloque.s_free_blocks_count--;
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        file = fopen(path, "rb+");
+        fseek(file, part_start, SEEK_SET);
+        fwrite(&superBloque, sizeof(super_bloque), 1, file);
+        fclose(file);
     }
-    if (carpeta_actual.i_block[13] != -1) {
-        inodo_creado = crear_inodo_indirecto(2, carpeta_actual.i_block[13], nombre_carpeta, path, part_start, tipo,
-                                             inodo_padre, carpeta_actual);
-        if (inodo_creado != -1) return inodo_creado;
+
+    inodo_creado = crear_inodo_indirecto(1, carpeta_actual.i_block[12], nombre_carpeta, path, part_start, tipo,
+                                         inodo_padre, carpeta_actual);
+    if (inodo_creado != -1) return inodo_creado;
+
+    if(carpeta_actual.i_block[13] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+        carpeta_actual.i_block[13] = superBloque.s_first_blo;// actualizamos el inodo
+        file = fopen(path, "rb+");
+        fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_padre, SEEK_SET);
+        fwrite(&carpeta_actual, sizeof(tabla_inodos), 1, file);//escribimos el inodo actualizado
+
+        bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
+        fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
+        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+
+        //marcamos como usado el bitmap del bloque y del inodo
+        fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
+        fwrite("1", 1, 1, file);
+        fclose(file);
+
+        //actualizamos el superbloque y lo escribimos
+        superBloque.s_free_blocks_count--;
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        file = fopen(path, "rb+");
+        fseek(file, part_start, SEEK_SET);
+        fwrite(&superBloque, sizeof(super_bloque), 1, file);
+        fclose(file);
     }
-    if (carpeta_actual.i_block[14] != -1) {
-        inodo_creado = crear_inodo_indirecto(3, carpeta_actual.i_block[14], nombre_carpeta, path, part_start, tipo,
-                                             inodo_padre, carpeta_actual);
-        if (inodo_creado != -1) return inodo_creado;
+
+    inodo_creado = crear_inodo_indirecto(2, carpeta_actual.i_block[13], nombre_carpeta, path, part_start, tipo,
+                                         inodo_padre, carpeta_actual);
+    if (inodo_creado != -1) return inodo_creado;
+
+    if(carpeta_actual.i_block[14] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+        carpeta_actual.i_block[14] = superBloque.s_first_blo;// actualizamos el inodo
+        file = fopen(path, "rb+");
+        fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_padre, SEEK_SET);
+        fwrite(&carpeta_actual, sizeof(tabla_inodos), 1, file);//escribimos el inodo actualizado
+
+        bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
+        fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
+        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+
+        //marcamos como usado el bitmap del bloque y del inodo
+        fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
+        fwrite("1", 1, 1, file);
+        fclose(file);
+
+        //actualizamos el superbloque y lo escribimos
+        superBloque.s_free_blocks_count--;
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        file = fopen(path, "rb+");
+        fseek(file, part_start, SEEK_SET);
+        fwrite(&superBloque, sizeof(super_bloque), 1, file);
+        fclose(file);
     }
+
+    inodo_creado = crear_inodo_indirecto(3, carpeta_actual.i_block[14], nombre_carpeta, path, part_start, tipo,
+                                         inodo_padre, carpeta_actual);
+    if (inodo_creado != -1) return inodo_creado;
+
     return -1;
 }
 
@@ -592,11 +660,15 @@ int TOUCH::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_car
                         fwrite(&carpeta_tmp, sizeof(bloque_carpeta), 1, file);
                         fclose(file);
 
-                        crear_inodo_carpeta(superBloque.s_inode_start, superBloque.s_block_start,
-                                            superBloque.s_bm_inode_start, superBloque.s_bm_block_start,
-                                            superBloque.s_first_ino, inodo_padre, superBloque.s_first_blo, path);
-                        superBloque.s_free_blocks_count--;
-
+                        if (tipo == '0') {//crear inodo carpeta
+                            crear_inodo_carpeta(superBloque.s_inode_start, superBloque.s_block_start,
+                                                superBloque.s_bm_inode_start, superBloque.s_bm_block_start,
+                                                superBloque.s_first_ino, inodo_padre, superBloque.s_first_blo, path);
+                            superBloque.s_free_blocks_count--;
+                        } else {//crear inodo archivo
+                            create_file_inode(superBloque.s_inode_start, superBloque.s_bm_inode_start,
+                                              superBloque.s_first_ino, path);
+                        }
 
                         inodo_creado = superBloque.s_first_ino;
                         //se busca el primer bloque e inodo libre
@@ -653,16 +725,21 @@ int TOUCH::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_car
                 fclose(file);
                 superBloque.s_free_blocks_count--;
 
-                //se busca el siguiente bloque de carpeta libre
-                int bloque_carpeta_libre = bitmap_libre(superBloque.s_bm_block_start,
-                                                        superBloque.s_bm_block_start + superBloque.s_blocks_count,
-                                                        path);
+                if (tipo == '0') {
+                    //se busca el siguiente bloque de carpeta libre
+                    int bloque_carpeta_libre = bitmap_libre(superBloque.s_bm_block_start,
+                                                            superBloque.s_bm_block_start + superBloque.s_blocks_count,
+                                                            path);
 
-                crear_inodo_carpeta(superBloque.s_inode_start, superBloque.s_block_start,
-                                    superBloque.s_bm_inode_start,
-                                    superBloque.s_bm_block_start, superBloque.s_first_ino, inodo_padre,
-                                    bloque_carpeta_libre, path);
-                superBloque.s_free_blocks_count--;
+                    crear_inodo_carpeta(superBloque.s_inode_start, superBloque.s_block_start, superBloque.s_bm_inode_start,
+                                        superBloque.s_bm_block_start, superBloque.s_first_ino, inodo_padre,
+                                        bloque_carpeta_libre, path);
+                    superBloque.s_free_blocks_count--;
+
+                } else {
+                    create_file_inode(superBloque.s_inode_start, superBloque.s_bm_inode_start, superBloque.s_first_ino,
+                                      path);
+                }
 
                 inodo_creado = superBloque.s_first_ino;//para retornar el indice del inodo creado
                 //se busca el primer bloque e inodo libre

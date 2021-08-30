@@ -85,7 +85,19 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/aux_structs.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/cat.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/cat.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/ebr.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/exec.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/exec.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp">
@@ -124,6 +136,12 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mount.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mv.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/mv.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/parser.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
@@ -133,10 +151,22 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/partition.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/ren.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/ren.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rep.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rep.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rm.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rm.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/rmdisk.cpp">

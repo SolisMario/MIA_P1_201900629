@@ -129,6 +129,54 @@ MIA_P1_201900629/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/build
 .PHONY : MIA_P1_201900629/fast
 
+cat.o: cat.cpp.o
+.PHONY : cat.o
+
+# target to build an object file
+cat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o
+.PHONY : cat.cpp.o
+
+cat.i: cat.cpp.i
+.PHONY : cat.i
+
+# target to preprocess a source file
+cat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cat.cpp.i
+.PHONY : cat.cpp.i
+
+cat.s: cat.cpp.s
+.PHONY : cat.s
+
+# target to generate assembly for a file
+cat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s
+.PHONY : cat.cpp.s
+
+exec.o: exec.cpp.o
+.PHONY : exec.o
+
+# target to build an object file
+exec.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o
+.PHONY : exec.cpp.o
+
+exec.i: exec.cpp.i
+.PHONY : exec.i
+
+# target to preprocess a source file
+exec.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/exec.cpp.i
+.PHONY : exec.cpp.i
+
+exec.s: exec.cpp.s
+.PHONY : exec.s
+
+# target to generate assembly for a file
+exec.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/exec.cpp.s
+.PHONY : exec.cpp.s
+
 fdisk.o: fdisk.cpp.o
 .PHONY : fdisk.o
 
@@ -273,6 +321,30 @@ mount.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mount.cpp.s
 .PHONY : mount.cpp.s
 
+mv.o: mv.cpp.o
+.PHONY : mv.o
+
+# target to build an object file
+mv.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o
+.PHONY : mv.cpp.o
+
+mv.i: mv.cpp.i
+.PHONY : mv.i
+
+# target to preprocess a source file
+mv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mv.cpp.i
+.PHONY : mv.cpp.i
+
+mv.s: mv.cpp.s
+.PHONY : mv.s
+
+# target to generate assembly for a file
+mv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/mv.cpp.s
+.PHONY : mv.cpp.s
+
 parser.o: parser.cpp.o
 .PHONY : parser.o
 
@@ -297,6 +369,30 @@ parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/parser.cpp.s
 .PHONY : parser.cpp.s
 
+ren.o: ren.cpp.o
+.PHONY : ren.o
+
+# target to build an object file
+ren.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o
+.PHONY : ren.cpp.o
+
+ren.i: ren.cpp.i
+.PHONY : ren.i
+
+# target to preprocess a source file
+ren.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ren.cpp.i
+.PHONY : ren.cpp.i
+
+ren.s: ren.cpp.s
+.PHONY : ren.s
+
+# target to generate assembly for a file
+ren.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ren.cpp.s
+.PHONY : ren.cpp.s
+
 rep.o: rep.cpp.o
 .PHONY : rep.o
 
@@ -320,6 +416,30 @@ rep.s: rep.cpp.s
 rep.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rep.cpp.s
 .PHONY : rep.cpp.s
+
+rm.o: rm.cpp.o
+.PHONY : rm.o
+
+# target to build an object file
+rm.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o
+.PHONY : rm.cpp.o
+
+rm.i: rm.cpp.i
+.PHONY : rm.i
+
+# target to preprocess a source file
+rm.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rm.cpp.i
+.PHONY : rm.cpp.i
+
+rm.s: rm.cpp.s
+.PHONY : rm.s
+
+# target to generate assembly for a file
+rm.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/rm.cpp.s
+.PHONY : rm.cpp.s
 
 rmdisk.o: rmdisk.cpp.o
 .PHONY : rmdisk.o
@@ -402,6 +522,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MIA_P1_201900629"
+	@echo "... cat.o"
+	@echo "... cat.i"
+	@echo "... cat.s"
+	@echo "... exec.o"
+	@echo "... exec.i"
+	@echo "... exec.s"
 	@echo "... fdisk.o"
 	@echo "... fdisk.i"
 	@echo "... fdisk.s"
@@ -420,12 +546,21 @@ help:
 	@echo "... mount.o"
 	@echo "... mount.i"
 	@echo "... mount.s"
+	@echo "... mv.o"
+	@echo "... mv.i"
+	@echo "... mv.s"
 	@echo "... parser.o"
 	@echo "... parser.i"
 	@echo "... parser.s"
+	@echo "... ren.o"
+	@echo "... ren.i"
+	@echo "... ren.s"
 	@echo "... rep.o"
 	@echo "... rep.i"
 	@echo "... rep.s"
+	@echo "... rm.o"
+	@echo "... rm.i"
+	@echo "... rm.s"
 	@echo "... rmdisk.o"
 	@echo "... rmdisk.i"
 	@echo "... rmdisk.s"

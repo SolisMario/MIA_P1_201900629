@@ -80,7 +80,12 @@ extern int yydebug;
     rmkdir = 286,
     touch = 287,
     rcont = 288,
-    rstdin = 289
+    rstdin = 289,
+    rexec = 290,
+    rcat = 291,
+    rren = 292,
+    rmv = 293,
+    rdest = 294
   };
 #endif
 
@@ -88,12 +93,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 125 "parser.y"
+#line 110 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 97 "parser.h"
+#line 102 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -66,7 +66,7 @@ void MKDIR::mkdir() {
         } else if (mbr_leido.particiones[i].part_type == 'e') {
             //si es extendida se busca entre las logicas
             EBR ebr_actual;
-            ebr_actual = leer_ebr(this->path.c_str(), mbr_leido.particiones[i].part_start);
+            ebr_actual = leer_ebr(discos_montados[disk_pos].path, mbr_leido.particiones[i].part_start);
 
             while (true) {
                 if (strcmp(nombre_particion, ebr_actual.part_name) == 0 && ebr_actual.part_status == 'a') {
@@ -74,7 +74,7 @@ void MKDIR::mkdir() {
                 }
                 if (ebr_actual.part_next == -1) break;
 
-                ebr_actual = leer_ebr(this->path.c_str(), ebr_actual.part_next);
+                ebr_actual = leer_ebr(discos_montados[disk_pos].path, ebr_actual.part_next);
                 break;
             }
         }

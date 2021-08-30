@@ -209,6 +209,71 @@ CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/mkdir.cpp -o CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.s
 
+CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
+CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o: ../exec.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/exec.cpp
+
+CMakeFiles/MIA_P1_201900629.dir/exec.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/exec.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/exec.cpp > CMakeFiles/MIA_P1_201900629.dir/exec.cpp.i
+
+CMakeFiles/MIA_P1_201900629.dir/exec.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/exec.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/exec.cpp -o CMakeFiles/MIA_P1_201900629.dir/exec.cpp.s
+
+CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
+CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o: ../cat.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/cat.cpp
+
+CMakeFiles/MIA_P1_201900629.dir/cat.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/cat.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/cat.cpp > CMakeFiles/MIA_P1_201900629.dir/cat.cpp.i
+
+CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/cat.cpp -o CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s
+
+CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
+CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o: ../ren.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/ren.cpp
+
+CMakeFiles/MIA_P1_201900629.dir/ren.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/ren.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/ren.cpp > CMakeFiles/MIA_P1_201900629.dir/ren.cpp.i
+
+CMakeFiles/MIA_P1_201900629.dir/ren.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/ren.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/ren.cpp -o CMakeFiles/MIA_P1_201900629.dir/ren.cpp.s
+
+CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
+CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o: ../mv.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/mv.cpp
+
+CMakeFiles/MIA_P1_201900629.dir/mv.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/mv.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/mv.cpp > CMakeFiles/MIA_P1_201900629.dir/mv.cpp.i
+
+CMakeFiles/MIA_P1_201900629.dir/mv.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/mv.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/mv.cpp -o CMakeFiles/MIA_P1_201900629.dir/mv.cpp.s
+
+CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o: CMakeFiles/MIA_P1_201900629.dir/flags.make
+CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o: ../rm.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o -c /home/mario/Repositorios/MIA_P1_201900629/rm.cpp
+
+CMakeFiles/MIA_P1_201900629.dir/rm.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MIA_P1_201900629.dir/rm.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/Repositorios/MIA_P1_201900629/rm.cpp > CMakeFiles/MIA_P1_201900629.dir/rm.cpp.i
+
+CMakeFiles/MIA_P1_201900629.dir/rm.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MIA_P1_201900629.dir/rm.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/Repositorios/MIA_P1_201900629/rm.cpp -o CMakeFiles/MIA_P1_201900629.dir/rm.cpp.s
+
 # Object files for target MIA_P1_201900629
 MIA_P1_201900629_OBJECTS = \
 "CMakeFiles/MIA_P1_201900629.dir/main.cpp.o" \
@@ -221,7 +286,12 @@ MIA_P1_201900629_OBJECTS = \
 "CMakeFiles/MIA_P1_201900629.dir/rep.cpp.o" \
 "CMakeFiles/MIA_P1_201900629.dir/mkfs.cpp.o" \
 "CMakeFiles/MIA_P1_201900629.dir/touch.cpp.o" \
-"CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.o"
+"CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.o" \
+"CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o" \
+"CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o" \
+"CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o" \
+"CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o" \
+"CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o"
 
 # External object files for target MIA_P1_201900629
 MIA_P1_201900629_EXTERNAL_OBJECTS =
@@ -237,9 +307,14 @@ MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/rep.cpp.o
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/mkfs.cpp.o
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/touch.cpp.o
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.o
+MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o
+MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o
+MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o
+MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o
+MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/build.make
 MIA_P1_201900629: CMakeFiles/MIA_P1_201900629.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable MIA_P1_201900629"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable MIA_P1_201900629"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MIA_P1_201900629.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

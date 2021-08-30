@@ -15,7 +15,7 @@ void REP::setPath(bool comillas, string path_set) {
 }
 
 void REP::setName(string name_set) {
-    this->name = name_set;
+    this->name = toLowerCase(name_set);
 }
 
 void REP::setRoot(int indice) {
@@ -219,7 +219,7 @@ void REP::graficar_disk() {
                         cont_ebr++;
                     }
                     if (ebr_actual.part_next == -1) {
-                        int entre_final = mbr_leido.particiones[i].part_size - final_actual;
+                        int entre_final = mbr_leido.particiones[i].part_start + mbr_leido.particiones[i].part_size - final_actual;
                         if (entre_final > 0) {
                             porcentaje_ocupado = entre_final * 100 / espacio_disco;
                             tr_logicas +=
