@@ -64,6 +64,10 @@ public:
     string escribir_indirecto(int nivel, string contenido, char const *path, int part_start);
 
     EBR leer_ebr(char const *sc, int seek);
+
+    int recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block, int part_start);
+
+    int recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo, int bm_inode, int bm_block, int part_start);
 };
 
 #endif //MIA_P1_201900629_TOUCH_H

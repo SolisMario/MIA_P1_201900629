@@ -8,6 +8,20 @@ CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o: \
  ../ebr.h \
  ../mbr.h \
  ../partition.h
+CMakeFiles/MIA_P1_201900629.dir/cp.cpp.o: \
+ ../aux_structs.h \
+ ../cp.cpp \
+ ../cp.h \
+ ../ebr.h \
+ ../mbr.h \
+ ../partition.h
+CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.o: \
+ ../aux_structs.h \
+ ../ebr.h \
+ ../edit.h \
+ ../eidt.cpp \
+ ../mbr.h \
+ ../partition.h
 CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o: \
  ../exec.cpp \
  ../exec.h \
@@ -59,7 +73,9 @@ CMakeFiles/MIA_P1_201900629.dir/mv.cpp.o: \
 CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: \
  ../aux_structs.h \
  ../cat.h \
+ ../cp.h \
  ../ebr.h \
+ ../edit.h \
  ../exec.h \
  ../fdisk.h \
  ../mbr.h \
@@ -72,6 +88,7 @@ CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: \
  ../partition.h \
  ../ren.h \
  ../rep.h \
+ ../rm.h \
  ../rmdisk.h \
  ../scanner.h \
  ../touch.h
@@ -89,6 +106,13 @@ CMakeFiles/MIA_P1_201900629.dir/rep.cpp.o: \
  ../partition.h \
  ../rep.cpp \
  ../rep.h
+CMakeFiles/MIA_P1_201900629.dir/rm.cpp.o: \
+ ../aux_structs.h \
+ ../ebr.h \
+ ../mbr.h \
+ ../partition.h \
+ ../rm.cpp \
+ ../rm.h
 CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o: \
  ../rmdisk.cpp \
  ../rmdisk.h

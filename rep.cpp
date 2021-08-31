@@ -26,8 +26,12 @@ void REP::setID(string id) {
     this->id = id;
 }
 
-void REP::setRuta(string ruta) {
-    this->ruta = ruta;
+void REP::setRuta(bool comillas, string ruta) {
+    if (comillas) {
+        this->ruta = ruta.substr(1, ruta.length() - 2);
+    } else {
+        this->ruta = ruta;
+    }
 }
 
 void REP::rep() {
@@ -43,6 +47,12 @@ void REP::rep() {
         graficar_super();
     } else if (this->name == "block") {
         graficar_bloque();
+    } else if (this->name == "bm_inode") {
+        graficar_bitmap("Inodos");
+    } else if (this->name == "bm_block") {
+        graficar_bitmap("Bloques");
+    } else if (this->name == "file") {
+        graficar_file();
     }
 }
 
@@ -219,7 +229,8 @@ void REP::graficar_disk() {
                         cont_ebr++;
                     }
                     if (ebr_actual.part_next == -1) {
-                        int entre_final = mbr_leido.particiones[i].part_start + mbr_leido.particiones[i].part_size - final_actual;
+                        int entre_final =
+                                mbr_leido.particiones[i].part_start + mbr_leido.particiones[i].part_size - final_actual;
                         if (entre_final > 0) {
                             porcentaje_ocupado = entre_final * 100 / espacio_disco;
                             tr_logicas +=
@@ -515,8 +526,7 @@ REP::graficar_bloque_archivo(int indice_inodo, int indice_bloque, int inode_star
 }
 
 string REP::graficar_bloque_apuntadores(int indice_inodo, int indice_bloque, int inode_start, int block_start,
-                                        char const *path,
-                                        char tipo, int nivel) {
+                                        char const *path, char tipo, int nivel) {
     //recupero el bloque de apuntadores
     bloque_apuntadores apuntadores;
     FILE *file = fopen(path, "rb+");
@@ -630,7 +640,8 @@ void REP::graficar_tabla_inodos() {
     string graph = "digraph{\ntabla[shape=none, margin=0, label=<<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"4\">\n";
     graph += "<TR><TD BGCOLOR=\"lightblue\">INDEX</TD><TD BGCOLOR=\"lightblue\">TIPO</TD><TD BGCOLOR=\"lightblue\">NOMBRE</TD></TR>\n";
 
-    graph += recorrer_inodo(0, superBloque.s_inode_start, superBloque.s_block_start, discos_montados[disk_pos].path, "");
+    graph += recorrer_inodo(0, superBloque.s_inode_start, superBloque.s_block_start, discos_montados[disk_pos].path,
+                            "");
 
     graph += "</TABLE>>]\n}";
     archivo_dot(graph, "inode");
@@ -653,15 +664,15 @@ string REP::recorrer_inodo(int indice_inodo, int inode_start, int block_start, c
             }
         }
 
-        if(inodo.i_block[12] != -1) {
+        if (inodo.i_block[12] != -1) {
             graph += recorrer_apuntadores_inodos(indice_inodo, inodo.i_block[12], inode_start, block_start, path, 1);
         }
 
-        if(inodo.i_block[13] != -1) {
+        if (inodo.i_block[13] != -1) {
             graph += recorrer_apuntadores_inodos(indice_inodo, inodo.i_block[13], inode_start, block_start, path, 1);
         }
 
-        if(inodo.i_block[13] != -1) {
+        if (inodo.i_block[13] != -1) {
             graph += recorrer_apuntadores_inodos(indice_inodo, inodo.i_block[13], inode_start, block_start, path, 1);
         }
     } else {
@@ -691,7 +702,8 @@ REP::recorrer_bloque_carpeta(int indice_inodo, int indice_bloque, int inode_star
     return graph;
 }
 
-string REP::recorrer_apuntadores_inodos(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path, int nivel) {
+string REP::recorrer_apuntadores_inodos(int indice_inodo, int indice_bloque, int inode_start, int block_start,
+                                        char const *path, int nivel) {
     //recupero el bloque de apuntadores
     bloque_apuntadores apuntadores;
     FILE *file = fopen(path, "rb+");
@@ -702,16 +714,18 @@ string REP::recorrer_apuntadores_inodos(int indice_inodo, int indice_bloque, int
     for (int i = 0; i < 16; ++i) {
         if (apuntadores.b_pointers[i] != -1) {
             if (nivel == 1) {
-                graph += recorrer_bloque_carpeta(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start, path);
+                graph += recorrer_bloque_carpeta(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start,
+                                                 path);
             } else {
-                graph += recorrer_apuntadores_inodos(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start, path, nivel - 1);
+                graph += recorrer_apuntadores_inodos(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start,
+                                                     path, nivel - 1);
             }
         }
     }
     return graph;
 }
 
-void REP::graficar_super(){
+void REP::graficar_super() {
     //se recupera la posicion del dico y particion, se verifica si estan montados
     string disk_number = this->id.substr(2, this->id.length() - 3);
     int disk_pos = stoi(disk_number) - 1;
@@ -746,7 +760,7 @@ void REP::graficar_super(){
     //for para buscar el inicio de la particion
     for (int i = 0; i < 4; ++i) {
         if (strcmp(mbr_leido.particiones[i].part_name, nombre_particion) == 0 &&
-        mbr_leido.particiones[i].part_status == 'a') {
+            mbr_leido.particiones[i].part_status == 'a') {
             part_start = mbr_leido.particiones[i].part_start;
             break;
         } else if (mbr_leido.particiones[i].part_type == 'e') {
@@ -771,7 +785,6 @@ void REP::graficar_super(){
         return;
     }
 
-    cout << " va a empezar a hacer graph" << endl;
     //se llama al super bloque
     super_bloque superBloque;
     recuperar = fopen(discos_montados[disk_pos].path, "rb+");
@@ -786,28 +799,41 @@ void REP::graficar_super(){
     graph += "digraph{\n";
     graph += "tabla[shape=none, margin=0, label=<<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"4\">\n";
     graph += "<TR><TD ALIGN=\"left\" BGCOLOR=\"#3498db\">Nombre</TD><TD ALIGN=\"left\" BGCOLOR=\"#3498db\">Valor</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_inodes_count</TD><TD ALIGN="left">)" + to_string(superBloque.s_inodes_count) + "</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_blocks_count</TD><TD ALIGN="left">)"+to_string(superBloque.s_blocks_count)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_free_blocks_count</TD><TD ALIGN="left">)"+to_string(superBloque.s_free_blocks_count)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_free_inodes_count</TD><TD ALIGN="left">)"+ to_string(superBloque.s_free_inodes_count)+"</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_inodes_count</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_inodes_count) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_blocks_count</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_blocks_count) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_free_blocks_count</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_free_blocks_count) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_free_inodes_count</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_free_inodes_count) + "</TD></TR>\n";
     strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&superBloque.s_mtime));
     fecha_hora = fechayhora;
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_mtime</TD><TD ALIGN="left">)"+fecha_hora+"</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_mtime</TD><TD ALIGN="left">)" + fecha_hora + "</TD></TR>\n";
     fecha_hora = "";
     strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&superBloque.s_umtime));
     fecha_hora = fechayhora;
-    if(superBloque.s_umtime == 0) fecha_hora = "--";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_umtime</TD><TD ALIGN="left">)"+fecha_hora+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_mnt_count</TD><TD ALIGN="left">)"+to_string(superBloque.s_mnt_count)+"</TD></TR>\n";
+    if (superBloque.s_umtime == 0) fecha_hora = "--";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_umtime</TD><TD ALIGN="left">)" + fecha_hora + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_mnt_count</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_mnt_count) + "</TD></TR>\n";
     graph += "<TR><TD ALIGN=\"left\" BGCOLOR=\"lightblue\">s_magic</TD><TD ALIGN=\"left\">0xEF53</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_inode_size</TD><TD ALIGN="left">)"+ to_string(superBloque.s_inode_size)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_block_size</TD><TD ALIGN="left">)"+to_string(superBloque.s_block_size)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_first_ino</TD><TD ALIGN="left">)"+to_string(superBloque.s_first_ino)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_first_blo</TD><TD ALIGN="left">)"+to_string(superBloque.s_first_blo)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_bm_inode_start</TD><TD ALIGN="left">)"+to_string(superBloque.s_bm_inode_start)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_bm_block_start</TD><TD ALIGN="left">)"+to_string(superBloque.s_bm_block_start)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_inode_start</TD><TD ALIGN="left">)"+to_string(superBloque.s_inode_start)+"</TD></TR>\n";
-    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_block_start</TD><TD ALIGN="left">)"+to_string(superBloque.s_block_start)+"</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_inode_size</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_inode_size) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_block_size</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_block_size) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_first_ino</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_first_ino) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_first_blo</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_first_blo) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_bm_inode_start</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_bm_inode_start) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_bm_block_start</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_bm_block_start) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_inode_start</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_inode_start) + "</TD></TR>\n";
+    graph += R"(<TR><TD ALIGN="left" BGCOLOR="lightblue">s_block_start</TD><TD ALIGN="left">)" +
+             to_string(superBloque.s_block_start) + "</TD></TR>\n";
     graph += "</TABLE>>];\n}";
 
     archivo_dot(graph, "sb");
@@ -848,7 +874,7 @@ void REP::graficar_bloque() {
     //for para buscar el inicio de la particion
     for (int i = 0; i < 4; ++i) {
         if (strcmp(mbr_leido.particiones[i].part_name, nombre_particion) == 0 &&
-        mbr_leido.particiones[i].part_status == 'a') {
+            mbr_leido.particiones[i].part_status == 'a') {
             part_start = mbr_leido.particiones[i].part_start;
             break;
         } else if (mbr_leido.particiones[i].part_type == 'e') {
@@ -882,7 +908,8 @@ void REP::graficar_bloque() {
 
     string graph = "digraph{\n";
 
-    graph += graficar_inodo_bloque(0, superBloque.s_inode_start, superBloque.s_block_start, discos_montados[disk_pos].path);
+    graph += graficar_inodo_bloque(0, superBloque.s_inode_start, superBloque.s_block_start,
+                                   discos_montados[disk_pos].path);
     graph += "\n}";
     archivo_dot(graph, "inode");
 }
@@ -909,24 +936,25 @@ string REP::graficar_inodo_bloque(int indice_inodo, int inode_start, int block_s
 
     if (inodo.i_block[12] != -1) {
         graph += graficar_bloque_apuntadores_bloque(indice_inodo, inodo.i_block[12], inode_start, block_start, path,
-                                             inodo.i_type, 1);
+                                                    inodo.i_type, 1);
     }
 
     if (inodo.i_block[13] != -1) {
         graph += graficar_bloque_apuntadores_bloque(indice_inodo, inodo.i_block[13], inode_start, block_start, path,
-                                             inodo.i_type, 2);
+                                                    inodo.i_type, 2);
     }
 
     if (inodo.i_block[14] != -1) {
         graph += graficar_bloque_apuntadores_bloque(indice_inodo, inodo.i_block[14], inode_start, block_start, path,
-                                             inodo.i_type, 3);
+                                                    inodo.i_type, 3);
     }
 
     return graph;
 }
 
 string
-REP::graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path) {
+REP::graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start,
+                                    char const *path) {
     bloque_carpeta carpeta;
     FILE *file = fopen(path, "rb+");
     fseek(file, block_start + sizeof(bloque_archivos) * indice_bloque, SEEK_SET);
@@ -946,10 +974,10 @@ REP::graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int ino
             b_name = "-";
         }
         graph += "<TR><TD>" + b_name + "</TD><TD PORT=\"port" + to_string(i) + "\">" +
-                to_string(carpeta.b_content[i].b_inodo) + "</TD></TR>\n";
+                 to_string(carpeta.b_content[i].b_inodo) + "</TD></TR>\n";
     }
     graph += "</TABLE>>];\n";
-    graph += "bloque" +  to_string(indice_bloque);
+    graph += "bloque" + to_string(indice_bloque);
 
     for (int i = 0; i < 4; ++i) {
         if (carpeta.b_content[i].b_inodo != -1) {
@@ -959,7 +987,7 @@ REP::graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int ino
         }
     }
 
-    if(indice_bloque != 0){
+    if (indice_bloque != 0) {
         graph = "-> bloque" + to_string(indice_bloque) + "\n" + graph;
     }
 
@@ -967,7 +995,8 @@ REP::graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int ino
 }
 
 string
-REP::graficar_bloque_archivo_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path) {
+REP::graficar_bloque_archivo_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start,
+                                    char const *path) {
     bloque_archivos contenido;
     FILE *file = fopen(path, "rb+");
     fseek(file, block_start + sizeof(bloque_archivos) * indice_bloque, SEEK_SET);
@@ -992,8 +1021,8 @@ REP::graficar_bloque_archivo_bloque(int indice_inodo, int indice_bloque, int ino
 }
 
 string REP::graficar_bloque_apuntadores_bloque(int indice_inodo, int indice_bloque, int inode_start, int block_start,
-                                        char const *path,
-                                        char tipo, int nivel) {
+                                               char const *path,
+                                               char tipo, int nivel) {
     //recupero el bloque de apuntadores
     bloque_apuntadores apuntadores;
     FILE *file = fopen(path, "rb+");
@@ -1009,7 +1038,7 @@ string REP::graficar_bloque_apuntadores_bloque(int indice_inodo, int indice_bloq
 
     for (int i = 0; i < 15; ++i) {
         pointers += to_string(apuntadores.b_pointers[i]) + ", ";
-        if(i == 7){
+        if (i == 7) {
             pointers += "\n";
         }
     }
@@ -1024,11 +1053,13 @@ string REP::graficar_bloque_apuntadores_bloque(int indice_inodo, int indice_bloq
         if (apuntadores.b_pointers[i] != -1) {
             if (nivel == 1) {
                 if (tipo == '0') {
-                    graph += graficar_bloque_carpeta_bloque(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start,
-                                                     path);
+                    graph += graficar_bloque_carpeta_bloque(indice_inodo, apuntadores.b_pointers[i], inode_start,
+                                                            block_start,
+                                                            path);
                 } else {
-                    graph += graficar_bloque_archivo_bloque(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start,
-                                                     path);
+                    graph += graficar_bloque_archivo_bloque(indice_inodo, apuntadores.b_pointers[i], inode_start,
+                                                            block_start,
+                                                            path);
                 }
             } else {
                 graph += graficar_bloque_apuntadores(indice_inodo, apuntadores.b_pointers[i], inode_start, block_start,
@@ -1038,6 +1069,415 @@ string REP::graficar_bloque_apuntadores_bloque(int indice_inodo, int indice_bloq
     }
     graph = "-> bloque" + to_string(indice_bloque) + "\n" + graph;
     return graph;
+}
+
+void REP::graficar_bitmap(string bitmap) {
+    //se recupera la posicion del dico y particion, se verifica si estan montados
+    string disk_number = this->id.substr(2, this->id.length() - 3);
+    int disk_pos = stoi(disk_number) - 1;
+    if (disk_pos < 0 || disk_pos > 98 || discos_montados[disk_pos].estado == 0) {
+        cout << "ERROR: El disco indicado no esta montado." << endl;
+        return;
+    }
+    char part_letter = this->id.at(this->id.length() - 1);
+    int part_pos = int(part_letter - 65);
+    if (part_pos < 0 || part_pos > 25 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
+        cout << "ERROR: La particion indicada no esta montada." << endl;
+        return;
+    }
+
+    if (discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
+        cout << "ERROR: el disco indicado no esta montado." << endl;
+        return;
+    }
+
+    //se verifica que el disco exista
+    if (!verificar_disco(discos_montados[disk_pos].path)) return;
+
+    FILE *recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+    MBR mbr_leido;
+    fread(&mbr_leido, sizeof(MBR), 1, recuperar);
+    fclose(recuperar);
+
+    int part_start = -1;
+    char nombre_particion[16];
+    strcpy(nombre_particion, discos_montados[disk_pos].particiones[part_pos].nombre);
+
+    //for para buscar el inicio de la particion
+    for (int i = 0; i < 4; ++i) {
+        if (strcmp(mbr_leido.particiones[i].part_name, nombre_particion) == 0 &&
+            mbr_leido.particiones[i].part_status == 'a') {
+            part_start = mbr_leido.particiones[i].part_start;
+            break;
+        } else if (mbr_leido.particiones[i].part_type == 'e') {
+            //si es extendida se busca entre las logicas
+            EBR ebr_actual;
+            ebr_actual = leer_ebr(this->path.c_str(), mbr_leido.particiones[i].part_start);
+
+            while (true) {
+                if (strcmp(nombre_particion, ebr_actual.part_name) == 0 && ebr_actual.part_status == 'a') {
+                    part_start = ebr_actual.part_start;
+                }
+                if (ebr_actual.part_next == -1) break;
+
+                ebr_actual = leer_ebr(this->path.c_str(), ebr_actual.part_next);
+                break;
+            }
+        }
+    }
+
+    if (part_start == -1) {
+        cout << "No se encontro la particion solicitada." << endl;
+        return;
+    }
+
+    cout << " va a empezar a hacer graph" << endl;
+    //se llama al super bloque
+    super_bloque superBloque;
+    recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(recuperar, part_start, SEEK_SET);
+    fread(&superBloque, sizeof(super_bloque), 1, recuperar);
+    fclose(recuperar);
+
+    int bm_start = 0;
+    int bm_end = 0;
+
+    if (bitmap == "Inodos") {
+        bm_start = superBloque.s_bm_inode_start;
+        bm_end = superBloque.s_bm_inode_start + superBloque.s_inodes_count;
+    } else {
+        bm_start = superBloque.s_bm_block_start;
+        bm_end = superBloque.s_bm_block_start + superBloque.s_blocks_count;
+    }
+
+    string graph = "digraph html {\nrankdir=LR;\ninodo0[shape=none, margin=0, label=<\n";
+    graph += "<TABLE BORDER=\"0\" CELLBORDER=\"0\" CELLSPACING=\"0\" CELLPADDING=\"4\">\n";
+    graph += "<TR><TD>Bitmap de " + bitmap + "</TD></TR>";
+    recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+    int cont_linea = 0;
+    string linea_bits;
+    char bit_leido;
+    for (int i = bm_start; i < bm_end; ++i) {
+        fseek(recuperar, i, SEEK_SET);
+        fread(&bit_leido, 1, 1, recuperar);
+        linea_bits += bit_leido;
+        cont_linea++;
+        if (cont_linea >= 64) {
+            graph += "<TR><TD>" + linea_bits + "</TD></TR>";
+            cont_linea = 0;
+            linea_bits = "";
+        }
+    }
+    graph += "<TR><TD>" + linea_bits + "</TD></TR>";
+    graph += "</TABLE>>];\n}";
+
+    archivo_dot(graph, bitmap);
+}
+
+void REP::graficar_file() {
+
+    string logged_partition = usuario_loggeado.particion_loggeada;
+
+    //se recupera la posicion del dico y particion, se verifica si estan montados
+    string disk_number = logged_partition.substr(2, logged_partition.length() - 3);
+    int disk_pos = stoi(disk_number) - 1;
+    if (disk_pos < 0 || disk_pos > 98 || discos_montados[disk_pos].estado == 0) {
+        cout << "ERROR: El disco indicado no esta montado." << endl;
+        return;
+    }
+
+    char part_letter = logged_partition.at(logged_partition.length() - 1);
+    int part_pos = int(part_letter - 65);
+    if (part_pos < 0 || part_pos > 25 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
+        cout << "ERROR: La particion indicada no esta montada." << endl;
+        return;
+    }
+
+    if (discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
+        cout << "ERROR: el disco indicado no esta montado." << endl;
+        return;
+    }
+
+    //se verifica que el disco exista
+    if (!verificar_disco(discos_montados[disk_pos].path)) return;
+
+    FILE *recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+    MBR mbr_leido;
+    fread(&mbr_leido, sizeof(MBR), 1, recuperar);
+    fclose(recuperar);
+
+    char nombre_particion[16];
+    strcpy(nombre_particion, discos_montados[disk_pos].particiones[part_pos].nombre);
+
+    int part_start = -1;
+
+    for (int i = 0; i < 4; ++i) {
+        if (strcmp(mbr_leido.particiones[i].part_name, nombre_particion) == 0 &&
+            mbr_leido.particiones[i].part_status == 'a') {
+            part_start = mbr_leido.particiones[i].part_start;
+            break;
+        } else if (mbr_leido.particiones[i].part_type == 'e') {
+            //si es extendida se busca entre las logicas
+            int posicion_eliminada = 0;
+            EBR ebr_actual;
+            ebr_actual = leer_ebr(discos_montados[disk_pos].path, mbr_leido.particiones[i].part_start);
+
+            while (true) {
+                if (strcmp(nombre_particion, ebr_actual.part_name) == 0 && ebr_actual.part_status == 'a') {
+                    part_start = ebr_actual.part_start;
+                }
+                if (ebr_actual.part_next == -1) break;
+
+                ebr_actual = leer_ebr(discos_montados[disk_pos].path, ebr_actual.part_next);
+                posicion_eliminada++;
+                break;
+            }
+        }
+    }
+
+    if (part_start != -1) {
+        //se encontro la particion
+        super_bloque superBloque;
+        recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+        fseek(recuperar, part_start, SEEK_SET);
+        fread(&superBloque, sizeof(super_bloque), 1, recuperar);
+        fclose(recuperar);
+
+        tabla_inodos carpeta_tmp;
+        recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+        fseek(recuperar, superBloque.s_inode_start, SEEK_SET);
+        fread(&carpeta_tmp, sizeof(tabla_inodos), 1, recuperar);
+        fclose(recuperar);
+
+        int inodo_carpeta = -1;
+        list<string> carpetas = separar_carpetas(this->ruta);
+        list<string>::iterator it;
+
+        //navegar entre las carpetas
+        for (it = carpetas.begin(); it != carpetas.end(); it++) {
+            inodo_carpeta = get_inodo(*it, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
+            if (inodo_carpeta == -1) { //si el inodo carpeta es -1 las carpetas no existen
+                cout << "La carpeta " << *it << " no existe " << endl;
+                break;
+            }
+            recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+            fseek(recuperar, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_carpeta, SEEK_SET);
+            fread(&carpeta_tmp, sizeof(tabla_inodos), 1, recuperar);
+            fclose(recuperar);
+        }
+
+        string contenido = "";
+        string file_name = nombre_archivo(this->ruta);
+        int inodo_archivo = -1;
+        inodo_archivo = get_inodo(file_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, '1');
+        if (inodo_archivo == -1) {
+            cout << "El archivo " << file_name << " no existe." << endl;
+            return;
+        } else {
+            contenido += contenido_archivo_file(inodo_archivo, disk_pos, superBloque.s_inode_start,
+                                           superBloque.s_block_start);
+            string graph = "digraph html {\nrankdir=LR;\ninodo0[shape=none, margin=0, label=<\n";
+            graph += "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"4\">\n";
+            graph += "<TR><TD BGCOLOR=\"yellow\">" + file_name + "</TD></TR>";
+            graph += "<TR><TD>" + contenido + "</TD></TR>";
+            graph += "</TABLE>>];\n}";
+
+            archivo_dot(graph, "file");
+        }
+        return;
+    } else {
+        cout << "No existe la particion." << endl;
+    }
+}
+
+int REP::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char const *path, int part_start, int tipo) {
+    //for que itera los apuntadores directos del inodo
+    FILE *file;
+    for (int i = 0; i < 12; i++) {
+        if (inodo_carpeta.i_block[i] != -1) {
+            super_bloque superBloque;
+            file = fopen(path, "rb+");
+            fseek(file, part_start, SEEK_SET);
+            fread(&superBloque, sizeof(super_bloque), 1, file);
+            fclose(file);
+            file = fopen(path, "rb+");
+            bloque_carpeta carpeta_tmp;
+            fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * inodo_carpeta.i_block[i], SEEK_SET);
+            fread(&carpeta_tmp, sizeof(bloque_carpeta), 1, file);
+            fclose(file);
+            //for que itera los contents del blque carpeta
+            for (int j = 0; j < 4; ++j) {
+                if (strcmp(nombre_buscado.c_str(), carpeta_tmp.b_content[j].b_name) == 0) {
+                    tabla_inodos inodo_tmp;
+                    file = fopen(path, "rb+");
+                    fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * carpeta_tmp.b_content[j].b_inodo,
+                          SEEK_SET);
+                    fread(&inodo_tmp, sizeof(tabla_inodos), 1, file);
+                    fclose(file);
+                    if (inodo_tmp.i_type == tipo) {
+                        return carpeta_tmp.b_content[j].b_inodo;
+                    }
+                }
+            }
+        }
+    }
+
+    if (inodo_carpeta.i_block[12] != -1) {
+        int inodo_indirecto = get_inodo_indirecto(1, inodo_carpeta.i_block[12], nombre_buscado, path, part_start, tipo);
+        if (inodo_indirecto != -1) return inodo_indirecto;
+    }
+
+    if (inodo_carpeta.i_block[13] != -1) {
+        int inodo_indirecto = get_inodo_indirecto(2, inodo_carpeta.i_block[13], nombre_buscado, path, part_start, tipo);
+        if (inodo_indirecto != -1) return inodo_indirecto;
+    }
+
+    if (inodo_carpeta.i_block[13] != -1) {
+        int inodo_indirecto = get_inodo_indirecto(3, inodo_carpeta.i_block[14], nombre_buscado, path, part_start, tipo);
+        if (inodo_indirecto != -1) return inodo_indirecto;
+    }
+
+    return -1;
+}
+
+int REP::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado, char const *path, int part_start, int tipo) {
+    FILE *file;
+    //se trae el superbloque y el inodo indirecto
+    super_bloque superBloque;
+    file = fopen(path, "rb+");
+    fseek(file, part_start, SEEK_SET);
+    fread(&superBloque, sizeof(super_bloque), 1, file);
+    fclose(file);
+
+    bloque_apuntadores apuntadores;
+    file = fopen(path, "rb+");
+    fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * apuntador_ind, SEEK_SET);
+    fread(&apuntadores, sizeof(bloque_apuntadores), 1, file);
+    fclose(file);
+
+    for (int i = 0; i < 16; ++i) {
+        if (apuntadores.b_pointers[i] != -1) {
+            if (nivel == 1) {
+                bloque_carpeta carpeta_tmp;
+                file = fopen(path, "rb+");
+                fseek(file, superBloque.s_block_start + sizeof(bloque_carpeta) * apuntadores.b_pointers[i],
+                      SEEK_SET);
+                fread(&carpeta_tmp, sizeof(bloque_carpeta), 1, file);
+                fclose(file);
+
+                //for que itera los contents del blque carpeta
+                for (int j = 0; j < 4; ++j) {
+                    if (strcmp(nombre_buscado.c_str(), carpeta_tmp.b_content[j].b_name) == 0) {
+                        tabla_inodos inodo_tmp;
+                        file = fopen(path, "rb+");
+                        fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * carpeta_tmp.b_content[j].b_inodo,
+                              SEEK_SET);
+                        fread(&inodo_tmp, sizeof(tabla_inodos), 1, file);
+                        fclose(file);
+                        if (inodo_tmp.i_type == tipo) {
+                            return carpeta_tmp.b_content[j].b_inodo;
+                        }
+                    }
+                }
+            } else {
+                int inodo = get_inodo_indirecto(nivel - 1, apuntadores.b_pointers[i], nombre_buscado, path, part_start,
+                                                tipo);
+                if (inodo != -1) return inodo;
+            }
+        }
+    }
+    return -1;
+}
+
+string REP::contenido_archivo_file(int indice_inodo, int disk_pos, int inode_start, int block_start){
+    FILE *file;
+    tabla_inodos inodo;// se recupera el inodo
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
+    fread(&inodo, sizeof(tabla_inodos), 1, file);
+    fclose(file);
+
+    string contenido = "";
+
+    for (int i = 0; i < 12; ++i) {
+        if(inodo.i_block[i] != -1){
+            contenido += contenido_bloque_file(inodo.i_block[i], disk_pos, inode_start, block_start);
+        }
+    }
+
+    if(inodo.i_block[12] != -1) {
+        contenido += contenido_indirectos_file(inodo.i_block[12], disk_pos, inode_start, block_start, 1);
+    }
+
+    if(inodo.i_block[13] != -1) {
+        contenido += contenido_indirectos_file(inodo.i_block[13], disk_pos, inode_start, block_start, 2);
+    }
+
+    if(inodo.i_block[14] != -1) {
+        contenido += contenido_indirectos_file(inodo.i_block[14], disk_pos, inode_start, block_start, 3);
+    }
+    return contenido;
+}
+
+string REP::contenido_bloque_file(int indice_bloque, int disk_pos, int inode_start, int block_start){
+    bloque_archivos bloque;
+    FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, block_start + sizeof(bloque_archivos) * indice_bloque, SEEK_SET);
+    fread(&bloque, sizeof(bloque_archivos), 1, file);
+    fclose(file);
+
+    string contenido(bloque.b_content, 64);
+    return contenido;
+}
+
+string REP::contenido_indirectos_file(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel){
+    //recupero el bloque de apuntadores
+    bloque_apuntadores apuntadores;
+    FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, block_start + sizeof(bloque_apuntadores) * indice_bloque, SEEK_SET);
+    fread(&apuntadores, sizeof(bloque_apuntadores), 1, file);
+    fclose(file);
+
+    string contenido = "";
+
+    for (int i = 0; i < 16; ++i) {
+        if (apuntadores.b_pointers[i] != -1) {
+            if (nivel == 1) {
+                contenido += contenido_bloque_file(apuntadores.b_pointers[i], disk_pos, inode_start, block_start);
+            } else {
+                contenido += contenido_indirectos_file(apuntadores.b_pointers[i], disk_pos, inode_start, block_start, nivel - 1);
+            }
+        }
+    }
+    return contenido;
+}
+
+list<string> REP::separar_carpetas(string path) {
+    if (path[0] == '/') {
+        path = path.substr(1, path.length());
+    }
+    list<string> lista_carpetas;
+    char ruta[path.length() + 1];
+    strcpy(ruta, path.c_str());
+    string nombre_carpeta;
+    for (int i = 0; i < path.length() + 1; i++) {
+        if (ruta[i] == '/') {
+            lista_carpetas.push_back(nombre_carpeta);
+            nombre_carpeta.clear();
+            continue;
+        }
+        nombre_carpeta += ruta[i];
+    }
+    return lista_carpetas;
+}
+
+string REP::nombre_archivo(string path) {
+    string nombre_disco;
+    for (int i = path.length() - 1; i > 0; --i) {
+        if (path[i] == '/') break;
+        nombre_disco = path[i] + nombre_disco;
+    }
+    return nombre_disco;
 }
 
 string REP::toLowerCase(string sl) {

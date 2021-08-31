@@ -2,8 +2,8 @@
 // Created by mario on 30/08/21.
 //
 
-#ifndef MIA_P1_201900629_RM_H
-#define MIA_P1_201900629_RM_H
+#ifndef MIA_P1_201900629_EDIT_H
+#define MIA_P1_201900629_EDIT_H
 
 #include <iostream>
 #include <cstring>
@@ -14,13 +14,19 @@
 
 using namespace std;
 
-class RM {
+class EDIT {
 private:
     string path;
+    string cont;
+    bool stdin_ = false;
 public:
     void set_path(bool comillas, string path);
 
-    void rm();
+    void set_stdin(bool stdin_);
+
+    void set_cont(bool comillas, string cont);
+
+    void edit();
 
     bool verificar_disco(char const *path);
 
@@ -34,15 +40,16 @@ public:
 
     EBR leer_ebr(char const *sc, int seek);
 
-    int iniciar_borrado(int bloque_contiene, int disk_pos, string nombre, int inode_start, int block_start, int bm_inode, int bm_block, int part_start);
-
     int recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block, int part_start);
-
-    int recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block, int part_start);
 
     int recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo, int bm_inode, int bm_block, int part_start);
 
+    void escribir_archivo(const char *path, int part_start, int inodo_archivo);
+
+    string escribir_indirecto(int nivel, string contenido, char const *path, int part_start);
+
     int bitmap_libre(int start, int final, char const *path);
+
 };
 
-#endif //MIA_P1_201900629_RM_H
+#endif //MIA_P1_201900629_EDIT_H

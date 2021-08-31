@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <list>
 #include "aux_structs.h"
 #include "mbr.h"
 #include "ebr.h"
@@ -27,7 +28,7 @@ public:
 
     void setID(string id);
 
-    void setRuta(string ruta);
+    void setRuta(bool comillas, string path);
 
     void setRoot(int indice);
 
@@ -79,6 +80,23 @@ public:
 
     void graficar_bloque();
 
+    void graficar_bitmap(string bitmap);
+
+    void graficar_file();
+
+    list<string> separar_carpetas(string path);
+
+    int get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char const *path, int part_start, int tipo);
+
+    int get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado, char const *path, int part_start, int tipo);
+
+    string nombre_archivo(string path);
+
+    string contenido_bloque_file(int indice_bloque, int disk_pos, int inode_start, int block_start);
+
+    string contenido_indirectos_file(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel);
+
+    string contenido_archivo_file(int indice_inodo, int disk_pos, int inode_start, int block_start);
 };
 
 #endif //MIA_P1_201900629_REP_H

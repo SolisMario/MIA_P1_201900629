@@ -91,7 +91,19 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/cat.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/cp.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/cp.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/ebr.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/edit.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/eidt.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/exec.cpp">

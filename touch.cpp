@@ -156,6 +156,30 @@ void TOUCH::touch() {
                 return;
             } else {
                 //sobreescribir archivo
+                int borrado = recorrer_inodo(inodo_archivo, disk_pos, superBloque.s_inode_start, superBloque.s_block_start,
+                                             superBloque.s_bm_inode_start, superBloque.s_bm_block_start, part_start);
+                if (borrado != 0) {
+                    cout << "ERROR no se tiene permiso de edicion en uno de los archivos/carpetas." << endl;
+                }
+                recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+                fseek(recuperar, part_start, SEEK_SET);
+                fread(&superBloque, sizeof(super_bloque), 1, recuperar);
+                fclose(recuperar);
+
+                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                                       superBloque.s_bm_block_start + superBloque.s_blocks_count,
+                                                       discos_montados[disk_pos].path);
+                superBloque.s_first_ino = bitmap_libre(superBloque.s_bm_inode_start,
+                                                       superBloque.s_bm_inode_start + superBloque.s_inodes_count,
+                                                       discos_montados[disk_pos].path);
+
+                recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+                fseek(recuperar, part_start, SEEK_SET);
+                fwrite(&superBloque, sizeof(super_bloque), 1, recuperar);
+                fclose(recuperar);
+
+                escribir_archivo(discos_montados[disk_pos].path, part_start, inodo_archivo);
+                return;
             }
         } else {
             //crear el inodo del archivo
@@ -168,6 +192,8 @@ void TOUCH::touch() {
                 escribir_archivo(discos_montados[disk_pos].path, part_start, inodo_archivo);
             }
         }
+    } else {
+        cout << "La particion no existe" << endl;
     }
 }
 
@@ -375,7 +401,6 @@ int TOUCH::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char con
             fclose(file);
             //for que itera los contents del blque carpeta
             for (int j = 0; j < 4; ++j) {
-                cout << carpeta_tmp.b_content[j].b_name << " apunta a " << carpeta_tmp.b_content[j].b_inodo << endl;
                 if (strcmp(nombre_buscado.c_str(), carpeta_tmp.b_content[j].b_name) == 0) {
                     tabla_inodos inodo_tmp;
                     file = fopen(path, "rb+");
@@ -384,12 +409,10 @@ int TOUCH::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char con
                     fread(&inodo_tmp, sizeof(tabla_inodos), 1, file);
                     fclose(file);
                     if (inodo_tmp.i_type == tipo) {
-                        cout << "-----------------------------------------------------------------------" << endl;
                         return carpeta_tmp.b_content[j].b_inodo;
                     }
                 }
             }
-            cout << "-----------------------------------------------------------------------" << endl;
         }
     }
 
@@ -894,6 +917,93 @@ int TOUCH::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_busca
         }
     }
     return -1;
+}
+
+int TOUCH::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block,
+                         int part_start) {
+    FILE *file;
+    tabla_inodos inodo;// se recupera el inodo
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
+    fread(&inodo, sizeof(tabla_inodos), 1, file);
+    fclose(file);
+
+    int resultado = -1;
+
+    //******************************************AQUI VA EL IF DE PERIMISOS********************************************//
+
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    for (int i = 0; i < 12; ++i) {
+        if (inodo.i_block[i] != -1) {
+            fseek(file, bm_block + inodo.i_block[i], SEEK_SET);
+            fwrite("0", 1, 1, file);
+            inodo.i_block[i] = -1;
+        }
+    }
+    fclose(file);
+
+    if (inodo.i_block[12] != -1) {
+        recorrer_apuntadores(inodo.i_block[12], disk_pos, inode_start, block_start, 1, '1', bm_inode, bm_block,
+                             part_start);
+        inodo.i_block[12] = -1;
+    }
+
+    if (inodo.i_block[13] != -1) {
+        recorrer_apuntadores(inodo.i_block[13], disk_pos, inode_start, block_start, 2, '1', bm_inode, bm_block,
+                             part_start);
+        inodo.i_block[13] = -1;
+    }
+
+    if (inodo.i_block[14] != -1) {
+        recorrer_apuntadores(inodo.i_block[14], disk_pos, inode_start, block_start, 3, '1', bm_inode, bm_block,
+                             part_start);
+        inodo.i_block[14] = -1;
+    }
+
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
+    fwrite(&inodo, sizeof(tabla_inodos), 1, file);
+    fclose(file);
+
+    return 0;
+}
+
+int TOUCH::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo,
+                               int bm_inode, int bm_block, int part_start) {
+    //recupero el bloque de apuntadores
+    bloque_apuntadores apuntadores;
+    FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, block_start + sizeof(bloque_apuntadores) * indice_bloque, SEEK_SET);
+    fread(&apuntadores, sizeof(bloque_apuntadores), 1, file);
+    fclose(file);
+
+    for (int i = 0; i < 16; ++i) {
+        if (nivel == 1) {
+            if (apuntadores.b_pointers[i] != -1) {
+                file = fopen(discos_montados[disk_pos].path, "rb+");
+                fseek(file, bm_block + apuntadores.b_pointers[i], SEEK_SET);
+                fwrite("0", 1, 1, file);
+                fclose(file);
+            }
+        } else {
+            recorrer_apuntadores(apuntadores.b_pointers[i], disk_pos, inode_start, block_start, nivel - 1, tipo,
+                                 bm_inode, bm_block, part_start);
+        }
+    }
+
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    super_bloque super;
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
+    super.s_free_inodes_count++;
+    fseek(file, part_start, SEEK_SET);
+    fwrite(&super, sizeof(super_bloque), 1, file);
+
+    fseek(file, bm_block + indice_bloque, SEEK_SET);
+    fwrite("0", 1, 1, file);
+    fclose(file);
+
+    return 0;
 }
 
 //metodo que busca el primer bitmap libre

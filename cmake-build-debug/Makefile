@@ -153,6 +153,54 @@ cat.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s
 .PHONY : cat.cpp.s
 
+cp.o: cp.cpp.o
+.PHONY : cp.o
+
+# target to build an object file
+cp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cp.cpp.o
+.PHONY : cp.cpp.o
+
+cp.i: cp.cpp.i
+.PHONY : cp.i
+
+# target to preprocess a source file
+cp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cp.cpp.i
+.PHONY : cp.cpp.i
+
+cp.s: cp.cpp.s
+.PHONY : cp.s
+
+# target to generate assembly for a file
+cp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cp.cpp.s
+.PHONY : cp.cpp.s
+
+eidt.o: eidt.cpp.o
+.PHONY : eidt.o
+
+# target to build an object file
+eidt.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.o
+.PHONY : eidt.cpp.o
+
+eidt.i: eidt.cpp.i
+.PHONY : eidt.i
+
+# target to preprocess a source file
+eidt.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.i
+.PHONY : eidt.cpp.i
+
+eidt.s: eidt.cpp.s
+.PHONY : eidt.s
+
+# target to generate assembly for a file
+eidt.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.s
+.PHONY : eidt.cpp.s
+
 exec.o: exec.cpp.o
 .PHONY : exec.o
 
@@ -525,6 +573,12 @@ help:
 	@echo "... cat.o"
 	@echo "... cat.i"
 	@echo "... cat.s"
+	@echo "... cp.o"
+	@echo "... cp.i"
+	@echo "... cp.s"
+	@echo "... eidt.o"
+	@echo "... eidt.i"
+	@echo "... eidt.s"
 	@echo "... exec.o"
 	@echo "... exec.i"
 	@echo "... exec.s"

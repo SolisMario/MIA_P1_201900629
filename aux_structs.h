@@ -86,6 +86,8 @@ typedef struct {
     string pwd = "123";
     int activo = 1;
     string particion_loggeada = "291A";
+    int id = 1;
+    int grupo = 1;
 } usuario_actual;
 
 extern disco_montado discos_montados[26];

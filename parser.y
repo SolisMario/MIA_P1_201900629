@@ -4,6 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <string.h>
+
 #include "scanner.h"
 #include "mkdisk.h"
 #include "rmdisk.h"
@@ -17,6 +18,9 @@
 #include "cat.h"
 #include "ren.h"
 #include "mv.h"
+#include "rm.h"
+#include "edit.h"
+#include "cp.h"
 
 using namespace std;
 extern int yylex(void);
@@ -36,6 +40,9 @@ EXEC * execV;
 CAT * catV;
 REN * renV;
 MV * moveV;
+RM * rmV;
+EDIT * editV;
+CP * cpV;
 %}
 
 %start INI
@@ -77,6 +84,10 @@ MV * moveV;
 %token<STRING> rren
 %token<STRING> rmv
 %token<STRING> rdest
+%token<STRING> rrm
+%token<STRING> redit
+%token<STRING> rpause
+%token<STRING> rcp
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -103,6 +114,11 @@ MV * moveV;
 %type<STRING> RENPARAM
 %type<STRING> MVPARAMS
 %type<STRING> MVPARAM
+%type<STRING> RMPARAM
+%type<STRING> EDITPARAMS
+%type<STRING> EDITPARAM
+%type<STRING> CPPARAMS
+%type<STRING> CPPARAM
 
 %define parse.error verbose
 %locations
@@ -137,6 +153,10 @@ INSTRUCCION:
 	| rcat {catV = new CAT();} CATPARAMS {catV->cat();}
 	| rren {renV = new REN();} RENPARAMS {renV->ren();}
 	| rmv {moveV = new MV();} MVPARAMS {moveV->mv();}
+	| rrm {rmV = new RM();} RMPARAM {rmV->rm();}
+	| redit {editV = new EDIT();} EDITPARAMS {editV->edit();}
+	| rcp {cpV = new CP();} CPPARAMS {cpV->cp();}
+	| rpause {system("read -p 'Presione Enter para continuar...' var");}
 ;
 
 MKDISKPARAMS:
@@ -202,7 +222,8 @@ REPPARAM:
 	| guion path igual ruta {repV->setPath(false, $4);}
         | guion path igual cadena {repV->setPath(true, $4);}
         | guion rid igual id_particion {repV->setID($4);}
-        | guion retruta igual id {repV->setRuta($4);}
+        | guion retruta igual ruta {repV->setRuta(false, $4);}
+        | guion retruta igual cadena {repV->setRuta(true, $4);}
         | guion root igual numero {repV->setRoot(atoi($4));}
 ;
 
@@ -277,6 +298,35 @@ MVPARAM:
         | guion path igual cadena {moveV->set_path(true, $4);}
         | guion rdest igual ruta {moveV->set_dest(false, $4);}
         | guion rdest igual cadena {moveV->set_dest(true, $4);}
+;
+
+RMPARAM:
+	guion path igual ruta {rmV->set_path(false, $4);}
+        | guion path igual cadena {rmV->set_path(true, $4);}
+;
+
+EDITPARAMS:
+	EDITPARAMS EDITPARAM
+	| EDITPARAM
+;
+
+EDITPARAM:
+	guion path igual ruta {editV->set_path(false, $4);}
+	| guion path igual cadena {editV->set_path(true, $4);}
+	| guion rcont igual ruta {editV->set_cont(false, $4);}
+       	| guion rcont igual cadena {editV->set_cont(true, $4);}
+	| guion rstdin {editV->set_stdin(true);}
+;
+
+CPPARAMS:
+	CPPARAMS CPPARAM
+	| CPPARAM
+;
+CPPARAM:
+	guion path igual ruta {cpV->set_path(false, $4);}
+        | guion path igual cadena {cpV->set_path(true, $4);}
+        | guion rdest igual ruta {cpV->set_dest(false, $4);}
+        | guion rdest igual cadena {cpV->set_dest(true, $4);}
 ;
 
 %%

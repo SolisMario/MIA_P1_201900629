@@ -102,7 +102,7 @@ void CAT::cat() {
                 inodo_carpeta = get_inodo(*it, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
                 if (inodo_carpeta == -1) { //si el inodo carpeta es -1 las carpetas no existen
                     cout << "La carpeta " << *it << " no existe " << endl;
-                    return;
+                    break;
                 }
                 recuperar = fopen(discos_montados[disk_pos].path, "rb+");
                 fseek(recuperar, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_carpeta, SEEK_SET);
@@ -118,7 +118,8 @@ void CAT::cat() {
                 cout << "El archivo " << file_name << " no existe." << endl;
             } else {
                 contenido += contenido_archivo(inodo_archivo, disk_pos, superBloque.s_inode_start, superBloque.s_block_start);
-                cout << contenido << endl;
+
+
             }
         }
     }
@@ -317,7 +318,6 @@ string CAT::nombre_archivo(string path) {
 }
 
 bool CAT::verificar_disco(char const *path) {
-
     FILE *verificar = fopen(path, "r"); //r= read = si el disco ya existia
     if (verificar == nullptr) {
         cout << "El disco no existe." << endl;

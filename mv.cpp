@@ -14,7 +14,7 @@ void MV::set_path(bool comillas, string path) {
 
 void MV::set_dest(bool comillas, string dest) {
     if (comillas) {
-        this->dest = dest.substr(1, path.length() - 2);
+        this->dest = dest.substr(1, dest.length() - 2);
     } else {
         this->dest = dest;
     }

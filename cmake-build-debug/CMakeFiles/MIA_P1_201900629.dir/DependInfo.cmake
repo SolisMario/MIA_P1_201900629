@@ -9,6 +9,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/mario/Repositorios/MIA_P1_201900629/cat.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o"
+  "/home/mario/Repositorios/MIA_P1_201900629/cp.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/cp.cpp.o"
+  "/home/mario/Repositorios/MIA_P1_201900629/eidt.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/exec.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/main.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/main.cpp.o"
