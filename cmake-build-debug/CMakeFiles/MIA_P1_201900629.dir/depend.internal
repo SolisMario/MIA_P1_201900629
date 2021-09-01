@@ -33,6 +33,13 @@ CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o
  /home/mario/Repositorios/MIA_P1_201900629/fdisk.h
  /home/mario/Repositorios/MIA_P1_201900629/mbr.h
  /home/mario/Repositorios/MIA_P1_201900629/partition.h
+CMakeFiles/MIA_P1_201900629.dir/find.cpp.o
+ /home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
+ /home/mario/Repositorios/MIA_P1_201900629/ebr.h
+ /home/mario/Repositorios/MIA_P1_201900629/find.cpp
+ /home/mario/Repositorios/MIA_P1_201900629/find.h
+ /home/mario/Repositorios/MIA_P1_201900629/mbr.h
+ /home/mario/Repositorios/MIA_P1_201900629/partition.h
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.o
  /home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
  /home/mario/Repositorios/MIA_P1_201900629/main.cpp
@@ -78,6 +85,7 @@ CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o
  /home/mario/Repositorios/MIA_P1_201900629/edit.h
  /home/mario/Repositorios/MIA_P1_201900629/exec.h
  /home/mario/Repositorios/MIA_P1_201900629/fdisk.h
+ /home/mario/Repositorios/MIA_P1_201900629/find.h
  /home/mario/Repositorios/MIA_P1_201900629/mbr.h
  /home/mario/Repositorios/MIA_P1_201900629/mkdir.h
  /home/mario/Repositorios/MIA_P1_201900629/mkdisk.h

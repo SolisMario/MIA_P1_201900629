@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o"
+  "CMakeFiles/MIA_P1_201900629.dir/find.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/main.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o"

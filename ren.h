@@ -38,6 +38,10 @@ public:
 
     EBR leer_ebr(char const *sc, int seek);
 
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
+
 };
 
 

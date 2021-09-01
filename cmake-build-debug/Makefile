@@ -249,6 +249,30 @@ fdisk.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.s
 .PHONY : fdisk.cpp.s
 
+find.o: find.cpp.o
+.PHONY : find.o
+
+# target to build an object file
+find.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/find.cpp.o
+.PHONY : find.cpp.o
+
+find.i: find.cpp.i
+.PHONY : find.i
+
+# target to preprocess a source file
+find.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/find.cpp.i
+.PHONY : find.cpp.i
+
+find.s: find.cpp.s
+.PHONY : find.s
+
+# target to generate assembly for a file
+find.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/find.cpp.s
+.PHONY : find.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -585,6 +609,9 @@ help:
 	@echo "... fdisk.o"
 	@echo "... fdisk.i"
 	@echo "... fdisk.s"
+	@echo "... find.o"
+	@echo "... find.i"
+	@echo "... find.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

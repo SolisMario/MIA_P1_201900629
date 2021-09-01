@@ -43,6 +43,9 @@ public:
 
     int crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen, int disk_pos, int part_start, tabla_inodos carpeta_actual, int b_inodo);
 
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
 };
 
 #endif //MIA_P1_201900629_MV_H

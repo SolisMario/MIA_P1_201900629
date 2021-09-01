@@ -53,6 +53,8 @@ void REP::rep() {
         graficar_bitmap("Bloques");
     } else if (this->name == "file") {
         graficar_file();
+    } else if (this->name == "journaling") {
+        graficar_journal();
     }
 }
 
@@ -1176,17 +1178,14 @@ void REP::graficar_bitmap(string bitmap) {
 
 void REP::graficar_file() {
 
-    string logged_partition = usuario_loggeado.particion_loggeada;
-
     //se recupera la posicion del dico y particion, se verifica si estan montados
-    string disk_number = logged_partition.substr(2, logged_partition.length() - 3);
+    string disk_number = this->id.substr(2, this->id.length() - 3);
     int disk_pos = stoi(disk_number) - 1;
     if (disk_pos < 0 || disk_pos > 98 || discos_montados[disk_pos].estado == 0) {
         cout << "ERROR: El disco indicado no esta montado." << endl;
         return;
     }
-
-    char part_letter = logged_partition.at(logged_partition.length() - 1);
+    char part_letter = this->id.at(this->id.length() - 1);
     int part_pos = int(part_letter - 65);
     if (part_pos < 0 || part_pos > 25 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
         cout << "ERROR: La particion indicada no esta montada." << endl;
@@ -1275,7 +1274,7 @@ void REP::graficar_file() {
             return;
         } else {
             contenido += contenido_archivo_file(inodo_archivo, disk_pos, superBloque.s_inode_start,
-                                           superBloque.s_block_start);
+                                                superBloque.s_block_start);
             string graph = "digraph html {\nrankdir=LR;\ninodo0[shape=none, margin=0, label=<\n";
             graph += "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"4\">\n";
             graph += "<TR><TD BGCOLOR=\"yellow\">" + file_name + "</TD></TR>";
@@ -1340,7 +1339,8 @@ int REP::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char const
     return -1;
 }
 
-int REP::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado, char const *path, int part_start, int tipo) {
+int REP::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado, char const *path, int part_start,
+                             int tipo) {
     FILE *file;
     //se trae el superbloque y el inodo indirecto
     super_bloque superBloque;
@@ -1389,7 +1389,7 @@ int REP::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado
     return -1;
 }
 
-string REP::contenido_archivo_file(int indice_inodo, int disk_pos, int inode_start, int block_start){
+string REP::contenido_archivo_file(int indice_inodo, int disk_pos, int inode_start, int block_start) {
     FILE *file;
     tabla_inodos inodo;// se recupera el inodo
     file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -1400,26 +1400,26 @@ string REP::contenido_archivo_file(int indice_inodo, int disk_pos, int inode_sta
     string contenido = "";
 
     for (int i = 0; i < 12; ++i) {
-        if(inodo.i_block[i] != -1){
+        if (inodo.i_block[i] != -1) {
             contenido += contenido_bloque_file(inodo.i_block[i], disk_pos, inode_start, block_start);
         }
     }
 
-    if(inodo.i_block[12] != -1) {
+    if (inodo.i_block[12] != -1) {
         contenido += contenido_indirectos_file(inodo.i_block[12], disk_pos, inode_start, block_start, 1);
     }
 
-    if(inodo.i_block[13] != -1) {
+    if (inodo.i_block[13] != -1) {
         contenido += contenido_indirectos_file(inodo.i_block[13], disk_pos, inode_start, block_start, 2);
     }
 
-    if(inodo.i_block[14] != -1) {
+    if (inodo.i_block[14] != -1) {
         contenido += contenido_indirectos_file(inodo.i_block[14], disk_pos, inode_start, block_start, 3);
     }
     return contenido;
 }
 
-string REP::contenido_bloque_file(int indice_bloque, int disk_pos, int inode_start, int block_start){
+string REP::contenido_bloque_file(int indice_bloque, int disk_pos, int inode_start, int block_start) {
     bloque_archivos bloque;
     FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, block_start + sizeof(bloque_archivos) * indice_bloque, SEEK_SET);
@@ -1430,7 +1430,7 @@ string REP::contenido_bloque_file(int indice_bloque, int disk_pos, int inode_sta
     return contenido;
 }
 
-string REP::contenido_indirectos_file(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel){
+string REP::contenido_indirectos_file(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel) {
     //recupero el bloque de apuntadores
     bloque_apuntadores apuntadores;
     FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -1445,7 +1445,8 @@ string REP::contenido_indirectos_file(int indice_bloque, int disk_pos, int inode
             if (nivel == 1) {
                 contenido += contenido_bloque_file(apuntadores.b_pointers[i], disk_pos, inode_start, block_start);
             } else {
-                contenido += contenido_indirectos_file(apuntadores.b_pointers[i], disk_pos, inode_start, block_start, nivel - 1);
+                contenido += contenido_indirectos_file(apuntadores.b_pointers[i], disk_pos, inode_start, block_start,
+                                                       nivel - 1);
             }
         }
     }
@@ -1478,6 +1479,110 @@ string REP::nombre_archivo(string path) {
         nombre_disco = path[i] + nombre_disco;
     }
     return nombre_disco;
+}
+
+void REP::graficar_journal() {
+    //se recupera la posicion del dico y particion, se verifica si estan montados
+    string disk_number = this->id.substr(2, this->id.length() - 3);
+    int disk_pos = stoi(disk_number) - 1;
+    if (disk_pos < 0 || disk_pos > 98 || discos_montados[disk_pos].estado == 0) {
+        cout << "ERROR: El disco indicado no esta montado." << endl;
+        return;
+    }
+    char part_letter = this->id.at(this->id.length() - 1);
+    int part_pos = int(part_letter - 65);
+    if (part_pos < 0 || part_pos > 25 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
+        cout << "ERROR: La particion indicada no esta montada." << endl;
+        return;
+    }
+
+    if (discos_montados[disk_pos].estado == 0 || discos_montados[disk_pos].particiones[part_pos].estado == 0) {
+        cout << "ERROR: el disco indicado no esta montado." << endl;
+        return;
+    }
+
+    //se verifica que el disco exista
+    if (!verificar_disco(discos_montados[disk_pos].path)) return;
+
+    FILE *recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+    MBR mbr_leido;
+    fread(&mbr_leido, sizeof(MBR), 1, recuperar);
+    fclose(recuperar);
+
+    int part_start = -1;
+    char nombre_particion[16];
+    strcpy(nombre_particion, discos_montados[disk_pos].particiones[part_pos].nombre);
+
+    //for para buscar el inicio de la particion
+    for (int i = 0; i < 4; ++i) {
+        if (strcmp(mbr_leido.particiones[i].part_name, nombre_particion) == 0 &&
+            mbr_leido.particiones[i].part_status == 'a') {
+            part_start = mbr_leido.particiones[i].part_start;
+            break;
+        } else if (mbr_leido.particiones[i].part_type == 'e') {
+            //si es extendida se busca entre las logicas
+            EBR ebr_actual;
+            ebr_actual = leer_ebr(this->path.c_str(), mbr_leido.particiones[i].part_start);
+
+            while (true) {
+                if (strcmp(nombre_particion, ebr_actual.part_name) == 0 && ebr_actual.part_status == 'a') {
+                    part_start = ebr_actual.part_start;
+                }
+                if (ebr_actual.part_next == -1) break;
+
+                ebr_actual = leer_ebr(this->path.c_str(), ebr_actual.part_next);
+                break;
+            }
+        }
+    }
+
+    if (part_start == -1) {
+        cout << "No se encontro la particion solicitada." << endl;
+        return;
+    }
+
+    //se llama al super bloque
+    super_bloque superBloque;
+    recuperar = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(recuperar, part_start, SEEK_SET);
+    fread(&superBloque, sizeof(super_bloque), 1, recuperar);
+    fclose(recuperar);
+
+    char fechayhora[16];
+    string fecha_hora = "";
+
+    string graph = "";
+    graph += "digraph{\n";
+    graph += "tabla[shape=none, margin=0, label=<<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"4\">\n";
+    graph += "<TR><TD COLSPAN=\"4\" BGCOLOR=\"#145a32\">Journal</TD></TR>\n";
+    graph += "<TR><TD BGCOLOR=\"#196f3d\">Operacion</TD><TD BGCOLOR=\"#196f3d\">Path</TD><TD BGCOLOR=\"#196f3d\">Contenido</TD><TD BGCOLOR=\"#196f3d\">Fecha</TD></TR>\n";
+
+    journal journal_actual;
+    FILE *file;
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, part_start + sizeof(super_bloque), SEEK_SET);
+    fread(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    while (true) {
+        string op = journal_actual.tipo_operacion;
+        string path = journal_actual.path;
+        string contenido = journal_actual.contenido;
+        strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&journal_actual.log_fecha));
+        fecha_hora = fechayhora;
+        graph += "<TR><TD BGCOLOR=\"#52be80\">" + op + "</TD><TD BGCOLOR=\"#52be80\">" + path + "</TD><TD BGCOLOR=\"#52be80\">" + contenido + "</TD><TD BGCOLOR=\"#52be80\">" + fecha_hora + "</TD></TR>\n";
+        if (journal_actual.next == -1) {
+            break;
+        }
+        file = fopen(discos_montados[disk_pos].path, "rb+");
+        fseek(file, part_start + sizeof(super_bloque) + sizeof(journal) * journal_actual.next, SEEK_SET);
+        fread(&journal_actual, sizeof(journal), 1, file);
+        fclose(file);
+    }
+
+    graph += "</TABLE>>];\n}";
+
+    archivo_dot(graph, "sb");
 }
 
 string REP::toLowerCase(string sl) {

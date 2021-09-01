@@ -68,6 +68,10 @@ public:
     int recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block, int part_start);
 
     int recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo, int bm_inode, int bm_block, int part_start);
+
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
 };
 
 #endif //MIA_P1_201900629_TOUCH_H

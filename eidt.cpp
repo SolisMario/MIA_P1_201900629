@@ -152,6 +152,9 @@ void EDIT::edit() {
             fclose(recuperar);
 
             escribir_archivo(discos_montados[disk_pos].path, part_start, inodo_archivo);
+
+            cout << "Archivo esitado con exito." << endl;
+            if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
         }
     } else {
         cout << "La particion no existe." << endl;
@@ -589,4 +592,56 @@ int EDIT::bitmap_libre(int start, int final, char const *path) {
     }
     fclose(file);
     return libre;
+}
+
+int EDIT::posicion_journal(char const *path, int partStart) {
+    journal journal_actual;
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque), SEEK_SET);
+    fread(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    int posicion_actual = 0;
+    while (true) {
+        posicion_actual = journal_actual.posicion;
+        if (journal_actual.next == -1) {
+            break;
+        }
+        file = fopen(path, "rb+");
+        fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * journal_actual.next, SEEK_SET);
+        fread(&journal_actual, sizeof(journal), 1, file);
+        fclose(file);
+    }
+
+    journal_actual.next = posicion_actual + 1;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * posicion_actual, SEEK_SET);
+    fwrite(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    return posicion_actual + 1;
+}
+
+void EDIT::add_to_journal(char const *path, int partStart) {
+    journal nuevo;
+    nuevo.posicion = posicion_journal(path, partStart);
+    strcpy(nuevo.tipo_operacion, "edit");
+    strcpy(nuevo.path, this->path.c_str());
+    string contenido;
+    if(this->cont[0] != '/'){
+        contenido = this->cont;
+        if(contenido.length() > 100){
+            contenido = contenido.substr(0, 100);
+        }
+    }
+    strcpy(nuevo.contenido, contenido.c_str());
+    nuevo.log_fecha = time(0);
+    nuevo.tipo = '6';
+
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * nuevo.posicion, SEEK_SET);
+    fwrite(&nuevo, sizeof(journal), 1, file);
+    fclose(file);
 }

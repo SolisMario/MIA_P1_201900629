@@ -153,12 +153,6 @@ void MKFS::mkfs() {
                 llenar_journal(particione.part_start, recuperar);
             }
 
-            cout << SB.s_bm_inode_start << endl;
-            cout << SB.s_bm_block_start << endl;
-            cout << SB.s_inode_start << endl;
-            cout << SB.s_block_start << endl;
-
-
             fclose(recuperar);
 
         } else if (particione.part_type == 'e') {
@@ -354,14 +348,17 @@ void MKFS::llenar_journal(int part_start, FILE *file) {
     strcpy(diario_inicial.contenido, "");
     fseek(file, part_start + sizeof(super_bloque) + 0 * sizeof(journal), SEEK_SET);
     fwrite(&diario_inicial, sizeof(journal), 1, file);
+    diario_inicial.next = 1;
     fflush(file);
-    diario_inicial.size = 0;
-    diario_inicial.tipo = '2';
-    strcpy(diario_inicial.path, "/users.txt");
-    diario_inicial.log_fecha = time(0);
-    strcpy(diario_inicial.tipo_operacion, "touch");
-    strcpy(diario_inicial.contenido, "1,G,root\n1,U,root,123\n");
+    journal segundo;
+    segundo.size = 0;
+    segundo.posicion = 1;
+    segundo.tipo = '2';
+    strcpy(segundo.path, "/users.txt");
+    segundo.log_fecha = time(0);
+    strcpy(segundo.tipo_operacion, "touch");
+    strcpy(segundo.contenido, "1,G,root\n1,U,root,123\n");
     fseek(file, part_start + sizeof(super_bloque) + 1 * sizeof(journal), SEEK_SET);
-    fwrite(&diario_inicial, sizeof(journal), 1, file);
+    fwrite(&segundo, sizeof(journal), 1, file);
     fflush(file);
 }

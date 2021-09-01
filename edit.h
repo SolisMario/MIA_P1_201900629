@@ -50,6 +50,9 @@ public:
 
     int bitmap_libre(int start, int final, char const *path);
 
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
 };
 
 #endif //MIA_P1_201900629_EDIT_H

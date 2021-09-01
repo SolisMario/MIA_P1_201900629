@@ -33,6 +33,13 @@ CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o: \
  ../fdisk.h \
  ../mbr.h \
  ../partition.h
+CMakeFiles/MIA_P1_201900629.dir/find.cpp.o: \
+ ../aux_structs.h \
+ ../ebr.h \
+ ../find.cpp \
+ ../find.h \
+ ../mbr.h \
+ ../partition.h
 CMakeFiles/MIA_P1_201900629.dir/main.cpp.o: \
  ../aux_structs.h \
  ../main.cpp \
@@ -78,6 +85,7 @@ CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: \
  ../edit.h \
  ../exec.h \
  ../fdisk.h \
+ ../find.h \
  ../mbr.h \
  ../mkdir.h \
  ../mkdisk.h \

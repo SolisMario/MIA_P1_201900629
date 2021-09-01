@@ -97,6 +97,9 @@ public:
     string contenido_indirectos_file(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel);
 
     string contenido_archivo_file(int indice_inodo, int disk_pos, int inode_start, int block_start);
+
+    void graficar_journal();
+
 };
 
 #endif //MIA_P1_201900629_REP_H

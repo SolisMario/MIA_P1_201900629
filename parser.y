@@ -21,6 +21,7 @@
 #include "rm.h"
 #include "edit.h"
 #include "cp.h"
+#include "find.h"
 
 using namespace std;
 extern int yylex(void);
@@ -43,6 +44,7 @@ MV * moveV;
 RM * rmV;
 EDIT * editV;
 CP * cpV;
+FIND * findV;
 %}
 
 %start INI
@@ -52,6 +54,7 @@ CP * cpV;
 %token<STRING> guion
 %token<STRING> igual
 %token<STRING> mkdisk
+%token<STRING> rfind
 %token<STRING> size
 %token<STRING> fit
 %token<STRING> unit
@@ -119,6 +122,8 @@ CP * cpV;
 %type<STRING> EDITPARAM
 %type<STRING> CPPARAMS
 %type<STRING> CPPARAM
+%type<STRING> FINDPARAMS
+%type<STRING> FINDPARAM
 
 %define parse.error verbose
 %locations
@@ -157,6 +162,7 @@ INSTRUCCION:
 	| redit {editV = new EDIT();} EDITPARAMS {editV->edit();}
 	| rcp {cpV = new CP();} CPPARAMS {cpV->cp();}
 	| rpause {system("read -p 'Presione Enter para continuar...' var");}
+	| rfind {findV = new FIND();} FINDPARAMS {findV->find();}
 ;
 
 MKDISKPARAMS:
@@ -329,6 +335,16 @@ CPPARAM:
         | guion rdest igual cadena {cpV->set_dest(true, $4);}
 ;
 
+FINDPARAMS:
+	FINDPARAMS FINDPARAM
+	|FINDPARAM
+;
+
+FINDPARAM:
+	guion path igual ruta {findV->set_path(false, $4);}
+	| guion path igual cadena {findV->set_path(true, $4);}
+	| guion rname igual cadena {findV->set_name($4);}
+;
 %%
 void yyerror(const char *s)
 {

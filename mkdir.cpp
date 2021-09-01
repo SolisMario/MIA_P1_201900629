@@ -124,15 +124,19 @@ void MKDIR::mkdir() {
         int inodo_nueva = -1;
         string folder_name = nombre_carpeta(this->path.c_str());
         inodo_nueva = get_inodo(folder_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
-        if(inodo_nueva != -1){
+        if (inodo_nueva != -1) {
             cout << "La carpeta " << folder_name << " ya existe." << endl;
             return;
         }
 
-        crear_inodo(folder_name, inodo_carpeta, inodo_abuelo, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
-
+        crear_inodo(folder_name, inodo_carpeta, inodo_abuelo, carpeta_tmp, discos_montados[disk_pos].path, part_start,
+                    '0');
+        cout << "Carpeta creada con exito." << endl;
+        if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
+    } else {
+        cout << "La particion no existe" << endl;
     }
-    cout << "Carpeta creada con exito." << endl;
+
 }
 
 string MKDIR::nombre_carpeta(const char *path) {
@@ -348,7 +352,7 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
     //si el contenido no es 0 se sigue con apuntadores indirectos
 
-    if(carpeta_actual.i_block[12] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+    if (carpeta_actual.i_block[12] == -1) {//si es -1 significa que no hay ningun bloque de punteros creado, se crea
         carpeta_actual.i_block[12] = superBloque.s_first_blo;// actualizamos el inodo
         file = fopen(path, "rb+");
         fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_padre, SEEK_SET);
@@ -356,7 +360,7 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
         bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
         fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+        fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
         //marcamos como usado el bitmap del bloque y del inodo
         fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -365,7 +369,8 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
         //actualizamos el superbloque y lo escribimos
         superBloque.s_free_blocks_count--;
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
         file = fopen(path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -376,7 +381,7 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
                                          inodo_padre, carpeta_actual);
     if (inodo_creado != -1) return inodo_creado;
 
-    if(carpeta_actual.i_block[13] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+    if (carpeta_actual.i_block[13] == -1) {//si es -1 significa que no hay ningun bloque de punteros creado, se crea
         carpeta_actual.i_block[13] = superBloque.s_first_blo;// actualizamos el inodo
         file = fopen(path, "rb+");
         fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_padre, SEEK_SET);
@@ -384,7 +389,7 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
         bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
         fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+        fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
         //marcamos como usado el bitmap del bloque y del inodo
         fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -393,7 +398,8 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
         //actualizamos el superbloque y lo escribimos
         superBloque.s_free_blocks_count--;
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
         file = fopen(path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -404,7 +410,7 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
                                          inodo_padre, carpeta_actual);
     if (inodo_creado != -1) return inodo_creado;
 
-    if(carpeta_actual.i_block[14] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+    if (carpeta_actual.i_block[14] == -1) {//si es -1 significa que no hay ningun bloque de punteros creado, se crea
         carpeta_actual.i_block[14] = superBloque.s_first_blo;// actualizamos el inodo
         file = fopen(path, "rb+");
         fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_padre, SEEK_SET);
@@ -412,7 +418,7 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
         bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
         fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+        fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
         //marcamos como usado el bitmap del bloque y del inodo
         fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -421,7 +427,8 @@ int MKDIR::crear_inodo(string nombre_carpeta, int inodo_padre, int inodo_abuelo,
 
         //actualizamos el superbloque y lo escribimos
         superBloque.s_free_blocks_count--;
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
         file = fopen(path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -572,7 +579,7 @@ int MKDIR::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_car
 
                 bloque_apuntadores apuntadores2;//creamo el bloque de apuntadores
                 fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-                fwrite(&apuntadores2 , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+                fwrite(&apuntadores2, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
                 //marcamos como usado el bitmap del bloque y del inodo
                 fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -581,7 +588,8 @@ int MKDIR::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_car
 
                 //actualizamos el superbloque y lo escribimos
                 superBloque.s_free_blocks_count--;
-                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                                       superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
                 file = fopen(path, "rb+");
                 fseek(file, part_start, SEEK_SET);
                 fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -706,4 +714,47 @@ EBR MKDIR::leer_ebr(char const *sc, int seek) {
     fread(&ebr_aux, sizeof(EBR), 1, rec_aux);
     fclose(rec_aux);
     return ebr_aux;
+}
+
+int MKDIR::posicion_journal(char const *path, int partStart) {
+    journal journal_actual;
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque), SEEK_SET);
+    fread(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    int posicion_actual = 0;
+    while (true) {
+        posicion_actual = journal_actual.posicion;
+        if (journal_actual.next == -1) {
+            break;
+        }
+        file = fopen(path, "rb+");
+        fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * journal_actual.next, SEEK_SET);
+        fread(&journal_actual, sizeof(journal), 1, file);
+        fclose(file);
+    }
+
+    journal_actual.next = posicion_actual + 1;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * posicion_actual, SEEK_SET);
+    fwrite(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    return posicion_actual + 1;
+}
+
+void MKDIR::add_to_journal(char const *path, int partStart) {
+    journal nuevo;
+    nuevo.posicion = posicion_journal(path, partStart);
+    strcpy(nuevo.tipo_operacion, "mkdir");
+    strcpy(nuevo.path, this->path.c_str());
+    nuevo.log_fecha = time(0);
+    nuevo.tipo = '3';
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * nuevo.posicion, SEEK_SET);
+    fwrite(&nuevo, sizeof(journal), 1, file);
+    fclose(file);
 }

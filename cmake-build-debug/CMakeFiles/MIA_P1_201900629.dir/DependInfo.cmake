@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/mario/Repositorios/MIA_P1_201900629/eidt.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/exec.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/fdisk.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/fdisk.cpp.o"
+  "/home/mario/Repositorios/MIA_P1_201900629/find.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/find.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/main.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/main.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/mkdir.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/mkdir.cpp.o"
   "/home/mario/Repositorios/MIA_P1_201900629/mkdisk.cpp" "/home/mario/Repositorios/MIA_P1_201900629/cmake-build-debug/CMakeFiles/MIA_P1_201900629.dir/mkdisk.cpp.o"

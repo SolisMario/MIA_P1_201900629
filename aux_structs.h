@@ -73,12 +73,14 @@ typedef struct {
 
 typedef struct
 {
+    int posicion = 0;
     char tipo_operacion[10] = "";
     char tipo = '2';
     char path[40] = "";
     char contenido[100] = ""; // Validar cuando espacio necesitan.
     time_t log_fecha;
-    int size = -1;
+    int size = 0;
+    int next = -1;
 }journal;
 
 typedef struct {

@@ -118,6 +118,12 @@
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/fdisk.h">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/find.cpp">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
+		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/find.h">
+			<Option target="MIA_P1_201900629"/>
+		</Unit>
 		<Unit filename="/home/mario/Repositorios/MIA_P1_201900629/main.cpp">
 			<Option target="MIA_P1_201900629"/>
 		</Unit>

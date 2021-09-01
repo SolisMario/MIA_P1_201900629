@@ -48,6 +48,10 @@ public:
                               int tipo, int inodo_padre, tabla_inodos carpeta_actual);
 
     string nombre_carpeta(const char *path);
+
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
 };
 
 #endif //MIA_P1_201900629_MKDIR_H

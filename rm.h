@@ -43,6 +43,10 @@ public:
     int recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo, int bm_inode, int bm_block, int part_start);
 
     int bitmap_libre(int start, int final, char const *path);
+
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
 };
 
 #endif //MIA_P1_201900629_RM_H

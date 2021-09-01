@@ -155,6 +155,8 @@ void CP::cp() {
         //bloque en el que se copiara el contenido, este esta en el inodo destino
         int bloque_destino = conseguir_bloque_carpeta(inodo_destino, inodo_origen, nombre, disk_pos, part_start);
         iniciar_copiado(bloque_destino, disk_pos, part_start, inodo_origen, nombre, inodo_destino);
+        cout << "El contenido fue copiado exitosamente." << endl;
+        if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
     } else {
         cout << "La particion no existe." << endl;
     }
@@ -854,4 +856,47 @@ string CP::nombre_archivo(const char *path) {
         nombre_disco = path[i] + nombre_disco;
     }
     return nombre_disco;
+}
+
+int CP::posicion_journal(char const *path, int partStart) {
+    journal journal_actual;
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque), SEEK_SET);
+    fread(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    int posicion_actual = 0;
+    while (true) {
+        posicion_actual = journal_actual.posicion;
+        if (journal_actual.next == -1) {
+            break;
+        }
+        file = fopen(path, "rb+");
+        fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * journal_actual.next, SEEK_SET);
+        fread(&journal_actual, sizeof(journal), 1, file);
+        fclose(file);
+    }
+
+    journal_actual.next = posicion_actual + 1;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * posicion_actual, SEEK_SET);
+    fwrite(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    return posicion_actual + 1;
+}
+
+void CP::add_to_journal(char const *path, int partStart) {
+    journal nuevo;
+    nuevo.posicion = posicion_journal(path, partStart);
+    strcpy(nuevo.tipo_operacion, "cp");
+    strcpy(nuevo.path, this->path.c_str());
+    nuevo.log_fecha = time(0);
+    nuevo.tipo = '7';
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * nuevo.posicion, SEEK_SET);
+    fwrite(&nuevo, sizeof(journal), 1, file);
+    fclose(file);
 }

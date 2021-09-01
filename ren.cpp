@@ -127,7 +127,13 @@ void REN::ren() {
         inodo_archivo = get_inodo(old_name, this->name, carpeta_tmp, discos_montados[disk_pos].path, part_start, 1);
         if(inodo_archivo == -1) {
             cout << "ERROR El archivo no existe." << endl;
+            return;
         }
+        cout << "EL archivo se renombro exitosamente." << endl;
+        if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
+    }
+    else{
+        cout << "La particion no existe." << endl;
     }
 }
 
@@ -281,4 +287,47 @@ string REN::nombre_archivo(const char *path) {
         nombre_disco = path[i] + nombre_disco;
     }
     return nombre_disco;
+}
+
+int REN::posicion_journal(char const *path, int partStart) {
+    journal journal_actual;
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque), SEEK_SET);
+    fread(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    int posicion_actual = 0;
+    while (true) {
+        posicion_actual = journal_actual.posicion;
+        if (journal_actual.next == -1) {
+            break;
+        }
+        file = fopen(path, "rb+");
+        fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * journal_actual.next, SEEK_SET);
+        fread(&journal_actual, sizeof(journal), 1, file);
+        fclose(file);
+    }
+
+    journal_actual.next = posicion_actual + 1;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * posicion_actual, SEEK_SET);
+    fwrite(&journal_actual, sizeof(journal), 1, file);
+    fclose(file);
+
+    return posicion_actual + 1;
+}
+
+void REN::add_to_journal(char const *path, int partStart) {
+    journal nuevo;
+    nuevo.posicion = posicion_journal(path, partStart);
+    strcpy(nuevo.tipo_operacion, "ren");
+    strcpy(nuevo.path, this->path.c_str());
+    nuevo.log_fecha = time(0);
+    nuevo.tipo = '5';
+    FILE *file;
+    file = fopen(path, "rb+");
+    fseek(file, partStart + sizeof(super_bloque) + sizeof(journal) * nuevo.posicion, SEEK_SET);
+    fwrite(&nuevo, sizeof(journal), 1, file);
+    fclose(file);
 }

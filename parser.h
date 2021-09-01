@@ -54,42 +54,43 @@ extern int yydebug;
     guion = 260,
     igual = 261,
     mkdisk = 262,
-    size = 263,
-    fit = 264,
-    unit = 265,
-    rp = 266,
-    rr = 267,
-    path = 268,
-    rmdisk = 269,
-    fdisk = 270,
-    rtype = 271,
-    rdelete = 272,
-    rname = 273,
-    radd = 274,
-    rmount = 275,
-    rumount = 276,
-    rmkfs = 277,
-    id = 278,
-    rfs = 279,
-    ruta = 280,
-    rep = 281,
-    rid = 282,
-    retruta = 283,
-    root = 284,
-    id_particion = 285,
-    rmkdir = 286,
-    touch = 287,
-    rcont = 288,
-    rstdin = 289,
-    rexec = 290,
-    rcat = 291,
-    rren = 292,
-    rmv = 293,
-    rdest = 294,
-    rrm = 295,
-    redit = 296,
-    rpause = 297,
-    rcp = 298
+    rfind = 263,
+    size = 264,
+    fit = 265,
+    unit = 266,
+    rp = 267,
+    rr = 268,
+    path = 269,
+    rmdisk = 270,
+    fdisk = 271,
+    rtype = 272,
+    rdelete = 273,
+    rname = 274,
+    radd = 275,
+    rmount = 276,
+    rumount = 277,
+    rmkfs = 278,
+    id = 279,
+    rfs = 280,
+    ruta = 281,
+    rep = 282,
+    rid = 283,
+    retruta = 284,
+    root = 285,
+    id_particion = 286,
+    rmkdir = 287,
+    touch = 288,
+    rcont = 289,
+    rstdin = 290,
+    rexec = 291,
+    rcat = 292,
+    rren = 293,
+    rmv = 294,
+    rdest = 295,
+    rrm = 296,
+    redit = 297,
+    rpause = 298,
+    rcp = 299
   };
 #endif
 
@@ -97,12 +98,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 126 "parser.y"
+#line 131 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 106 "parser.h"
+#line 107 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

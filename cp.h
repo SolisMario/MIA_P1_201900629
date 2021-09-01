@@ -52,6 +52,10 @@ public:
     void iniciar_copiado(int bloque_origen, int disk_pos, int part_start, int inodo_origen, string nombre_origen, int inodo_destino);
 
     int recorrer_bloque_apuntadores(int disk_pos, int part_start, int indice_bloque, string nombre_origen, int inodo_padre, int inodo_abuelo, char tipo, int nivel);
+
+    void add_to_journal(char const *path, int partStart);
+
+    int posicion_journal(char const *path, int partStart);
 };
 
 #endif //MIA_P1_201900629_CP_H

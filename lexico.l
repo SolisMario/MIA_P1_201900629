@@ -15,7 +15,7 @@ comentario [#]([^\n])*
 numero [-]?[0-9]+
 id_particion "29"[0-9]+[A-Z]
 cadena \"(\\\"|\\n|\\t|\\r|\\\\|[^\"])*\"
-ruta (([/]([a-zA-Z]|[0-9]|"_"|".")+)+)
+ruta (([/]([a-zA-Z]|[0-9]|"_"|".")*)+)
 id ([a-zA-Z])([a-zA-Z]|[0-9]|"_"|".")*
 
 %%
@@ -27,6 +27,7 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_"|".")*
 {cadena} {yylval.STRING = strdup(yytext); return (cadena);};
 ("–"|"-") {yylval.STRING = strdup(yytext);return (guion);};
 [=] {yylval.STRING = strdup(yytext);return (igual);};
+"find" {yylval.STRING = strdup(yytext);return (rfind);};
 "mkdisk" {yylval.STRING = strdup(yytext);return (mkdisk);};
 "size" {yylval.STRING = strdup(yytext);return (size);};
 "f" {yylval.STRING = strdup(yytext);return (fit);};

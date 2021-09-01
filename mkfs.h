@@ -34,6 +34,7 @@ public:
     super_bloque editar_super(int n, super_bloque &SB, int part_start);
 
     void llenar_journal(int part_start, FILE* file);
+
 };
 
 #endif //MIA_P1_201900629_MKFS_H
