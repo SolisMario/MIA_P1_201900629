@@ -18,6 +18,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/MIA_P1_201900629.dir/rmdisk.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/touch.cpp.o"
+  "CMakeFiles/MIA_P1_201900629.dir/users.cpp.o"
   "MIA_P1_201900629"
   "MIA_P1_201900629.pdb"
 )

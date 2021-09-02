@@ -84,10 +84,10 @@ typedef struct
 }journal;
 
 typedef struct {
-    string usuario = "root";
-    string pwd = "123";
-    int activo = 1;
-    string particion_loggeada = "291A";
+    int activo = 0;
+    string user;
+    string pwd ;
+    string particion_loggeada;
     int id = 1;
     int grupo = 1;
 } usuario_actual;

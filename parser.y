@@ -22,6 +22,7 @@
 #include "edit.h"
 #include "cp.h"
 #include "find.h"
+#include "users.h"
 
 using namespace std;
 extern int yylex(void);
@@ -45,6 +46,7 @@ RM * rmV;
 EDIT * editV;
 CP * cpV;
 FIND * findV;
+USERS * usersV;
 %}
 
 %start INI
@@ -91,6 +93,16 @@ FIND * findV;
 %token<STRING> redit
 %token<STRING> rpause
 %token<STRING> rcp
+%token<STRING> rpwd
+%token<STRING> ruser
+%token<STRING> rlogin
+%token<STRING> rlogout
+%token<STRING> rmkgrp
+%token<STRING> rrmgrp
+%token<STRING> rmkusr
+%token<STRING> rusr
+%token<STRING> rgrp
+%token<STRING> rrmusr
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -124,6 +136,16 @@ FIND * findV;
 %type<STRING> CPPARAM
 %type<STRING> FINDPARAMS
 %type<STRING> FINDPARAM
+%type<STRING> LOGINPARAM
+%type<STRING> LOGINPARAMS
+%type<STRING> MKGRPPARAMS
+%type<STRING> MKGRPPARAM
+%type<STRING> RMGRPPARAMS
+%type<STRING> RMGRPPARAM
+%type<STRING> MKUSERPARAMS
+%type<STRING> MKUSERPARAM
+%type<STRING> RMUSERPARAMS
+%type<STRING> RMUSERPARAM
 
 %define parse.error verbose
 %locations
@@ -163,6 +185,12 @@ INSTRUCCION:
 	| rcp {cpV = new CP();} CPPARAMS {cpV->cp();}
 	| rpause {system("read -p 'Presione Enter para continuar...' var");}
 	| rfind {findV = new FIND();} FINDPARAMS {findV->find();}
+	| rlogin {usersV = new USERS();} LOGINPARAMS {usersV->login();}
+	| rlogout {usersV = new USERS(); usersV->logout();}
+	| rmkgrp {usersV = new USERS();} MKGRPPARAMS {usersV->mkgrp();}
+	| rrmgrp {usersV = new USERS();} RMGRPPARAMS {usersV->rmgrp();}
+	| rrmusr {usersV = new USERS();} RMUSERPARAMS {usersV->rmusr();}
+	| rmkusr {usersV = new USERS();} MKUSERPARAMS {usersV->mkusr();}
 ;
 
 MKDISKPARAMS:
@@ -337,13 +365,72 @@ CPPARAM:
 
 FINDPARAMS:
 	FINDPARAMS FINDPARAM
-	|FINDPARAM
+	| FINDPARAM
 ;
 
 FINDPARAM:
 	guion path igual ruta {findV->set_path(false, $4);}
 	| guion path igual cadena {findV->set_path(true, $4);}
 	| guion rname igual cadena {findV->set_name($4);}
+;
+
+LOGINPARAMS:
+	LOGINPARAMS LOGINPARAM
+	| LOGINPARAM
+;
+
+LOGINPARAM:
+	guion ruser igual id {usersV->set_user($4);}
+	| guion ruser igual root {usersV->set_user($4);}
+	| guion rpwd igual id {usersV->set_pwd($4, "");}
+	| guion rpwd igual numero id {usersV->set_pwd($4, $5);}
+	| guion rpwd igual numero {usersV->set_pwd($4, "");}
+	| guion rid igual id_particion {usersV->set_id($4);}
+;
+
+MKGRPPARAMS:
+	MKGRPPARAMS MKGRPPARAM
+	| MKGRPPARAM
+;
+
+MKGRPPARAM:
+	guion rname igual id {usersV->set_name(false, $4);}
+        | guion rname igual cadena {usersV->set_name(true, $4);}
+;
+
+RMGRPPARAMS:
+	RMGRPPARAMS RMGRPPARAM
+	| RMGRPPARAM
+;
+
+RMGRPPARAM:
+	guion rname igual id {usersV->set_name(false, $4);}
+        | guion rname igual cadena {usersV->set_name(true, $4);}
+;
+
+MKUSERPARAMS:
+	MKUSERPARAMS MKUSERPARAM
+	| MKUSERPARAM
+;
+
+MKUSERPARAM:
+	guion rgrp igual id {usersV->set_name(false, $4);}
+        | guion rgrp igual cadena {usersV->set_name(true, $4);}
+        | guion rusr igual id {usersV->set_user($4);}
+        | guion rusr igual root {usersV->set_user($4);}
+        | guion rpwd igual id {usersV->set_pwd($4, "");}
+        | guion rpwd igual numero id {usersV->set_pwd($4, $5);}
+        | guion rpwd igual numero {usersV->set_pwd($4, "");}
+;
+
+RMUSERPARAMS:
+	RMUSERPARAMS RMUSERPARAM
+	| RMUSERPARAM
+;
+
+RMUSERPARAM:
+	guion rusr igual id {usersV->set_name(false, $4);}
+        | guion rusr igual cadena {usersV->set_name(true, $4);}
 ;
 %%
 void yyerror(const char *s)

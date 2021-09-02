@@ -99,7 +99,8 @@ CMakeFiles/MIA_P1_201900629.dir/parser.cpp.o: \
  ../rm.h \
  ../rmdisk.h \
  ../scanner.h \
- ../touch.h
+ ../touch.h \
+ ../users.h
 CMakeFiles/MIA_P1_201900629.dir/ren.cpp.o: \
  ../aux_structs.h \
  ../ebr.h \
@@ -134,3 +135,10 @@ CMakeFiles/MIA_P1_201900629.dir/touch.cpp.o: \
  ../partition.h \
  ../touch.cpp \
  ../touch.h
+CMakeFiles/MIA_P1_201900629.dir/users.cpp.o: \
+ ../aux_structs.h \
+ ../ebr.h \
+ ../mbr.h \
+ ../partition.h \
+ ../users.cpp \
+ ../users.h

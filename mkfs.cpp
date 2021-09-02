@@ -127,14 +127,14 @@ void MKFS::mkfs() {
             inodo_usuarios.i_mtime = time(0);
             inodo_usuarios.i_block[0] = 1;
             inodo_usuarios.i_type = '1';
-            inodo_usuarios.i_size = sizeof("1,G,root\n1,U,root,123\n");
+            inodo_usuarios.i_size = sizeof("1,G,root\n1,U,root,root,123\n");
             fseek(recuperar, SB.s_inode_start + sizeof(tabla_inodos), SEEK_SET);
             fwrite(&inodo_usuarios, sizeof(tabla_inodos), 1, recuperar);
             fflush(recuperar);
 
             //bloque con contenido de usuarios.txt
             bloque_archivos bloque_usuarios;
-            strcpy(bloque_usuarios.b_content, "1,G,root\n1,U,root,123\n");
+            strcpy(bloque_usuarios.b_content, "1,G,root\n1,U,root,root,123\n");
             fseek(recuperar, SB.s_block_start + sizeof(bloque_carpeta), SEEK_SET);
             fwrite(&bloque_usuarios, sizeof(bloque_archivos), 1, recuperar);
             fflush(recuperar);
@@ -231,14 +231,14 @@ void MKFS::mkfs() {
                     inodo_usuarios.i_mtime = time(0);
                     inodo_usuarios.i_block[0] = 1;
                     inodo_usuarios.i_type = '1';
-                    inodo_usuarios.i_size = sizeof("1,G,root\n1,U,root,123\n");
+                    inodo_usuarios.i_size = sizeof("1,G,root\n1,U,root,root,123\n");
                     fseek(recuperar, SB.s_inode_start + sizeof(tabla_inodos), SEEK_SET);
                     fwrite(&inodo_usuarios, sizeof(inodo_usuarios), 1, recuperar);
                     fflush(recuperar);
 
                     //bloque con contenido de usuarios.txt
                     bloque_archivos bloque_usuarios;
-                    strcpy(bloque_usuarios.b_content, "1,G,root\n1,U,root,123\n");
+                    strcpy(bloque_usuarios.b_content, "1,G,root\n1,U,root,root,123\n");
 
                     //marcando como utilizados los bitmap
                     fseek(recuperar, SB.s_bm_inode_start, SEEK_SET);//inodo carpeta raiz
@@ -346,9 +346,9 @@ void MKFS::llenar_journal(int part_start, FILE *file) {
     diario_inicial.log_fecha = time(0);
     strcpy(diario_inicial.tipo_operacion, "mkdir");
     strcpy(diario_inicial.contenido, "");
+    diario_inicial.next = 1;
     fseek(file, part_start + sizeof(super_bloque) + 0 * sizeof(journal), SEEK_SET);
     fwrite(&diario_inicial, sizeof(journal), 1, file);
-    diario_inicial.next = 1;
     fflush(file);
     journal segundo;
     segundo.size = 0;
@@ -357,7 +357,7 @@ void MKFS::llenar_journal(int part_start, FILE *file) {
     strcpy(segundo.path, "/users.txt");
     segundo.log_fecha = time(0);
     strcpy(segundo.tipo_operacion, "touch");
-    strcpy(segundo.contenido, "1,G,root\n1,U,root,123\n");
+    strcpy(segundo.contenido, "1,G,root\n1,U,root,root,123\n");
     fseek(file, part_start + sizeof(super_bloque) + 1 * sizeof(journal), SEEK_SET);
     fwrite(&segundo, sizeof(journal), 1, file);
     fflush(file);

@@ -90,7 +90,17 @@ extern int yydebug;
     rrm = 296,
     redit = 297,
     rpause = 298,
-    rcp = 299
+    rcp = 299,
+    rpwd = 300,
+    ruser = 301,
+    rlogin = 302,
+    rlogout = 303,
+    rmkgrp = 304,
+    rrmgrp = 305,
+    rmkusr = 306,
+    rusr = 307,
+    rgrp = 308,
+    rrmusr = 309
   };
 #endif
 
@@ -98,12 +108,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 131 "parser.y"
+#line 153 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 107 "parser.h"
+#line 117 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

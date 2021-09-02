@@ -585,6 +585,30 @@ touch.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/touch.cpp.s
 .PHONY : touch.cpp.s
 
+users.o: users.cpp.o
+.PHONY : users.o
+
+# target to build an object file
+users.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/users.cpp.o
+.PHONY : users.cpp.o
+
+users.i: users.cpp.i
+.PHONY : users.i
+
+# target to preprocess a source file
+users.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/users.cpp.i
+.PHONY : users.cpp.i
+
+users.s: users.cpp.s
+.PHONY : users.s
+
+# target to generate assembly for a file
+users.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/users.cpp.s
+.PHONY : users.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -651,6 +675,9 @@ help:
 	@echo "... touch.o"
 	@echo "... touch.i"
 	@echo "... touch.s"
+	@echo "... users.o"
+	@echo "... users.i"
+	@echo "... users.s"
 .PHONY : help
 
 

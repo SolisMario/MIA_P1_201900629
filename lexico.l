@@ -62,6 +62,16 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_"|".")*
 "edit" {yylval.STRING = strdup(yytext);return (redit);};
 "pause" {yylval.STRING = strdup(yytext);return (rpause);};
 "cp" {yylval.STRING = strdup(yytext);return (rcp);};
+"pwd" {yylval.STRING = strdup(yytext);return (rpwd);};
+"user" {yylval.STRING = strdup(yytext);return (ruser);};
+"login" {yylval.STRING = strdup(yytext);return (rlogin);};
+"logout" {yylval.STRING = strdup(yytext);return (rlogout);};
+"mkgrp" {yylval.STRING = strdup(yytext);return (rmkgrp);};
+"rmgrp" {yylval.STRING = strdup(yytext);return (rrmgrp);};
+"mkusr" {yylval.STRING = strdup(yytext);return (rmkusr);};
+"usr" {yylval.STRING = strdup(yytext);return (rusr);};
+"grp" {yylval.STRING = strdup(yytext);return (rgrp);};
+"rmusr" {yylval.STRING = strdup(yytext);return (rrmusr);};
 {id} {yylval.STRING = strdup(yytext); return (id);};
 {ruta} {yylval.STRING = strdup(yytext); return (ruta);};
 . {}

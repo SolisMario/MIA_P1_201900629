@@ -396,7 +396,7 @@ void EDIT::escribir_archivo(const char *path, int part_start, int inodo_archivo)
         fwrite("1", 1, 1, file);
         fclose(file);
         //buscar el bloque libre en el bitmap, actualizar el superBloque
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_blocks_count, path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
         superBloque.s_free_blocks_count--;
 
         file = fopen(path, "rb+");

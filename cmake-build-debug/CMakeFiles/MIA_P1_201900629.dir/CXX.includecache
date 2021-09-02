@@ -20,16 +20,26 @@ iostream
 partition.h
 /home/mario/Repositorios/MIA_P1_201900629/partition.h
 
-/home/mario/Repositorios/MIA_P1_201900629/mkfs.cpp
-cmath
--
-mkfs.h
-/home/mario/Repositorios/MIA_P1_201900629/mkfs.h
-cstring
+/home/mario/Repositorios/MIA_P1_201900629/partition.h
+iostream
 -
 
-/home/mario/Repositorios/MIA_P1_201900629/mkfs.h
+/home/mario/Repositorios/MIA_P1_201900629/users.cpp
+users.h
+/home/mario/Repositorios/MIA_P1_201900629/users.h
+
+/home/mario/Repositorios/MIA_P1_201900629/users.h
+vector
+-
+list
+-
+string
+-
 iostream
+-
+cstring
+-
+list
 -
 aux_structs.h
 /home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
@@ -37,8 +47,4 @@ mbr.h
 /home/mario/Repositorios/MIA_P1_201900629/mbr.h
 ebr.h
 /home/mario/Repositorios/MIA_P1_201900629/ebr.h
-
-/home/mario/Repositorios/MIA_P1_201900629/partition.h
-iostream
--
 
