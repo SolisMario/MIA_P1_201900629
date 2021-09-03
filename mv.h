@@ -46,6 +46,8 @@ public:
     void add_to_journal(char const *path, int partStart);
 
     int posicion_journal(char const *path, int partStart);
+
+    void actualizar_abuelo(int inodo, int disk_pos, int inode_start, int block_start, int inodo_abuelo);
 };
 
 #endif //MIA_P1_201900629_MV_H

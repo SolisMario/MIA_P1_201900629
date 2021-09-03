@@ -45,7 +45,7 @@ typedef struct {
 typedef struct {
     int i_uid = 1;
     int i_gid = 1;
-    int i_size = 1;
+    int i_size = 0;
     time_t i_atime;
     time_t i_ctime;
     time_t i_mtime;

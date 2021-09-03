@@ -62,6 +62,7 @@ void USERS::login() {
     string txt = get_txt(part_start, discos_montados[disk_pos].path, super.s_inode_start, super.s_block_start);
     list<string> lines = get_lines_txt(txt);
     list<string> usrs = get_grps_usrs(4, lines);//4 comas usrs, 2 comas grps
+    list<string> grps = get_grps_usrs(2, lines);//4 comas usrs, 2 comas grps
 
     //se tiene la lista de todos los usuarios, se recorre esa lista buscando el ususario y comprobando la pwd
     list<string>::iterator it;
@@ -71,7 +72,7 @@ void USERS::login() {
             if (this->password == parts[4]) {//se verifica la password
                 usuario_loggeado.user = this->user;
                 usuario_loggeado.id = atoi(parts[0].c_str());
-                //usuario_loggeado.grupo = parts[2];
+                usuario_loggeado.grupo = get_grp_num(grps, parts[2]);
                 usuario_loggeado.particion_loggeada = this->id;
                 usuario_loggeado.activo = 1;
                 usuario_loggeado.pwd = this->password;
@@ -87,7 +88,7 @@ void USERS::login() {
 }
 
 void USERS::logout() {
-    if(usuario_loggeado.activo == 0) {
+    if (usuario_loggeado.activo == 0) {
         cout << "Actualmente no existe un usuario loggeado. No se puede realizar logout." << endl;
         return;
     }
@@ -99,13 +100,13 @@ void USERS::mkgrp() {
     if (this->name.empty()) {
         cout << "El parametro name es obligatorio." << endl;
         return;
-    } else if (usuario_loggeado.activo == 0){
+    } else if (usuario_loggeado.activo == 0) {
         cout << "Para realizar esta operacion necesita estar logeado en una particion." << endl;
         return;
-    } else if (usuario_loggeado.id != 1){
+    } else if (usuario_loggeado.id != 1) {
         cout << "Este usuario no tiene los permisos para realizar esta operacion.\n Inicie sesion con root." << endl;
         return;
-    } else if (this->name.length() > 10){
+    } else if (this->name.length() > 10) {
         cout << "El nombre del grupo excede el maximo de caracteres permitido." << endl;
         return;
     }
@@ -144,21 +145,24 @@ void USERS::mkgrp() {
     //se ve que numero tendra el grupo recorriendo la lista
     for (it = grps.begin(); it != grps.end(); it++) {//se busca si el grupo no existe
         vector<string> parts = get_parts(*it);
-        if(atoi(parts[0].c_str()) != 0) num_grupo = atoi(parts[0].c_str());
+        if (atoi(parts[0].c_str()) != 0) num_grupo = atoi(parts[0].c_str());
     }
     num_grupo += 1;
     string nuevo_grp = to_string(num_grupo) + ",G," + this->name + "\n";
     txt += nuevo_grp;
 
     //se edita el archivo users.txt
-    recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start,super.s_bm_inode_start, super.s_bm_block_start, part_start);
+    recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start, super.s_bm_inode_start,
+                   super.s_bm_block_start, part_start);
     file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, part_start, SEEK_SET);
     fread(&super, sizeof(super_bloque), 1, file);
     fclose(file);
 
-    super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count, discos_montados[disk_pos].path);
-    super.s_first_ino = bitmap_libre(super.s_bm_inode_start,super.s_bm_inode_start + super.s_inodes_count,discos_montados[disk_pos].path);
+    super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count,
+                                     discos_montados[disk_pos].path);
+    super.s_first_ino = bitmap_libre(super.s_bm_inode_start, super.s_bm_inode_start + super.s_inodes_count,
+                                     discos_montados[disk_pos].path);
 
     file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, part_start, SEEK_SET);
@@ -172,10 +176,10 @@ void USERS::rmgrp() {
     if (this->name.empty()) {
         cout << "El parametro name es obligatorio." << endl;
         return;
-    } else if (usuario_loggeado.activo == 0){
+    } else if (usuario_loggeado.activo == 0) {
         cout << "Para realizar esta operacion necesita estar logeado en una particion." << endl;
         return;
-    } else if (usuario_loggeado.id != 1){
+    } else if (usuario_loggeado.id != 1) {
         cout << "Este usuario no tiene los permisos para realizar esta operacion.\n Inicie sesion con root." << endl;
         return;
     }
@@ -213,21 +217,24 @@ void USERS::rmgrp() {
         }
     }
 
-    if(encontrado){
+    if (encontrado) {
         string nuevo_txt;
         for (it = lines.begin(); it != lines.end(); it++) {//se busca si el grupo no existe
             nuevo_txt += *it;
         }
 
         //se edita el archivo users.txt
-        recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start,super.s_bm_inode_start, super.s_bm_block_start, part_start);
+        recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start, super.s_bm_inode_start,
+                       super.s_bm_block_start, part_start);
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fread(&super, sizeof(super_bloque), 1, file);
         fclose(file);
 
-        super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count, discos_montados[disk_pos].path);
-        super.s_first_ino = bitmap_libre(super.s_bm_inode_start,super.s_bm_inode_start + super.s_inodes_count,discos_montados[disk_pos].path);
+        super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count,
+                                         discos_montados[disk_pos].path);
+        super.s_first_ino = bitmap_libre(super.s_bm_inode_start, super.s_bm_inode_start + super.s_inodes_count,
+                                         discos_montados[disk_pos].path);
 
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
@@ -244,19 +251,19 @@ void USERS::mkusr() {
     if (this->user.empty()) {
         cout << "El parametro name es obligatorio." << endl;
         return;
-    } else if (usuario_loggeado.activo == 0){
+    } else if (usuario_loggeado.activo == 0) {
         cout << "Para realizar esta operacion necesita estar logeado en una particion." << endl;
         return;
-    } else if (usuario_loggeado.id != 1){
+    } else if (usuario_loggeado.id != 1) {
         cout << "Este usuario no tiene los permisos para realizar esta operacion.\n Inicie sesion con root." << endl;
         return;
-    } else if (this->name.length() > 10){
+    } else if (this->name.length() > 10) {
         cout << "El nombre del grupo excede el maximo de caracteres permitido." << endl;
         return;
-    } else if (this->user.length() > 10){
+    } else if (this->user.length() > 10) {
         cout << "El nombre del usuario excede el maximo de caracteres permitido." << endl;
         return;
-    } else if (this->password.length() > 10){
+    } else if (this->password.length() > 10) {
         cout << "La contrasena excede el maximo de caracteres permitido." << endl;
         return;
     }
@@ -302,26 +309,29 @@ void USERS::mkusr() {
         }
     }
 
-    if(encontrado){
+    if (encontrado) {
         int num_usr = 0;
         //se ve que numero tendra el grupo recorriendo la lista
         for (it = usrs.begin(); it != usrs.end(); it++) {//se busca si el grupo no existe
             vector<string> parts = get_parts(*it);
-            if(atoi(parts[0].c_str()) != 0) num_usr = atoi(parts[0].c_str());
+            if (atoi(parts[0].c_str()) != 0) num_usr = atoi(parts[0].c_str());
         }
         num_usr += 1;
         string nuevo_usr = to_string(num_usr) + ",U," + this->name + "," + this->user + "," + this->password + "\n";
         txt += nuevo_usr;
 
         //se edita el archivo users.txt
-        recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start,super.s_bm_inode_start, super.s_bm_block_start, part_start);
+        recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start, super.s_bm_inode_start,
+                       super.s_bm_block_start, part_start);
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fread(&super, sizeof(super_bloque), 1, file);
         fclose(file);
 
-        super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count, discos_montados[disk_pos].path);
-        super.s_first_ino = bitmap_libre(super.s_bm_inode_start,super.s_bm_inode_start + super.s_inodes_count,discos_montados[disk_pos].path);
+        super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count,
+                                         discos_montados[disk_pos].path);
+        super.s_first_ino = bitmap_libre(super.s_bm_inode_start, super.s_bm_inode_start + super.s_inodes_count,
+                                         discos_montados[disk_pos].path);
 
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
@@ -329,7 +339,7 @@ void USERS::mkusr() {
         fclose(file);
 
         escribir_archivo(discos_montados[disk_pos].path, part_start, 1, txt);
-    }else{
+    } else {
         cout << "El grupo indicado no existe." << endl;
     }
 }
@@ -338,10 +348,10 @@ void USERS::rmusr() {
     if (this->name.empty()) {
         cout << "El parametro name es obligatorio." << endl;
         return;
-    } else if (usuario_loggeado.activo == 0){
+    } else if (usuario_loggeado.activo == 0) {
         cout << "Para realizar esta operacion necesita estar logeado en una particion." << endl;
         return;
-    } else if (usuario_loggeado.id != 1){
+    } else if (usuario_loggeado.id != 1) {
         cout << "Este usuario no tiene los permisos para realizar esta operacion.\n Inicie sesion con root." << endl;
         return;
     }
@@ -379,21 +389,24 @@ void USERS::rmusr() {
         }
     }
 
-    if(encontrado){
+    if (encontrado) {
         string nuevo_txt;
         for (it = lines.begin(); it != lines.end(); it++) {//se busca si el grupo no existe
             nuevo_txt += *it;
         }
 
         //se edita el archivo users.txt
-        recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start,super.s_bm_inode_start, super.s_bm_block_start, part_start);
+        recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start, super.s_bm_inode_start,
+                       super.s_bm_block_start, part_start);
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fread(&super, sizeof(super_bloque), 1, file);
         fclose(file);
 
-        super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count, discos_montados[disk_pos].path);
-        super.s_first_ino = bitmap_libre(super.s_bm_inode_start,super.s_bm_inode_start + super.s_inodes_count,discos_montados[disk_pos].path);
+        super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count,
+                                         discos_montados[disk_pos].path);
+        super.s_first_ino = bitmap_libre(super.s_bm_inode_start, super.s_bm_inode_start + super.s_inodes_count,
+                                         discos_montados[disk_pos].path);
 
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
@@ -404,6 +417,107 @@ void USERS::rmusr() {
     } else {
         cout << "El grupo indicado no existe en la particion." << endl;
     }
+}
+
+void USERS::chgrp() {
+    if (this->user.empty()) {
+        cout << "El parametro usr es obligatorio." << endl;
+        return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "Para realizar esta operacion necesita estar logeado en una particion." << endl;
+        return;
+    } else if (usuario_loggeado.id != 1) {
+        cout << "Este usuario no tiene los permisos para realizar esta operacion.\n Inicie sesion con root." << endl;
+        return;
+    } else if (this->name.empty()) {
+        cout << "El nparametro grp es obligatorio." << endl;
+        return;
+    }
+
+    int disk_pos = get_disk_pos(usuario_loggeado.particion_loggeada);
+    int part_pos = get_part_pos(usuario_loggeado.particion_loggeada, disk_pos);
+    if (disk_pos == -1 || part_pos == -1) return;
+
+    int part_start = get_part_start(usuario_loggeado.particion_loggeada, disk_pos, part_pos);
+
+    if (part_start == -1) {
+        cout << "La particion requerida no existe." << endl;
+        return;
+    }
+
+    //tengo el inicio de particion, ahora traigo el users.txt
+    super_bloque super;
+    FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
+    fclose(file);
+
+    string txt = get_txt(part_start, discos_montados[disk_pos].path, super.s_inode_start, super.s_block_start);
+    list<string> lines = get_lines_txt(txt);
+    list<string> usrs = get_grps_usrs(4, lines);//4 comas usrs, 2 comas grps
+    list<string> grps = get_grps_usrs(2, lines);//4 comas usrs, 2 comas grps
+
+    bool existe_usuario = false;
+    bool existe_grupo = false;
+    list<string>::iterator it;
+    for (it = usrs.begin(); it != usrs.end(); it++) {//se busca si el usuario no existe
+        vector<string> parts = get_parts(*it);
+        if (this->user == parts[3] && parts[0] != "0" && parts[1] == "U") {
+            existe_usuario = true;
+            break;
+        }
+    }
+    if (!existe_usuario) {
+        cout << "El usuario no existe." << endl;
+        return;
+    }
+
+    for (it = grps.begin(); it != grps.end(); it++) {//se busca si el grupo no existe
+        vector<string> parts = get_parts(*it);
+        if (this->name == parts[2] && parts[0] != "0" && parts[1] == "G") {
+            existe_grupo = true;
+            break;
+        }
+    }
+
+    if(!existe_grupo) {
+        cout << "El grupo no existe." << endl;
+        return;
+    }
+
+    for (it = lines.begin(); it != lines.end(); it++) {//se busca si el grupo no existe
+        vector<string> parts = get_parts(*it);
+        if (this->user == parts[3] && parts[0] != "0" && parts[1] == "U") {
+            string grupo = *it;
+            *it = parts[0] + "," + parts[1] + "," + this->name + "," + parts[3] + "," + parts[4] + "\n";
+            break;
+        }
+    }
+
+    string nuevo_txt;
+    for (it = lines.begin(); it != lines.end(); it++) {//se busca si el grupo no existe
+        nuevo_txt += *it;
+    }
+
+    //se edita el archivo users.txt
+    recorrer_inodo(1, disk_pos, super.s_inode_start, super.s_block_start, super.s_bm_inode_start,
+                   super.s_bm_block_start, part_start);
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
+    fclose(file);
+
+    super.s_first_blo = bitmap_libre(super.s_bm_block_start, super.s_bm_block_start + super.s_blocks_count,
+                                     discos_montados[disk_pos].path);
+    super.s_first_ino = bitmap_libre(super.s_bm_inode_start, super.s_bm_inode_start + super.s_inodes_count,
+                                     discos_montados[disk_pos].path);
+
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, part_start, SEEK_SET);
+    fwrite(&super, sizeof(super_bloque), 1, file);
+    fclose(file);
+
+    escribir_archivo(discos_montados[disk_pos].path, part_start, 1, nuevo_txt);
 }
 
 string USERS::get_txt(int part_start, char const *path, int inode_start, int block_start) {
@@ -424,7 +538,7 @@ string USERS::get_txt(int part_start, char const *path, int inode_start, int blo
             fread(&contenido_bloque, sizeof(bloque_archivos), 1, file);
             fclose(file);
             string contenido(contenido_bloque.b_content);
-            if(contenido.length() > 64) {
+            if (contenido.length() > 64) {
                 contenido = contenido.substr(0, 64);
             }
             txt += contenido;
@@ -564,7 +678,8 @@ EBR USERS::leer_ebr(char const *sc, int seek) {
     return ebr_aux;
 }
 
-void USERS::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block, int part_start) {
+void USERS::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int bm_inode, int bm_block,
+                           int part_start) {
     FILE *file;
     tabla_inodos inodo;// se recupera el inodo
     file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -594,7 +709,7 @@ void USERS::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int 
 
 void USERS::escribir_archivo(const char *path, int part_start, int inodo_archivo, string txt) {
     FILE *file;
-    string contenido =  txt;
+    string contenido = txt;
     super_bloque superBloque;
     file = fopen(path, "rb+");
     fseek(file, part_start, SEEK_SET);
@@ -630,7 +745,8 @@ void USERS::escribir_archivo(const char *path, int part_start, int inodo_archivo
         fwrite("1", 1, 1, file);
         fclose(file);
         //buscar el bloque libre en el bitmap, actualizar el superBloque
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count, path);
         superBloque.s_free_blocks_count--;
 
         file = fopen(path, "rb+");
@@ -661,4 +777,49 @@ int USERS::bitmap_libre(int start, int final, char const *path) {
     }
     fclose(file);
     return libre;
+}
+
+int USERS::get_grp_num(list<string> grps, string grp) {
+    int num = 0;
+    list<string>::iterator it;
+    for (it = grps.begin(); it != grps.end(); it++) {//se busca si el grupo no existe
+        vector<string> parts = get_parts(*it);
+        if (grp == parts[2] && parts[0] != "0" && parts[1] == "G") {
+            return atoi(parts[0].c_str());
+        }
+    }
+    return num;
+}
+
+string USERS::get_name(int id, string tipo) {
+
+    int disk_pos = get_disk_pos(usuario_loggeado.particion_loggeada);
+    int part_pos = get_part_pos(usuario_loggeado.particion_loggeada, disk_pos);
+
+    int part_start = get_part_start(usuario_loggeado.particion_loggeada, disk_pos, part_pos);
+
+    //tengo el inicio de particion, ahora traigo el users.txt
+    super_bloque super;
+    FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
+    fclose(file);
+
+    string txt = get_txt(part_start, discos_montados[disk_pos].path, super.s_inode_start, super.s_block_start);
+    list<string> lines = get_lines_txt(txt);
+
+    string name;
+    list<string>::iterator it;
+    for (it = lines.begin(); it != lines.end(); it++) {//se busca si el grupo no existe
+        vector<string> parts = get_parts(*it);
+        if (atoi(parts[0].c_str()) == id && parts[1] == tipo) {
+            if (tipo == "G") {
+                name = parts[2];
+            } else {
+                name = parts[3];
+            }
+            break;
+        }
+    }
+    return name;
 }

@@ -153,6 +153,30 @@ cat.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s
 .PHONY : cat.cpp.s
 
+ch.o: ch.cpp.o
+.PHONY : ch.o
+
+# target to build an object file
+ch.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ch.cpp.o
+.PHONY : ch.cpp.o
+
+ch.i: ch.cpp.i
+.PHONY : ch.i
+
+# target to preprocess a source file
+ch.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ch.cpp.i
+.PHONY : ch.cpp.i
+
+ch.s: ch.cpp.s
+.PHONY : ch.s
+
+# target to generate assembly for a file
+ch.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ch.cpp.s
+.PHONY : ch.cpp.s
+
 cp.o: cp.cpp.o
 .PHONY : cp.o
 
@@ -561,6 +585,30 @@ scanner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/scanner.cpp.s
 .PHONY : scanner.cpp.s
 
+simulate.o: simulate.cpp.o
+.PHONY : simulate.o
+
+# target to build an object file
+simulate.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/simulate.cpp.o
+.PHONY : simulate.cpp.o
+
+simulate.i: simulate.cpp.i
+.PHONY : simulate.i
+
+# target to preprocess a source file
+simulate.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/simulate.cpp.i
+.PHONY : simulate.cpp.i
+
+simulate.s: simulate.cpp.s
+.PHONY : simulate.s
+
+# target to generate assembly for a file
+simulate.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/simulate.cpp.s
+.PHONY : simulate.cpp.s
+
 touch.o: touch.cpp.o
 .PHONY : touch.o
 
@@ -621,6 +669,9 @@ help:
 	@echo "... cat.o"
 	@echo "... cat.i"
 	@echo "... cat.s"
+	@echo "... ch.o"
+	@echo "... ch.i"
+	@echo "... ch.s"
 	@echo "... cp.o"
 	@echo "... cp.i"
 	@echo "... cp.s"
@@ -672,6 +723,9 @@ help:
 	@echo "... scanner.o"
 	@echo "... scanner.i"
 	@echo "... scanner.s"
+	@echo "... simulate.o"
+	@echo "... simulate.i"
+	@echo "... simulate.s"
 	@echo "... touch.o"
 	@echo "... touch.i"
 	@echo "... touch.s"

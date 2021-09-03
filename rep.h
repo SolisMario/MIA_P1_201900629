@@ -100,6 +100,13 @@ public:
 
     void graficar_journal();
 
+    void graficar_ls();
+
+    string recorrer_inodo_ls(int indice_inodo, int inode_start, int block_start, char const *path, char const *name);
+
+    string recorrer_bloque_carpeta_ls(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path);
+
+    string recorrer_apuntadores_inodos_ls(int indice_inodo, int indice_bloque, int inode_start, int block_start, char const *path, int nivel);
 };
 
 #endif //MIA_P1_201900629_REP_H

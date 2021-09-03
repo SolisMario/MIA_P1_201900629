@@ -32,6 +32,7 @@ void EXEC::exec() {
     ifstream script(this->path);
     string str;
     while (getline(script, str)) {
+        cout << "----------------------------------------------------------------------------" << endl;
         std::cout << str << endl;
         if (str != "exit") {
             if (str != "") {
@@ -42,8 +43,10 @@ void EXEC::exec() {
                 } else {
                     printf("\nNo se pudo ejecutar el comando\n\n");
                 }
-                yy_delete_buffer(buffer);
+                //yy_delete_buffer(buffer);
             }
+        } else {
+            exit(1);
         }
     }
 }

@@ -835,6 +835,8 @@ void TOUCH::crear_inodo_carpeta(int inode_start, int block_start, int bm_inode, 
     nueva_carpeta.i_atime = time(0);
     nueva_carpeta.i_ctime = time(0);
     nueva_carpeta.i_mtime = time(0);
+    nueva_carpeta.i_gid = usuario_loggeado.grupo;
+    nueva_carpeta.i_uid = usuario_loggeado.id;
     nueva_carpeta.i_block[0] = bloque_libre;//apuntador hacia bloque de carpeta
     file = fopen(path, "rb+");
     fseek(file, inode_start + sizeof(tabla_inodos) * inodo_actual, SEEK_SET);
@@ -868,6 +870,8 @@ void TOUCH::create_file_inode(int inode_start, int bm_inode, int inodo_actual, c
     nuevo_archivo.i_atime = time(0);
     nuevo_archivo.i_ctime = time(0);
     nuevo_archivo.i_mtime = time(0);
+    nuevo_archivo.i_gid = usuario_loggeado.grupo;
+    nuevo_archivo.i_uid = usuario_loggeado.id;
     nuevo_archivo.i_type = '1';
     file = fopen(path, "rb+");
     fseek(file, inode_start + sizeof(tabla_inodos) * inodo_actual, SEEK_SET);

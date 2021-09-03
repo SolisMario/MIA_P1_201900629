@@ -100,7 +100,10 @@ extern int yydebug;
     rmkusr = 306,
     rusr = 307,
     rgrp = 308,
-    rrmusr = 309
+    rrmusr = 309,
+    rloss = 310,
+    rrecovery = 311,
+    rchgrp = 312
   };
 #endif
 
@@ -108,12 +111,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 153 "parser.y"
+#line 161 "parser.y"
 
     char*STRING;
     char*NUM;
 
-#line 117 "parser.h"
+#line 120 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -72,6 +72,9 @@ id ([a-zA-Z])([a-zA-Z]|[0-9]|"_"|".")*
 "usr" {yylval.STRING = strdup(yytext);return (rusr);};
 "grp" {yylval.STRING = strdup(yytext);return (rgrp);};
 "rmusr" {yylval.STRING = strdup(yytext);return (rrmusr);};
+"loss" {yylval.STRING = strdup(yytext);return (rloss);};
+"recovery" {yylval.STRING = strdup(yytext);return (rrecovery);};
+"chgrp" {yylval.STRING = strdup(yytext);return (rchgrp);};
 {id} {yylval.STRING = strdup(yytext); return (id);};
 {ruta} {yylval.STRING = strdup(yytext); return (ruta);};
 . {}

@@ -45,6 +45,8 @@ public:
 
     void rmusr();
 
+    void chgrp();
+
     vector<string> get_parts(string line);
 
     list<string> get_lines_txt(string txt);
@@ -68,6 +70,10 @@ public:
     void escribir_archivo(const char *path, int part_start, int inodo_archivo, string contenido);
 
     int bitmap_libre(int start, int final, char const *path);
+
+    int get_grp_num(list<string> grps, string grp);
+
+    string get_name(int id, string tipo);
 };
 
 #endif //MIA_P1_201900629_USERS_H

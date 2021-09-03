@@ -256,6 +256,32 @@ int MV::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado,
     return -1;
 }
 
+void MV::actualizar_abuelo(int indice_inodo, int disk_pos, int inode_start, int block_start, int inodo_abuelo){
+    //recuperar inodo
+    FILE *file;
+    tabla_inodos inodo;
+    file = fopen(discos_montados[disk_pos].path, "rb+");
+    fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
+    fread(&inodo, sizeof(tabla_inodos), 1, file);
+    fclose(file);
+
+    if (inodo.i_type == '0') {
+        bloque_carpeta carpeta_tmp;
+        file = fopen(discos_montados[disk_pos].path, "rb+");
+        fseek(file, block_start + sizeof(bloque_archivos) * inodo.i_block[0], SEEK_SET);
+        fread(&carpeta_tmp, sizeof(bloque_carpeta), 1, file);
+        fclose(file);
+
+        carpeta_tmp.b_content[1].b_inodo = inodo_abuelo;
+
+        file = fopen(discos_montados[disk_pos].path, "rb+");
+        fseek(file, block_start + sizeof(bloque_archivos) * inodo.i_block[0], SEEK_SET);
+        fwrite(&carpeta_tmp, sizeof(bloque_carpeta), 1, file);
+        fclose(file);
+    }
+
+}
+
 void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_origen, int disk_pos, int part_start){
     //recuperar bloque origen
     FILE *file;
@@ -287,6 +313,8 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
             fclose(file);
         }
     }
+
+    actualizar_abuelo(b_inodo, disk_pos, superBloque.s_inode_start, superBloque.s_block_start, inodo_destino);
 
     //recuperar inodo
     tabla_inodos inodo;

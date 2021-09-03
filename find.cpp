@@ -293,9 +293,6 @@ string FIND::recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, 
             formato += recorrer_inodo(bloque.b_content[i].b_inodo, disk_pos, inode_start, block_start, part_start, coincide, ruta, regex);
         }
     }
-
-
-
     return formato;
 }
 
@@ -360,10 +357,6 @@ bool FIND::verificar_match(string nombre, string regex){
     std::regex word_regex(regex);
     auto words_begin = std::sregex_iterator(nombre.begin(), nombre.end(), word_regex);
     auto words_end = std::sregex_iterator();
-
-    std::cout << "Found "
-    << std::distance(words_begin, words_end)
-    << " words\n";
 
     if(distance(words_begin, words_end) == 1){
         return true;

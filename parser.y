@@ -23,6 +23,7 @@
 #include "cp.h"
 #include "find.h"
 #include "users.h"
+#include "simulate.h"
 
 using namespace std;
 extern int yylex(void);
@@ -47,6 +48,7 @@ EDIT * editV;
 CP * cpV;
 FIND * findV;
 USERS * usersV;
+SIMULATE * simulateV;
 %}
 
 %start INI
@@ -103,6 +105,9 @@ USERS * usersV;
 %token<STRING> rusr
 %token<STRING> rgrp
 %token<STRING> rrmusr
+%token<STRING> rloss
+%token<STRING> rrecovery
+%token<STRING> rchgrp
 
 %type<STRING> INI
 %type<STRING> INSTRUCCION
@@ -146,6 +151,9 @@ USERS * usersV;
 %type<STRING> MKUSERPARAM
 %type<STRING> RMUSERPARAMS
 %type<STRING> RMUSERPARAM
+%type<STRING> SIMULATEPARAM
+%type<STRING> CHGRPPARAMS
+%type<STRING> CHGRPPARAM
 
 %define parse.error verbose
 %locations
@@ -191,6 +199,9 @@ INSTRUCCION:
 	| rrmgrp {usersV = new USERS();} RMGRPPARAMS {usersV->rmgrp();}
 	| rrmusr {usersV = new USERS();} RMUSERPARAMS {usersV->rmusr();}
 	| rmkusr {usersV = new USERS();} MKUSERPARAMS {usersV->mkusr();}
+	| rchgrp {usersV = new USERS();} CHGRPPARAMS {usersV->chgrp();}
+	| rloss {simulateV = new SIMULATE();} SIMULATEPARAM {simulateV->loss();}
+	| rrecovery {simulateV = new SIMULATE();} SIMULATEPARAM {simulateV->recovery();}
 ;
 
 MKDISKPARAMS:
@@ -431,6 +442,22 @@ RMUSERPARAMS:
 RMUSERPARAM:
 	guion rusr igual id {usersV->set_name(false, $4);}
         | guion rusr igual cadena {usersV->set_name(true, $4);}
+;
+
+SIMULATEPARAM:
+	guion rid igual id_particion {simulateV->set_id($4);}
+;
+
+CHGRPPARAMS:
+	CHGRPPARAMS CHGRPPARAM
+	| CHGRPPARAM
+;
+
+CHGRPPARAM:
+	guion rgrp igual id {usersV->set_name(false, $4);}
+        | guion rgrp igual cadena {usersV->set_name(true, $4);}
+        | guion rusr igual id {usersV->set_user($4);}
+        | guion rusr igual root {usersV->set_user($4);}
 ;
 %%
 void yyerror(const char *s)
