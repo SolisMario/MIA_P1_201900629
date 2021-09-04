@@ -14,7 +14,10 @@ void CAT::add_file(bool comillas, string file_path) {
 
 void CAT::cat() {
     if (this->files.empty()) {
-        cout << "No se ingreso ningun archivo para mostrar." << endl;
+        cout << "ERROR: No se ingreso ningun archivo para mostrar." << endl;
+        return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "ERROR: No se encuentra ningun usuario loggeado." << endl;
         return;
     }
 
@@ -101,7 +104,7 @@ void CAT::cat() {
             for (it = carpetas.begin(); it != carpetas.end(); it++) {
                 inodo_carpeta = get_inodo(*it, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
                 if (inodo_carpeta == -1) { //si el inodo carpeta es -1 las carpetas no existen
-                    cout << "La carpeta " << *it << " no existe " << endl;
+                    cout << "ERROR: La carpeta " << *it << " no existe " << endl;
                     break;
                 }
                 recuperar = fopen(discos_montados[disk_pos].path, "rb+");
@@ -115,13 +118,15 @@ void CAT::cat() {
             int inodo_archivo = -1;
             inodo_archivo = get_inodo(file_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, '1');
             if (inodo_archivo == -1) {
-                cout << "El archivo " << file_name << " no existe." << endl;
+                cout << "ERROR: El archivo " << file_name << " no existe." << endl;
             } else {
                 contenido += contenido_archivo(inodo_archivo, disk_pos, superBloque.s_inode_start, superBloque.s_block_start);
-
-
+                cout << contenido << endl;
             }
         }
+    } else {
+        cout << "ERROR: La particion indicada no existe " << endl;
+        return;
     }
 }
 
@@ -320,7 +325,7 @@ string CAT::nombre_archivo(string path) {
 bool CAT::verificar_disco(char const *path) {
     FILE *verificar = fopen(path, "r"); //r= read = si el disco ya existia
     if (verificar == nullptr) {
-        cout << "El disco no existe." << endl;
+        cout << "ERROR: El disco no existe." << endl;
         return false;
     }
     fclose(verificar);

@@ -25,7 +25,7 @@ private:
     string name;
     string grp;
 public:
-    void set_user(string user);
+    void set_user(bool comillas, string user);
 
     void set_pwd(string parte1, string parte2);
 

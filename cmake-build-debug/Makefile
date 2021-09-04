@@ -153,30 +153,6 @@ cat.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/cat.cpp.s
 .PHONY : cat.cpp.s
 
-ch.o: ch.cpp.o
-.PHONY : ch.o
-
-# target to build an object file
-ch.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ch.cpp.o
-.PHONY : ch.cpp.o
-
-ch.i: ch.cpp.i
-.PHONY : ch.i
-
-# target to preprocess a source file
-ch.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ch.cpp.i
-.PHONY : ch.cpp.i
-
-ch.s: ch.cpp.s
-.PHONY : ch.s
-
-# target to generate assembly for a file
-ch.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MIA_P1_201900629.dir/build.make CMakeFiles/MIA_P1_201900629.dir/ch.cpp.s
-.PHONY : ch.cpp.s
-
 cp.o: cp.cpp.o
 .PHONY : cp.o
 
@@ -669,9 +645,6 @@ help:
 	@echo "... cat.o"
 	@echo "... cat.i"
 	@echo "... cat.s"
-	@echo "... ch.o"
-	@echo "... ch.i"
-	@echo "... ch.s"
 	@echo "... cp.o"
 	@echo "... cp.i"
 	@echo "... cp.s"

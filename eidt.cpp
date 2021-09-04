@@ -29,6 +29,9 @@ void EDIT::edit() {
     if (this->path.empty()) {
         cout << "No se ingreso ningun archivo para mostrar." << endl;
         return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "No se encuentra ningun usuario loggeado." << endl;
+        return;
     }
 
     string logged_partition = usuario_loggeado.particion_loggeada;
@@ -125,15 +128,12 @@ void EDIT::edit() {
         int inodo_archivo = -1;
         inodo_archivo = get_inodo(file_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, '1');
         if (inodo_archivo == -1) {
-            cout << "El archivo " << file_name << " no existe." << endl;
+            cout << "ERROR: El archivo " << file_name << " no existe." << endl;
             return;
         } else {
             //iniciar_borrado
-            int borrado = recorrer_inodo(inodo_archivo, disk_pos, superBloque.s_inode_start, superBloque.s_block_start,
+            recorrer_inodo(inodo_archivo, disk_pos, superBloque.s_inode_start, superBloque.s_block_start,
                                          superBloque.s_bm_inode_start, superBloque.s_bm_block_start, part_start);
-            if (borrado != 0) {
-                cout << "ERROR no se tiene permiso de edicion en uno de los archivos/carpetas." << endl;
-            }
             recuperar = fopen(discos_montados[disk_pos].path, "rb+");
             fseek(recuperar, part_start, SEEK_SET);
             fread(&superBloque, sizeof(super_bloque), 1, recuperar);
@@ -153,11 +153,11 @@ void EDIT::edit() {
 
             escribir_archivo(discos_montados[disk_pos].path, part_start, inodo_archivo);
 
-            cout << "Archivo esitado con exito." << endl;
+            cout << "Archivo esditado con exito." << endl;
             if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
         }
     } else {
-        cout << "La particion no existe." << endl;
+        cout << "ERROR: La particion no existe." << endl;
     }
 }
 
@@ -560,7 +560,7 @@ bool EDIT::verificar_disco(char const *path) {
 
     FILE *verificar = fopen(path, "r"); //r= read = si el disco ya existia
     if (verificar == nullptr) {
-        cout << "El disco no existe." << endl;
+        cout << "ERROR: El disco no existe." << endl;
         return false;
     }
     fclose(verificar);
@@ -605,6 +605,7 @@ int EDIT::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if(posicion_actual >=35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -626,6 +627,7 @@ int EDIT::posicion_journal(char const *path, int partStart) {
 void EDIT::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if(nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "edit");
     strcpy(nuevo.path, this->path.c_str());
     string contenido;

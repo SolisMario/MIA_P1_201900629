@@ -20,7 +20,7 @@ private:
     string path;
     string id;
     string ruta;
-    int root;
+    int root = 0;
 public:
     void setName(string name);
 

@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o"
-  "CMakeFiles/MIA_P1_201900629.dir/ch.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/cp.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/eidt.cpp.o"
   "CMakeFiles/MIA_P1_201900629.dir/exec.cpp.o"

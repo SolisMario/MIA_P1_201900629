@@ -196,7 +196,6 @@ int MKDIR::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char con
             fclose(file);
             //for que itera los contents del blque carpeta
             for (int j = 0; j < 4; ++j) {
-                cout << carpeta_tmp.b_content[j].b_name << " apunta a " << carpeta_tmp.b_content[j].b_inodo << endl;
                 if (strcmp(nombre_buscado.c_str(), carpeta_tmp.b_content[j].b_name) == 0) {
                     tabla_inodos inodo_tmp;
                     file = fopen(path, "rb+");
@@ -205,12 +204,10 @@ int MKDIR::get_inodo(string nombre_buscado, tabla_inodos inodo_carpeta, char con
                     fread(&inodo_tmp, sizeof(tabla_inodos), 1, file);
                     fclose(file);
                     if (inodo_tmp.i_type == tipo) {
-                        cout << "-----------------------------------------------------------------------" << endl;
                         return carpeta_tmp.b_content[j].b_inodo;
                     }
                 }
             }
-            cout << "-----------------------------------------------------------------------" << endl;
         }
     }
 
@@ -729,6 +726,7 @@ int MKDIR::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if(posicion_actual>=35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -750,6 +748,7 @@ int MKDIR::posicion_journal(char const *path, int partStart) {
 void MKDIR::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if (nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "mkdir");
     strcpy(nuevo.path, this->path.c_str());
     nuevo.log_fecha = time(0);

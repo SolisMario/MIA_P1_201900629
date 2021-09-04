@@ -23,6 +23,9 @@ void FIND::find() {
     } else if (this->name.empty()) {
         cout << "El paramtetro name es obligatorio" << endl;
         return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "No se encuentra ningun usuario loggeado." << endl;
+        return;
     }
 
     string logged_partition = usuario_loggeado.particion_loggeada;
@@ -126,7 +129,8 @@ void FIND::find() {
             cout << "La carpeta " << folder_name << " no existe." << endl;
         } else {
             string regex = formar_regex(this->name);
-            string formato = recorrer_inodo(inodo_inicio, disk_pos, superBloque.s_inode_start, superBloque.s_block_start, part_start, false, "/", regex);
+            string formato = recorrer_inodo(inodo_inicio, disk_pos, superBloque.s_inode_start, superBloque.s_block_start, part_start, false,
+                                            this->path, regex, "");
             cout << formato << endl;
         }
     }
@@ -230,7 +234,7 @@ int FIND::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscad
 }
 
 string FIND::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int part_start,
-                            bool coincidencia_precedente, string ruta_precede, string regex) {
+                            bool coincidencia_precedente, string ruta_precede, string regex, string name) {
     FILE *file;
     tabla_inodos inodo;// se recupera el inodo
     file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -246,22 +250,28 @@ string FIND::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int
         if(coincidencia_precedente) {
             formato += "Folder";
         }
+        string prece_ruta;
+        if(ruta_precede[ruta_precede.length() - 1] != '/') {
+            prece_ruta = ruta_precede + "/" + name;
+        } else {
+            prece_ruta = ruta_precede + name;
+        }
         for (int i = 0; i < 12; ++i) {
             if (inodo.i_block[i] != -1) {
-                formato += recorrer_carpeta(inodo.i_block[i], disk_pos, inode_start, block_start, part_start, ruta_precede, regex);
+                formato += recorrer_carpeta(inodo.i_block[i], disk_pos, inode_start, block_start, part_start, prece_ruta, regex);
             }
         }
 
         if (inodo.i_block[12] != -1) {
-            formato += recorrer_apuntadores(inodo.i_block[12], disk_pos, inode_start, block_start, 1, '0', part_start, ruta_precede, regex);
+            formato += recorrer_apuntadores(inodo.i_block[12], disk_pos, inode_start, block_start, 1, '0', part_start, prece_ruta, regex);
         }
 
         if (inodo.i_block[13] != -1) {
-            formato += recorrer_apuntadores(inodo.i_block[13], disk_pos, inode_start, block_start, 2, '0', part_start, ruta_precede, regex);
+            formato += recorrer_apuntadores(inodo.i_block[13], disk_pos, inode_start, block_start, 2, '0', part_start, prece_ruta, regex);
         }
 
         if (inodo.i_block[14] != -1) {
-            formato += recorrer_apuntadores(inodo.i_block[14], disk_pos, inode_start, block_start, 3, '0', part_start, ruta_precede, regex);
+            formato += recorrer_apuntadores(inodo.i_block[14], disk_pos, inode_start, block_start, 3, '0', part_start, prece_ruta, regex);
         }
     } else {
         if(coincidencia_precedente) {
@@ -285,12 +295,19 @@ string FIND::recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, 
         if (bloque.b_content[i].b_inodo != -1 && strcmp(bloque.b_content[i].b_name, ".") != 0 && strcmp(bloque.b_content[i].b_name, "..") != 0) {
             string i_name = bloque.b_content[i].b_name;
             bool coincide = false;
-            string ruta = ruta_precede += i_name + "/";
+            string ruta;
+
+            if(ruta_precede[ruta_precede.length() - 1] != '/') {
+                ruta = ruta_precede + "/" + i_name;
+            } else {
+                ruta = ruta_precede + i_name;
+            }
+
             if(verificar_match(i_name, regex)){
                 formato += "\n" + ruta + "|" + to_string(bloque.b_content[i].b_inodo) + "|";
                 coincide = true;
             }
-            formato += recorrer_inodo(bloque.b_content[i].b_inodo, disk_pos, inode_start, block_start, part_start, coincide, ruta, regex);
+            formato += recorrer_inodo(bloque.b_content[i].b_inodo, disk_pos, inode_start, block_start, part_start, coincide, ruta_precede, regex,i_name);
         }
     }
     return formato;
@@ -344,7 +361,8 @@ string FIND::formar_regex(string name){
         } else if (i == '?'){
             regex += "([a-zA-Z0-9]{1})";
         } else {
-            regex += i;
+            string caracter(i, 1);
+            regex += "[" + caracter + "]";
         }
     }
     regex += ")$";

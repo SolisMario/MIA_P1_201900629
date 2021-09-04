@@ -1101,6 +1101,7 @@ int TOUCH::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if(posicion_actual >=35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -1122,6 +1123,7 @@ int TOUCH::posicion_journal(char const *path, int partStart) {
 void TOUCH::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if(nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "touch");
     strcpy(nuevo.path, this->path.c_str());
     string contenido;

@@ -15,7 +15,7 @@ void SIMULATE::loss() {
         return;
     }
 
-    string logged_partition = usuario_loggeado.particion_loggeada;
+    string logged_partition = this->id;
 
     //se recupera la posicion del dico y particion, se verifica si estan montados
     string disk_number = logged_partition.substr(2, logged_partition.length() - 3);

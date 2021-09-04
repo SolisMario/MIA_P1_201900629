@@ -38,7 +38,7 @@ public:
 
     EBR leer_ebr(char const *sc, int seek);
 
-    string recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int part_start, bool coincidencia_precedente, string ruta_precede, string regex);
+    string recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int block_start, int part_start, bool coincidencia_precedente, string ruta_precede, string regex, string name);
 
     string recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, int block_start, int part_start, string ruta_precede, string regex);
 

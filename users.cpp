@@ -12,8 +12,12 @@ void USERS::set_pwd(string parte1, string parte2) {
     this->password = parte1 + parte2;
 }
 
-void USERS::set_user(string user) {
-    this->user = user;
+void USERS::set_user(bool comillas, string user) {
+    if (comillas) {
+        this->user = user.substr(1, user.length() - 2);
+    } else {
+        this->user = user;
+    }
 }
 
 void USERS::set_name(bool comillas, string name) {
@@ -294,8 +298,8 @@ void USERS::mkusr() {
     list<string>::iterator it;
     for (it = usrs.begin(); it != usrs.end(); it++) {//se busca si el usuario no existe
         vector<string> parts = get_parts(*it);
-        if (this->name == parts[3] && parts[0] != "0" && parts[1] == "U") {
-            cout << "Ya existe un grupo creado bajo este nombre." << endl;
+        if (this->user == parts[3] && parts[0] != "0" && parts[1] == "U") {
+            cout << "Ya existe un usuario creado bajo este nombre." << endl;
             return;
         }
     }

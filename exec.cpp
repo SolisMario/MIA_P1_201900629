@@ -16,7 +16,7 @@ void EXEC::set_path(bool comillas, string path) {
 
 void EXEC::exec() {
     if (this->path.empty()){
-        cout << "ERROR el  parametro path es obligatorio." << endl;
+        cout << "ERROR: El  parametro path es obligatorio." << endl;
         return;
     }
 

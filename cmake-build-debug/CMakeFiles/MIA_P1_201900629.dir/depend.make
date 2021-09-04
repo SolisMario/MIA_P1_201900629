@@ -8,13 +8,6 @@ CMakeFiles/MIA_P1_201900629.dir/cat.cpp.o: \
  ../ebr.h \
  ../mbr.h \
  ../partition.h
-CMakeFiles/MIA_P1_201900629.dir/ch.cpp.o: \
- ../aux_structs.h \
- ../ch.cpp \
- ../ch.h \
- ../ebr.h \
- ../mbr.h \
- ../partition.h
 CMakeFiles/MIA_P1_201900629.dir/cp.cpp.o: \
  ../aux_structs.h \
  ../cp.cpp \

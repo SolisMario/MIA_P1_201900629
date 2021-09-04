@@ -27,6 +27,9 @@ void MV::mv() {
     } else if (this->dest.empty()) {
         cout << "El parametro dest es obligatorio." << endl;
         return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "No se encuentra ningun usuario loggeado." << endl;
+        return;
     }
 
     string logged_partition = usuario_loggeado.particion_loggeada;
@@ -107,8 +110,8 @@ void MV::mv() {
 
             int inodo_carpeta = 0;
             list<string> carpetas;
-            if(i == 0){
-             carpetas = separar_carpetas(this->path);
+            if (i == 0) {
+                carpetas = separar_carpetas(this->path);
             } else {
                 carpetas = separar_carpetas(this->dest);
             }
@@ -130,22 +133,22 @@ void MV::mv() {
 
             //si llega hasta aqui significa que las carpetas existen o se crearon con exito
             string old_name;
-            if(i == 0) {
+            if (i == 0) {
                 old_name = nombre_archivo(this->path.c_str());
             } else {
                 old_name = nombre_archivo(this->dest.c_str());
             }
             int carpeta_buscada = -1;
-            if(i == 0){// 0 regresa el bloque carpeta para borrar referencia, 1 el inodo para agregar la referencia
+            if (i == 0) {// 0 regresa el bloque carpeta para borrar referencia, 1 el inodo para agregar la referencia
                 bloque_actual = get_inodo(old_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, 1);
             } else {
                 inodo_destino = get_inodo(old_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, 0);
             }
         }
-        if(bloque_actual == -1){
+        if (bloque_actual == -1) {
             cout << "ERROR La carpeta/archivo de origen no existe." << endl;
             return;
-        } else if(inodo_destino == -1){
+        } else if (inodo_destino == -1) {
             cout << "ERROR La carpeta destino no existe." << endl;
             return;
         }
@@ -155,7 +158,7 @@ void MV::mv() {
         cambiar_referencia(inodo_destino, bloque_actual, nombre, disk_pos, part_start);
 
         cout << "Contenido movido exitosamente." << endl;
-        if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
+        if (superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
     } else {
         cout << "La particion no exite." << endl;
     }
@@ -240,10 +243,12 @@ int MV::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado,
 
                 //for que itera los contents del blque carpeta
                 for (int j = 0; j < 4; ++j) {
-                    if (operacion == 0) {
-                        return carpeta_tmp.b_content[j].b_inodo;
-                    } else {
-                        return apuntadores.b_pointers[i];
+                    if (strcmp(nombre_buscado.c_str(), carpeta_tmp.b_content[j].b_name) == 0) {
+                        if (operacion == 0) {
+                            return carpeta_tmp.b_content[j].b_inodo;
+                        } else {
+                            return apuntadores.b_pointers[i];
+                        }
                     }
                 }
             } else {
@@ -256,7 +261,7 @@ int MV::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado,
     return -1;
 }
 
-void MV::actualizar_abuelo(int indice_inodo, int disk_pos, int inode_start, int block_start, int inodo_abuelo){
+void MV::actualizar_abuelo(int indice_inodo, int disk_pos, int inode_start, int block_start, int inodo_abuelo) {
     //recuperar inodo
     FILE *file;
     tabla_inodos inodo;
@@ -282,7 +287,7 @@ void MV::actualizar_abuelo(int indice_inodo, int disk_pos, int inode_start, int 
 
 }
 
-void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_origen, int disk_pos, int part_start){
+void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_origen, int disk_pos, int part_start) {
     //recuperar bloque origen
     FILE *file;
 
@@ -324,7 +329,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
     fclose(file);
 
     for (int i = 0; i < 12; ++i) {
-        if(inodo.i_block[i] != -1){
+        if (inodo.i_block[i] != -1) {
             bloque_carpeta carpeta_destino;
             file = fopen(discos_montados[disk_pos].path, "rb+");
             fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * inodo.i_block[i], SEEK_SET);
@@ -332,7 +337,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
             fclose(file);
 
             for (int j = 0; j < 4; ++j) {
-                if(carpeta_destino.b_content[j].b_inodo == -1){
+                if (carpeta_destino.b_content[j].b_inodo == -1) {
                     carpeta_destino.b_content[j].b_inodo = b_inodo;
                     strcpy(carpeta_destino.b_content[j].b_name, nombre_origen.c_str());
                     file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -356,7 +361,8 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
             fwrite("1", 1, 1, file);
             fclose(file);
 
-            superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start, discos_montados[disk_pos].path);
+            superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start,
+                                                   discos_montados[disk_pos].path);
             superBloque.s_free_blocks_count--;
 
             file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -369,7 +375,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
     int inodo_creado = -1;
 
-    if(inodo.i_block[12] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+    if (inodo.i_block[12] == -1) {//si es -1 significa que no hay ningun bloque de punteros creado, se crea
         inodo.i_block[12] = superBloque.s_first_blo;// actualizamos el inodo
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_destino, SEEK_SET);
@@ -377,7 +383,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
         bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
         fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+        fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
         //marcamos como usado el bitmap del bloque y del inodo
         fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -386,7 +392,9 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
         //actualizamos el superbloque y lo escribimos
         superBloque.s_free_blocks_count--;
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, discos_montados[disk_pos].path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count,
+                                               discos_montados[disk_pos].path);
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -396,7 +404,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
     inodo_creado = crear_inodo_indirecto(1, inodo.i_block[12], nombre_origen, disk_pos, part_start, inodo, b_inodo);
     if (inodo_creado != -1) return;
 
-    if(inodo.i_block[13] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+    if (inodo.i_block[13] == -1) {//si es -1 significa que no hay ningun bloque de punteros creado, se crea
         inodo.i_block[13] = superBloque.s_first_blo;// actualizamos el inodo
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_destino, SEEK_SET);
@@ -404,7 +412,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
         bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
         fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+        fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
         //marcamos como usado el bitmap del bloque y del inodo
         fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -413,7 +421,9 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
         //actualizamos el superbloque y lo escribimos
         superBloque.s_free_blocks_count--;
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, discos_montados[disk_pos].path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count,
+                                               discos_montados[disk_pos].path);
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -423,7 +433,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
     inodo_creado = crear_inodo_indirecto(1, inodo.i_block[13], nombre_origen, disk_pos, part_start, inodo, b_inodo);
     if (inodo_creado != -1) return;
 
-    if(inodo.i_block[14] == -1){//si es -1 significa que no hay ningun bloque de punteros creado, se crea
+    if (inodo.i_block[14] == -1) {//si es -1 significa que no hay ningun bloque de punteros creado, se crea
         inodo.i_block[14] = superBloque.s_first_blo;// actualizamos el inodo
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_destino, SEEK_SET);
@@ -431,7 +441,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
         bloque_apuntadores apuntadores;//creamo el bloque de apuntadores
         fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-        fwrite(&apuntadores , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+        fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
         //marcamos como usado el bitmap del bloque y del inodo
         fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -440,7 +450,9 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
         //actualizamos el superbloque y lo escribimos
         superBloque.s_free_blocks_count--;
-        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, discos_montados[disk_pos].path);
+        superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                               superBloque.s_bm_block_start + superBloque.s_blocks_count,
+                                               discos_montados[disk_pos].path);
         file = fopen(discos_montados[disk_pos].path, "rb+");
         fseek(file, part_start, SEEK_SET);
         fwrite(&superBloque, sizeof(super_bloque), 1, file);
@@ -451,7 +463,8 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
 
 }
 
-int MV::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen, int disk_pos, int part_start, tabla_inodos carpeta_actual, int b_inodo) {
+int MV::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen, int disk_pos, int part_start,
+                              tabla_inodos carpeta_actual, int b_inodo) {
     int inodo_creado = -1;
     FILE *file;
     //se trae el superbloque y el inodo indirecto
@@ -477,18 +490,20 @@ int MV::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen
                 fclose(file);
 
                 for (int j = 0; j < 4; ++j) {
-                    if(carpeta_destino.b_content[j].b_inodo == -1){
+                    if (carpeta_destino.b_content[j].b_inodo == -1) {
                         carpeta_destino.b_content[j].b_inodo = b_inodo;
                         strcpy(carpeta_destino.b_content[j].b_name, nombre_origen.c_str());
                         file = fopen(discos_montados[disk_pos].path, "rb+");
-                        fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * apuntadores.b_pointers[i], SEEK_SET);
+                        fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * apuntadores.b_pointers[i],
+                              SEEK_SET);
                         fwrite(&carpeta_destino, sizeof(bloque_carpeta), 1, file);
                         fclose(file);
                         return 0;
                     }
                 }
             } else {
-                inodo_creado = crear_inodo_indirecto(nivel - 1, apuntadores.b_pointers[i], nombre_origen, disk_pos, part_start, carpeta_actual, b_inodo);
+                inodo_creado = crear_inodo_indirecto(nivel - 1, apuntadores.b_pointers[i], nombre_origen, disk_pos,
+                                                     part_start, carpeta_actual, b_inodo);
                 if (inodo_creado != -1) return inodo_creado;
             }
         } else {
@@ -507,7 +522,8 @@ int MV::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen
                 fwrite("1", 1, 1, file);
                 fclose(file);
 
-                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start, discos_montados[disk_pos].path);
+                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start,
+                                                       discos_montados[disk_pos].path);
                 superBloque.s_free_blocks_count--;
 
                 file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -525,7 +541,7 @@ int MV::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen
 
                 bloque_apuntadores apuntadores2;//creamo el bloque de apuntadores
                 fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * superBloque.s_first_blo, SEEK_SET);
-                fwrite(&apuntadores2 , sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
+                fwrite(&apuntadores2, sizeof(bloque_apuntadores), 1, file);//escribimos el nuevo bloque
 
                 //marcamos como usado el bitmap del bloque y del inodo
                 fseek(file, superBloque.s_bm_block_start + superBloque.s_first_blo, SEEK_SET);
@@ -534,13 +550,16 @@ int MV::crear_inodo_indirecto(int nivel, int apuntador_ind, string nombre_origen
 
                 //actualizamos el superbloque y lo escribimos
                 superBloque.s_free_blocks_count--;
-                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count, discos_montados[disk_pos].path);
+                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start,
+                                                       superBloque.s_bm_block_start + superBloque.s_blocks_count,
+                                                       discos_montados[disk_pos].path);
                 file = fopen(discos_montados[disk_pos].path, "rb+");
                 fseek(file, part_start, SEEK_SET);
                 fwrite(&superBloque, sizeof(super_bloque), 1, file);
                 fclose(file);
 
-                inodo_creado = crear_inodo_indirecto(nivel - 1, apuntadores.b_pointers[i], nombre_origen, disk_pos, part_start, carpeta_actual, b_inodo);
+                inodo_creado = crear_inodo_indirecto(nivel - 1, apuntadores.b_pointers[i], nombre_origen, disk_pos,
+                                                     part_start, carpeta_actual, b_inodo);
                 if (inodo_creado != -1) return inodo_creado;
             }
         }
@@ -626,6 +645,7 @@ int MV::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if (posicion_actual >= 35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -647,6 +667,7 @@ int MV::posicion_journal(char const *path, int partStart) {
 void MV::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if (nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "mv");
     strcpy(nuevo.path, this->path.c_str());
     nuevo.log_fecha = time(0);

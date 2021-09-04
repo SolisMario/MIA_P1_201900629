@@ -24,6 +24,9 @@ void REN::ren() {
     } else if(this->name.empty()) {
         cout << "El parametro name es obligatorio." << endl;
         return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "No se encuentra ningun usuario loggeado." << endl;
+        return;
     }
 
     string logged_partition = usuario_loggeado.particion_loggeada;
@@ -118,7 +121,7 @@ void REN::ren() {
         //si llega hasta aqui significa que las carpetas existen o se crearon con exito
         string old_name = nombre_archivo(this->path.c_str());
         int inodo_archivo = -1;
-        inodo_archivo = get_inodo(this->name, this->name, carpeta_tmp, discos_montados[disk_pos].path, part_start, 1);
+        inodo_archivo = get_inodo(this->name, this->name, carpeta_tmp, discos_montados[disk_pos].path, part_start, 0);
         if(inodo_archivo != -1){
             cout << "ERROR ya existe un archivo/carpeta con este nombre." << endl;
             return;
@@ -154,7 +157,6 @@ int REN::get_inodo(string nombre_buscado, string new_name, tabla_inodos inodo_ca
             fclose(file);
             //for que itera los contents del blque carpeta
             for (int j = 0; j < 4; ++j) {
-                cout << carpeta_tmp.b_content[j].b_name << " apunta a " << carpeta_tmp.b_content[j].b_inodo << endl;
                 if (strcmp(nombre_buscado.c_str(), carpeta_tmp.b_content[j].b_name) == 0) {
                     if(operacion == 0){
                         return carpeta_tmp.b_content[j].b_inodo;
@@ -221,7 +223,9 @@ int REN::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado
                         if(operacion == 0){
                             return carpeta_tmp.b_content[j].b_inodo;
                         } else {
+                            int apuntaa = carpeta_tmp.b_content[j].b_inodo;
                             strcpy(carpeta_tmp.b_content[j].b_name, new_name.c_str());
+                            carpeta_tmp.b_content[j].b_inodo = apuntaa;
                             file = fopen(path, "rb+");
                             fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * apuntadores.b_pointers[i], SEEK_SET);
                             fwrite(&carpeta_tmp, sizeof(bloque_carpeta), 1, file);
@@ -300,6 +304,7 @@ int REN::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if(posicion_actual >=35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -321,6 +326,7 @@ int REN::posicion_journal(char const *path, int partStart) {
 void REN::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if(nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "ren");
     strcpy(nuevo.path, this->path.c_str());
     nuevo.log_fecha = time(0);

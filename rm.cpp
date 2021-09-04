@@ -16,6 +16,9 @@ void RM::rm() {
     if (this->path.empty()) {
         cout << "No se ingreso ningun archivo para mostrar." << endl;
         return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "No se encuentra ningun usuario loggeado." << endl;
+        return;
     }
 
     string logged_partition = usuario_loggeado.particion_loggeada;
@@ -222,8 +225,10 @@ int RM::get_inodo_indirecto(int nivel, int apuntador_ind, string nombre_buscado,
                               SEEK_SET);
                         fread(&inodo_tmp, sizeof(tabla_inodos), 1, file);
                         fclose(file);
-                        if (inodo_tmp.i_type) {
+                        if (tipo == '0') {
                             return carpeta_tmp.b_content[j].b_inodo;
+                        } else {
+                            return apuntadores.b_pointers[i];
                         }
                     }
                 }
@@ -500,6 +505,7 @@ int RM::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if(posicion_actual >=35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -521,6 +527,7 @@ int RM::posicion_journal(char const *path, int partStart) {
 void RM::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if(nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "rm");
     strcpy(nuevo.path, this->path.c_str());
     nuevo.log_fecha = time(0);

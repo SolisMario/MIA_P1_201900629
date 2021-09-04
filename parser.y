@@ -54,6 +54,7 @@ SIMULATE * simulateV;
 %start INI
 
 %token<NUM> numero
+%token<STRING> comentarioSS
 %token<STRING> cadena
 %token<STRING> guion
 %token<STRING> igual
@@ -391,8 +392,9 @@ LOGINPARAMS:
 ;
 
 LOGINPARAM:
-	guion ruser igual id {usersV->set_user($4);}
-	| guion ruser igual root {usersV->set_user($4);}
+	guion ruser igual id {usersV->set_user(false, $4);}
+	| guion ruser igual root {usersV->set_user(false, $4);}
+	| guion ruser igual cadena {usersV->set_user(true, $4);}
 	| guion rpwd igual id {usersV->set_pwd($4, "");}
 	| guion rpwd igual numero id {usersV->set_pwd($4, $5);}
 	| guion rpwd igual numero {usersV->set_pwd($4, "");}
@@ -426,9 +428,11 @@ MKUSERPARAMS:
 
 MKUSERPARAM:
 	guion rgrp igual id {usersV->set_name(false, $4);}
+	|guion rgrp igual root {usersV->set_name(false, $4);}
         | guion rgrp igual cadena {usersV->set_name(true, $4);}
-        | guion rusr igual id {usersV->set_user($4);}
-        | guion rusr igual root {usersV->set_user($4);}
+        | guion rusr igual id {usersV->set_user(false, $4);}
+        | guion rusr igual root {usersV->set_user(false, $4);}
+        | guion rusr igual cadena {usersV->set_user(true, $4);}
         | guion rpwd igual id {usersV->set_pwd($4, "");}
         | guion rpwd igual numero id {usersV->set_pwd($4, $5);}
         | guion rpwd igual numero {usersV->set_pwd($4, "");}
@@ -456,8 +460,9 @@ CHGRPPARAMS:
 CHGRPPARAM:
 	guion rgrp igual id {usersV->set_name(false, $4);}
         | guion rgrp igual cadena {usersV->set_name(true, $4);}
-        | guion rusr igual id {usersV->set_user($4);}
-        | guion rusr igual root {usersV->set_user($4);}
+        | guion rusr igual id {usersV->set_user(false, $4);}
+        | guion rusr igual root {usersV->set_user(false, $4);}
+        | guion rusr igual cadena {usersV->set_user(true, $4);}
 ;
 %%
 void yyerror(const char *s)

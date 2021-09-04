@@ -22,10 +22,13 @@ void CP::set_dest(bool comillas, string dest) {
 
 void CP::cp() {
     if (this->path.empty()) {
-        cout << "El parametro path es obligatorio." << endl;
+        cout << "ERROR: El parametro path es obligatorio." << endl;
         return;
     } else if (this->dest.empty()) {
-        cout << "El parametro dest es obligatorio." << endl;
+        cout << "ERROR: El parametro dest es obligatorio." << endl;
+        return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "ERROR: No se encuentra ningun usuario loggeado." << endl;
         return;
     }
 
@@ -119,7 +122,7 @@ void CP::cp() {
             for (it = carpetas.begin(); it != carpetas.end(); it++) {
                 inodo_carpeta = get_inodo(*it, carpeta_tmp, discos_montados[disk_pos].path, part_start, 0);
                 if (inodo_carpeta == -1) { //si el inodo carpeta es -1 las carpetas no existen
-                    cout << "La carpeta " << *it << " no existe " << endl;
+                    cout << "ERROR: La carpeta " << *it << " no existe " << endl;
                     return;
                 }
                 recuperar = fopen(discos_montados[disk_pos].path, "rb+");
@@ -145,10 +148,10 @@ void CP::cp() {
             }
         }
         if (inodo_origen == -1) {
-            cout << "ERROR La carpeta/archivo de origen no existe." << endl;
+            cout << "ERROR: La carpeta/archivo de origen no existe." << endl;
             return;
         } else if (inodo_destino == -1) {
-            cout << "ERROR La carpeta destino no existe." << endl;
+            cout << "ERROR: La carpeta destino no existe." << endl;
             return;
         }
         string nombre = nombre_archivo(this->path.c_str());
@@ -156,9 +159,9 @@ void CP::cp() {
         int bloque_destino = conseguir_bloque_carpeta(inodo_destino, inodo_origen, nombre, disk_pos, part_start);
         iniciar_copiado(bloque_destino, disk_pos, part_start, inodo_origen, nombre, inodo_destino);
         cout << "El contenido fue copiado exitosamente." << endl;
-        if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
+        //if(superBloque.s_filesystem_type == 3) add_to_journal(discos_montados[disk_pos].path, part_start);
     } else {
-        cout << "La particion no existe." << endl;
+        cout << "ERROR: La particion no existe." << endl;
     }
 }
 
@@ -322,6 +325,10 @@ CP::conseguir_bloque_carpeta(int inodo_destino, int bloque_origen, string nombre
             file = fopen(discos_montados[disk_pos].path, "rb+");
             fseek(file, part_start, SEEK_SET);
             fwrite(&superBloque, sizeof(super_bloque), 1, file);
+
+            inodo.i_block[i] = nuevo_bloque;
+            fseek(file, superBloque.s_inode_start + sizeof(tabla_inodos) * inodo_destino, SEEK_SET);
+            fwrite(&inodo, sizeof(tabla_inodos), 1, file);
             fclose(file);
             return nuevo_bloque;
         }
@@ -468,6 +475,10 @@ int CP::conseguir_bloque_carpeta_ind(int nivel, int apuntador_ind, string nombre
                 //strcpy(carpeta_destino.b_content[0].b_name, nombre_origen.c_str());
 
                 file = fopen(discos_montados[disk_pos].path, "rb+");
+
+                fseek(file, superBloque.s_block_start + sizeof(bloque_apuntadores) * apuntador_ind, SEEK_SET);
+                fwrite(&apuntadores, sizeof(bloque_apuntadores), 1, file);
+
                 fseek(file, superBloque.s_block_start + sizeof(bloque_archivos) * apuntadores.b_pointers[i], SEEK_SET);
                 fwrite(&carpeta_destino, sizeof(bloque_carpeta), 1, file);
 
@@ -554,7 +565,6 @@ void CP::iniciar_copiado(int bloque_origen, int disk_pos, int part_start, int in
 
 int CP::recorrer_inodo(int disk_pos, int part_start, int indice_inodo, string nombre_origen, int inodo_padre) {
     FILE *file;
-
     file = fopen(discos_montados[disk_pos].path, "rb+");
     super_bloque superBloque;//recupero el superbloque
     fseek(file, part_start, SEEK_SET);
@@ -831,7 +841,7 @@ bool CP::verificar_disco(char const *path) {
 
     FILE *verificar = fopen(path, "r"); //r= read = si el disco ya existia
     if (verificar == nullptr) {
-        cout << "El disco no existe." << endl;
+        cout << "ERROR: El disco no existe." << endl;
         return false;
     }
     fclose(verificar);
@@ -869,6 +879,7 @@ int CP::posicion_journal(char const *path, int partStart) {
     int posicion_actual = 0;
     while (true) {
         posicion_actual = journal_actual.posicion;
+        if(posicion_actual >=35) return -1;
         if (journal_actual.next == -1) {
             break;
         }
@@ -890,6 +901,7 @@ int CP::posicion_journal(char const *path, int partStart) {
 void CP::add_to_journal(char const *path, int partStart) {
     journal nuevo;
     nuevo.posicion = posicion_journal(path, partStart);
+    if(nuevo.posicion == -1) return;
     strcpy(nuevo.tipo_operacion, "cp");
     strcpy(nuevo.path, this->path.c_str());
     nuevo.log_fecha = time(0);

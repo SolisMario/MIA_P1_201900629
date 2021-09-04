@@ -24,9 +24,29 @@ partition.h
 iostream
 -
 
-/home/mario/Repositorios/MIA_P1_201900629/users.cpp
+/home/mario/Repositorios/MIA_P1_201900629/rep.cpp
+fstream
+-
+algorithm
+-
+rep.h
+/home/mario/Repositorios/MIA_P1_201900629/rep.h
 users.h
 /home/mario/Repositorios/MIA_P1_201900629/users.h
+
+/home/mario/Repositorios/MIA_P1_201900629/rep.h
+iostream
+-
+cstring
+-
+list
+-
+aux_structs.h
+/home/mario/Repositorios/MIA_P1_201900629/aux_structs.h
+mbr.h
+/home/mario/Repositorios/MIA_P1_201900629/mbr.h
+ebr.h
+/home/mario/Repositorios/MIA_P1_201900629/ebr.h
 
 /home/mario/Repositorios/MIA_P1_201900629/users.h
 vector

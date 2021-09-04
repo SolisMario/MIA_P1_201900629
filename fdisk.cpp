@@ -58,10 +58,10 @@ void FDISK::fdisk() {
 
     //comrpobar que los parametros sean correctos
     if (this->path.empty()) {
-        cout << "ERROR el parametro path es obligatorio." << endl;
+        cout << "ERROR: el parametro path es obligatorio." << endl;
         return;
     } else if (this->name.empty()) {
-        cout << "ERROR el parametro name es obligatorio." << endl;
+        cout << "ERROR: el parametro name es obligatorio." << endl;
         return;
     } else if (this->unit != "m" && this->unit != "k" && this->unit != "b") {
         cout << "ERROR al crear el disco: el tipo de unit no es correcto." << endl;
@@ -95,7 +95,7 @@ void FDISK::fdisk() {
     if (this->type == "e") {
         for (auto &particione : mbr_leido.particiones) {
             if (particione.part_type == 'e') {
-                cout << "ERROR al crear la particion: maximo de particiones primarias alcanzado." << endl;
+                cout << "ERROR al crear la particion: maximo de particiones extendidas alcanzado." << endl;
                 return;
             }
         }
@@ -156,7 +156,7 @@ void FDISK::fdisk() {
     } else {
         inicio_particion = set_start(mbr_leido);
         if (inicio_particion == -1) {
-            cout << "No se encontro un bloque de tamano suficiente para la particion" << endl;
+            cout << "ERROR: No se encontro un bloque de tamano suficiente para la particion" << endl;
             return;
         }
     }
@@ -196,7 +196,6 @@ void FDISK::fdisk() {
     }
     fclose(reescribir);
     cout << "Particion creada con exito" << endl;
-    cout << endl;
     mostrar_particiones(mbr_leido);
 }
 
@@ -262,15 +261,15 @@ int FDISK::set_start(MBR &mbr) {
 }
 
 void FDISK::mostrar_particiones(MBR &mbr) {
-    cout << "lista de particiones" << endl;
+    cout << "****************Lista de particiones****************" << endl;
     for (auto &particion: mbr.particiones) {
         if (particion.part_status == 'a') {
-            cout << "\nType: "
-                 << particion.part_type << "\nFit: "
-                 << particion.part_fit << "\nStart: "
-                 << particion.part_start << "\nSize: "
-                 << particion.part_size << "\nName: "
-                 << particion.part_name << "\nStatus: "
+            cout << "\npart_type: "
+                 << particion.part_type << "\npart_fit: "
+                 << particion.part_fit << "\npart_start: "
+                 << particion.part_start << "\npart_size: "
+                 << particion.part_size << "\npart_name: "
+                 << particion.part_name << "\npart_status: "
                  << particion.part_status << endl;
 
             if (particion.part_type == 'e') {
@@ -281,12 +280,13 @@ void FDISK::mostrar_particiones(MBR &mbr) {
                 fread(&ebr_inicial, sizeof(EBR), 1, file_struct);
                 while (true) {
                     if (ebr_inicial.part_status == 'a') {
-                        cout << "\nFit: "
-                             << ebr_inicial.part_fit << "\nStart: "
-                             << ebr_inicial.part_start << "\nSize: "
-                             << ebr_inicial.part_size << "\nName: "
-                             << ebr_inicial.part_name << "\nStatus: "
-                             << ebr_inicial.part_status << "\nNext: "
+                        cout << "\npart_type: l";
+                        cout << "\npart_fit: "
+                             << ebr_inicial.part_fit << "\npart_start: "
+                             << ebr_inicial.part_start << "\npart_size: "
+                             << ebr_inicial.part_size << "\npart_name: "
+                             << ebr_inicial.part_name << "\npart_status: "
+                             << ebr_inicial.part_status << "\npart_next: "
                              << ebr_inicial.part_next << endl;
                     }
 
@@ -441,7 +441,7 @@ void FDISK::delete_partition(string name, string path, string delete_type) {
             }
         }
     }
-    cout << "La particion requerida no existe." << endl;
+    cout << "ERROR: La particion requerida no existe." << endl;
 }
 
 void FDISK::create_logic_partition(MBR &mbr_leido, partition_ &part_extendida) {
@@ -483,10 +483,10 @@ void FDISK::create_logic_partition(MBR &mbr_leido, partition_ &part_extendida) {
                 fwrite(&ebr_inicial, sizeof(EBR), 1, reescribir);
                 fclose(reescribir);
 
-                cout << "se creo la particion con exito." << endl;
+                cout << "Se creo la particion con exito." << endl;
                 return;
             } else {
-                cout << "No hay suficiente espacio para crear la particion." << endl;
+                cout << "ERROR: No hay suficiente espacio para crear la particion." << endl;
             }
         } else {
             //existe espacio vacio entre la primera logica activa y el ebr inicial

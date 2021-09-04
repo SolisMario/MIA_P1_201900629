@@ -395,7 +395,7 @@ void REP::graficar_tree() {
     fread(&bit_leido, 1, 1, recuperar);
     fclose(recuperar);
 
-    string graph = "digraph html {\nrankdir=LR;";
+    string graph = "digraph html {\nrankdir=LR;\nranksep=3;";
     if (bit_leido == '1') {
         graph += graficar_inodo(this->root, superBloque.s_inode_start, superBloque.s_block_start,
                                 discos_montados[disk_pos].path);
@@ -405,32 +405,33 @@ void REP::graficar_tree() {
     archivo_dot(graph, "tree");
 }
 
-string REP::graficar_inodo(int indice_inodo, int inode_start, int block_start, char const *path) {
+string REP::graficar_inodo(int indice, int inode_start, int block_start, char const *path) {
     string graph = "";
     tabla_inodos inodo;
     FILE *recuperar = fopen(path, "rb+");
-    fseek(recuperar, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
+    fseek(recuperar, inode_start + sizeof(tabla_inodos) * indice, SEEK_SET);
     fread(&inodo, sizeof(tabla_inodos), 1, recuperar);
     fclose(recuperar);
 
+    string indice_inodo = to_string(indice);
     //dot de inodo
     char fechayhora[16];
     string fecha_hora = "";
-    graph += "\ninodo" + to_string(indice_inodo) + "[shape=none, margin=0, label=<\n";
+    graph += "\ninodo" + indice_inodo + "[shape=none, margin=0, label=<\n";
     graph += R"(<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">)";
     graph +=
-            "\n<TR><TD BGCOLOR=\"#3498db\">INODO</TD><TD BGCOLOR=\"#3498db\">" + to_string(indice_inodo) + "</TD></TR>";
+            "\n<TR><TD BGCOLOR=\"#3498db\">INODO</TD><TD BGCOLOR=\"#3498db\">" + indice_inodo + "</TD></TR>";
     graph += "<TR><TD>UID:</TD><TD>" + to_string(inodo.i_uid) + "</TD></TR>\n";
     graph += "<TR><TD>GUID:</TD><TD>" + to_string(inodo.i_gid) + "</TD></TR>\n";
     graph += "<TR><TD>SIZE:</TD><TD>" + to_string(inodo.i_size) + "</TD></TR>\n";
-    strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_atime));
-    fecha_hora = fechayhora;
+    //strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_atime));
+    //fecha_hora = fechayhora;
     graph += "<TR><TD>LECTURA:</TD><TD>" + fecha_hora + "</TD></TR>\n";
-    strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_ctime));
-    fecha_hora = fechayhora;
+    //strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_ctime));
+    //fecha_hora = fechayhora;
     graph += "<TR><TD>CREACION:</TD><TD>" + fecha_hora + "</TD></TR>\n";
-    strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_mtime));
-    fecha_hora = fechayhora;
+    //strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_mtime));
+    //fecha_hora = fechayhora;
     graph += "<TR><TD>MODIFICACION:</TD><TD>" + fecha_hora + "</TD></TR>\n";
     //FOR DE BLOQUES
     for (int i = 0; i < 15; ++i) {
@@ -446,36 +447,35 @@ string REP::graficar_inodo(int indice_inodo, int inode_start, int block_start, c
     for (int i = 0; i < 12; ++i) {
         if (inodo.i_block[i] != -1) {
             if (inodo.i_type == '0') {
-                graph += graficar_bloque_carpeta(indice_inodo, inodo.i_block[i], inode_start, block_start, path);
+                graph += graficar_bloque_carpeta(indice, inodo.i_block[i], inode_start, block_start, path);
             } else {
-                graph += graficar_bloque_archivo(indice_inodo, inodo.i_block[i], inode_start, block_start, path);
+                graph += graficar_bloque_archivo(indice, inodo.i_block[i], inode_start, block_start, path);
             }
-            graph += "inodo" + to_string(indice_inodo) + ":port" + to_string(i) + "-> bloque" +
+            graph += "inodo" + indice_inodo + ":port" + to_string(i) + "-> bloque" +
                      to_string(inodo.i_block[i]) + "\n";
         }
     }
 
     if (inodo.i_block[12] != -1) {
-        graph += graficar_bloque_apuntadores(indice_inodo, inodo.i_block[12], inode_start, block_start, path,
+        graph += graficar_bloque_apuntadores(indice, inodo.i_block[12], inode_start, block_start, path,
                                              inodo.i_type, 1);
-        graph += "inodo" + to_string(indice_inodo) + ":port" + to_string(12) + "-> bloque" +
+        graph += "inodo" + indice_inodo + ":port" + to_string(12) + "-> bloque" +
                  to_string(inodo.i_block[12]) + "\n";
     }
 
     if (inodo.i_block[13] != -1) {
-        graph += graficar_bloque_apuntadores(indice_inodo, inodo.i_block[13], inode_start, block_start, path,
+        graph += graficar_bloque_apuntadores(indice, inodo.i_block[13], inode_start, block_start, path,
                                              inodo.i_type, 2);
-        graph += "inodo" + to_string(indice_inodo) + ":port" + to_string(13) + "-> bloque" +
+        graph += "inodo" + indice_inodo + ":port" + to_string(13) + "-> bloque" +
                  to_string(inodo.i_block[13]) + "\n";
     }
 
     if (inodo.i_block[14] != -1) {
-        graph += graficar_bloque_apuntadores(indice_inodo, inodo.i_block[14], inode_start, block_start, path,
+        graph += graficar_bloque_apuntadores(indice, inodo.i_block[14], inode_start, block_start, path,
                                              inodo.i_type, 3);
-        graph += "inodo" + to_string(indice_inodo) + ":port" + to_string(13) + "-> bloque" +
+        graph += "inodo" + indice_inodo + ":port" + to_string(13) + "-> bloque" +
                  to_string(inodo.i_block[14]) + "\n";
     }
-
     return graph;
 }
 
@@ -497,6 +497,8 @@ REP::graficar_bloque_carpeta(int indice_inodo, int indice_bloque, int inode_star
         string b_name = carpeta.b_content[i].b_name;
         if (b_name.empty() || carpeta.b_content[i].b_inodo == -1) {
             b_name = "-";
+        } else if (b_name.length() > 12 ){
+            b_name = b_name.substr(0, 12);
         }
         graph += "<TR><TD>" + b_name + "</TD><TD PORT=\"port" + to_string(i) + "\">" +
                  to_string(carpeta.b_content[i].b_inodo) + "</TD></TR>\n";
@@ -512,7 +514,6 @@ REP::graficar_bloque_carpeta(int indice_inodo, int indice_bloque, int inode_star
             }
         }
     }
-
     return graph;
 }
 
@@ -534,7 +535,6 @@ REP::graficar_bloque_archivo(int indice_inodo, int indice_bloque, int inode_star
     }
     graph += "<TR><TD>" + content + "</TD><TD></TD></TR>\n";
     graph += "</TABLE>>];\n";
-
     return graph;
 }
 
@@ -933,7 +933,7 @@ void REP::graficar_bloque() {
     fread(&bit_leido, 1, 1, recuperar);
     fclose(recuperar);
 
-    string graph = "digraph{\n";
+    string graph = "digraph{\nrankdir=LR;";
     if(bit_leido == '1') {
         graph += graficar_inodo_bloque(0, superBloque.s_inode_start, superBloque.s_block_start,
                                        discos_montados[disk_pos].path);
@@ -1000,6 +1000,8 @@ REP::graficar_bloque_carpeta_bloque(int indice_inodo, int indice_bloque, int ino
         string b_name = carpeta.b_content[i].b_name;
         if (b_name.empty() || carpeta.b_content[i].b_inodo == -1) {
             b_name = "-";
+        } else if(b_name.length() > 12){
+            b_name = b_name.substr(0, 12);
         }
         graph += "<TR><TD>" + b_name + "</TD><TD PORT=\"port" + to_string(i) + "\">" +
                  to_string(carpeta.b_content[i].b_inodo) + "</TD></TR>\n";
@@ -1461,7 +1463,10 @@ string REP::contenido_bloque_file(int indice_bloque, int disk_pos, int inode_sta
     fread(&bloque, sizeof(bloque_archivos), 1, file);
     fclose(file);
 
-    string contenido(bloque.b_content, 64);
+    string contenido(bloque.b_content);
+    if(contenido.length() > 64) {
+        contenido = contenido.substr(0, 64);
+    }
     return contenido;
 }
 
@@ -1715,6 +1720,9 @@ string REP::recorrer_inodo_ls(int indice_inodo, int inode_start, int block_start
     fread(&inodo, sizeof(tabla_inodos), 1, recuperar);
     fclose(recuperar);
     string nombre = name;
+    if(nombre.length() > 12){
+        nombre = nombre.substr(0,12);
+    }
     USERS * user = new USERS();
     string usr = user->get_name(inodo.i_uid, "U");
     string grp = user->get_name(inodo.i_gid, "G");
