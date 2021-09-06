@@ -120,7 +120,7 @@ void FIND::find() {
 
         string folder_name = nombre_archivo(this->path);
         int inodo_inicio = -1;
-        if(inodo_carpeta != -1){
+        if (inodo_carpeta != -1) {
             inodo_inicio = get_inodo(folder_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, '0');
         } else {
             inodo_inicio = 0;
@@ -129,7 +129,8 @@ void FIND::find() {
             cout << "La carpeta " << folder_name << " no existe." << endl;
         } else {
             string regex = formar_regex(this->name);
-            string formato = recorrer_inodo(inodo_inicio, disk_pos, superBloque.s_inode_start, superBloque.s_block_start, part_start, false,
+            string formato = recorrer_inodo(inodo_inicio, disk_pos, superBloque.s_inode_start,
+                                            superBloque.s_block_start, part_start, false,
                                             this->path, regex, "");
             cout << formato << endl;
         }
@@ -247,34 +248,38 @@ string FIND::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int
     //******************************************AQUI VA EL IF DE PERIMISOS********************************************//
 
     if (inodo.i_type == '0') {
-        if(coincidencia_precedente) {
+        if (coincidencia_precedente) {
             formato += "Folder";
         }
         string prece_ruta;
-        if(ruta_precede[ruta_precede.length() - 1] != '/') {
+        if (ruta_precede[ruta_precede.length() - 1] != '/') {
             prece_ruta = ruta_precede + "/" + name;
         } else {
             prece_ruta = ruta_precede + name;
         }
         for (int i = 0; i < 12; ++i) {
             if (inodo.i_block[i] != -1) {
-                formato += recorrer_carpeta(inodo.i_block[i], disk_pos, inode_start, block_start, part_start, prece_ruta, regex);
+                formato += recorrer_carpeta(inodo.i_block[i], disk_pos, inode_start, block_start, part_start,
+                                            prece_ruta, regex);
             }
         }
 
         if (inodo.i_block[12] != -1) {
-            formato += recorrer_apuntadores(inodo.i_block[12], disk_pos, inode_start, block_start, 1, '0', part_start, prece_ruta, regex);
+            formato += recorrer_apuntadores(inodo.i_block[12], disk_pos, inode_start, block_start, 1, '0', part_start,
+                                            prece_ruta, regex);
         }
 
         if (inodo.i_block[13] != -1) {
-            formato += recorrer_apuntadores(inodo.i_block[13], disk_pos, inode_start, block_start, 2, '0', part_start, prece_ruta, regex);
+            formato += recorrer_apuntadores(inodo.i_block[13], disk_pos, inode_start, block_start, 2, '0', part_start,
+                                            prece_ruta, regex);
         }
 
         if (inodo.i_block[14] != -1) {
-            formato += recorrer_apuntadores(inodo.i_block[14], disk_pos, inode_start, block_start, 3, '0', part_start, prece_ruta, regex);
+            formato += recorrer_apuntadores(inodo.i_block[14], disk_pos, inode_start, block_start, 3, '0', part_start,
+                                            prece_ruta, regex);
         }
     } else {
-        if(coincidencia_precedente) {
+        if (coincidencia_precedente) {
             formato += "File";
         }
     }
@@ -282,7 +287,8 @@ string FIND::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int
     return formato;
 }
 
-string FIND::recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, int block_start, int part_start, string ruta_precede, string regex) {
+string FIND::recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, int block_start, int part_start,
+                              string ruta_precede, string regex) {
     bloque_carpeta bloque;
     FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, block_start + sizeof(bloque_carpeta) * indice_bloque, SEEK_SET);
@@ -292,28 +298,32 @@ string FIND::recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, 
     string formato;
 
     for (int i = 0; i < 4; ++i) {
-        if (bloque.b_content[i].b_inodo != -1 && strcmp(bloque.b_content[i].b_name, ".") != 0 && strcmp(bloque.b_content[i].b_name, "..") != 0) {
+        if (bloque.b_content[i].b_inodo != -1 && strcmp(bloque.b_content[i].b_name, ".") != 0 &&
+            strcmp(bloque.b_content[i].b_name, "..") != 0) {
             string i_name = bloque.b_content[i].b_name;
             bool coincide = false;
             string ruta;
 
-            if(ruta_precede[ruta_precede.length() - 1] != '/') {
+            if (ruta_precede[ruta_precede.length() - 1] != '/') {
                 ruta = ruta_precede + "/" + i_name;
             } else {
                 ruta = ruta_precede + i_name;
             }
 
-            if(verificar_match(i_name, regex)){
+            if (verificar_match(i_name, regex)) {
                 formato += "\n" + ruta + "|" + to_string(bloque.b_content[i].b_inodo) + "|";
                 coincide = true;
             }
-            formato += recorrer_inodo(bloque.b_content[i].b_inodo, disk_pos, inode_start, block_start, part_start, coincide, ruta_precede, regex,i_name);
+            formato += recorrer_inodo(bloque.b_content[i].b_inodo, disk_pos, inode_start, block_start, part_start,
+                                      coincide, ruta_precede, regex, i_name);
         }
     }
     return formato;
 }
 
-string FIND::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo, int part_start, string ruta_precede, string regex) {
+string
+FIND::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, int block_start, int nivel, char tipo,
+                           int part_start, string ruta_precede, string regex) {
     //recupero el bloque de apuntadores
     bloque_apuntadores apuntadores;
     FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
@@ -323,13 +333,17 @@ string FIND::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_sta
 
     string formato;
 
-        for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < 16; ++i) {
+        if (apuntadores.b_pointers[i] != -1) {
             if (nivel == 1) {
-                formato += recorrer_carpeta(apuntadores.b_pointers[i], disk_pos, inode_start, block_start, part_start, ruta_precede, regex);
+                formato += recorrer_carpeta(apuntadores.b_pointers[i], disk_pos, inode_start, block_start, part_start,
+                                            ruta_precede, regex);
             } else {
-               formato += recorrer_apuntadores(apuntadores.b_pointers[i], disk_pos, inode_start, block_start, nivel - 1, tipo, part_start, ruta_precede, regex);
+                formato += recorrer_apuntadores(apuntadores.b_pointers[i], disk_pos, inode_start, block_start,
+                                                nivel - 1, tipo, part_start, ruta_precede, regex);
             }
         }
+    }
 
     return formato;
 }
@@ -353,16 +367,17 @@ list<string> FIND::separar_carpetas(string path) {
     return lista_carpetas;
 }
 
-string FIND::formar_regex(string name){
+string FIND::formar_regex(string name) {
     string regex = "^(";
     for (char i : name) {
-        if(i == '*'){
-            regex += "([a-zA-Z0-9]+)";
-        } else if (i == '?'){
-            regex += "([a-zA-Z0-9]{1})";
+        if (i == '*') {
+            regex += "([^\n]+)";
+        } else if (i == '?') {
+            regex += "([^\n]{1})";
         } else {
-            string caracter(i, 1);
-            regex += "[" + caracter + "]";
+            regex += "[";
+            regex += i;
+            regex += "]";
         }
     }
     regex += ")$";
@@ -370,13 +385,13 @@ string FIND::formar_regex(string name){
     return regex;
 }
 
-bool FIND::verificar_match(string nombre, string regex){
+bool FIND::verificar_match(string nombre, string regex) {
 
     std::regex word_regex(regex);
     auto words_begin = std::sregex_iterator(nombre.begin(), nombre.end(), word_regex);
     auto words_end = std::sregex_iterator();
 
-    if(distance(words_begin, words_end) == 1){
+    if (distance(words_begin, words_end) == 1) {
         return true;
     }
     return false;
@@ -412,19 +427,3 @@ EBR FIND::leer_ebr(char const *sc, int seek) {
     return ebr_aux;
 }
 
-int FIND::bitmap_libre(int start, int final, char const *path) {
-    FILE *file = fopen(path, "rb+");
-    int libre = -1;
-    char bitmap_leido;
-    for (int i = start; i < final; i++) {
-        fseek(file, i, SEEK_SET);
-        fread(&bitmap_leido, sizeof(char), 1, file);
-        if (bitmap_leido == '0') {
-            libre = i - start;
-            fclose(file);
-            return libre;
-        }
-    }
-    fclose(file);
-    return libre;
-}

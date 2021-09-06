@@ -37,6 +37,9 @@ void TOUCH::touch() {
     if (this->path.empty()) {
         cout << "El parametro path es obligatorio." << endl;
         return;
+    } else if(this->size < 0) {
+        cout << "El parametro size no puede ser menor que 0" << endl;
+        return;
     }
 
     string logged_partition = usuario_loggeado.particion_loggeada;

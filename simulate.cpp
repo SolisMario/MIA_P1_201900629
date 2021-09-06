@@ -80,6 +80,11 @@ void SIMULATE::loss() {
         fread(&superBloque, sizeof(super_bloque), 1, recuperar);
         fclose(recuperar);
 
+        if(superBloque.s_filesystem_type != 3) {
+            cout << "El sistema de Archivos de esta Particion es EXT2, no cuenta con esta opcion" << endl;
+            return;
+        }
+
         recuperar = fopen(discos_montados[disk_pos].path, "rb+");
         for (int i = superBloque.s_bm_block_start; i < superBloque.s_bm_block_start + superBloque.s_blocks_count; ++i) {
             fseek(recuperar, i, SEEK_SET);
@@ -166,6 +171,11 @@ void SIMULATE::recovery() {
         fseek(recuperar, part_start, SEEK_SET);
         fread(&superBloque, sizeof(super_bloque), 1, recuperar);
         fclose(recuperar);
+
+        if(superBloque.s_filesystem_type != 3) {
+            cout << "El sistema de Archivos de esta Particion es EXT2, no cuenta con esta opcion" << endl;
+            return;
+        }
 
         recuperar = fopen(discos_montados[disk_pos].path, "rb+");
         for (int i = superBloque.s_bm_block_start; i < superBloque.s_bm_block_start + superBloque.s_blocks_count; ++i) {

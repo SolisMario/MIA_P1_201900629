@@ -21,10 +21,9 @@ void EXEC::exec() {
     }
 
     FILE *file = NULL;
-    file = fopen(this->path.c_str(), "r");
+    file = fopen(this->path.c_str(), "rb+");
     if(file == NULL){
         cout << "ERROR La ruta del archivo es incorrecta o no existe." << endl;
-        fclose(file);
         return;
     }
     fclose(file);

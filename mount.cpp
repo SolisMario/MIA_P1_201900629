@@ -23,8 +23,12 @@ void MOUNT::setName(bool comillas, const string &name_set) {
     }
 }
 
-void MOUNT::setID(string ID) {
-    this->id = ID;
+void MOUNT::setID(bool comillas, string ID) {
+    if (comillas) {
+        this->id = ID.substr(1, ID.length() - 2);
+    } else {
+        this->id = ID;
+    }
 }
 
 void MOUNT::mount() {

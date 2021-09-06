@@ -138,7 +138,6 @@ void MV::mv() {
             } else {
                 old_name = nombre_archivo(this->dest.c_str());
             }
-            int carpeta_buscada = -1;
             if (i == 0) {// 0 regresa el bloque carpeta para borrar referencia, 1 el inodo para agregar la referencia
                 bloque_actual = get_inodo(old_name, carpeta_tmp, discos_montados[disk_pos].path, part_start, 1);
             } else {
@@ -361,7 +360,7 @@ void MV::cambiar_referencia(int inodo_destino, int bloque_origen, string nombre_
             fwrite("1", 1, 1, file);
             fclose(file);
 
-            superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start,
+            superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count,
                                                    discos_montados[disk_pos].path);
             superBloque.s_free_blocks_count--;
 

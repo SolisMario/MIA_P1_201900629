@@ -21,7 +21,11 @@ void MKDIR::mkdir() {
     if (this->path.empty()) {
         cout << "El parametro path es obligatorio." << endl;
         return;
+    } else if (usuario_loggeado.activo == 0) {
+        cout << "No se encuentra ningun usuario loggeado." << endl;
+        return;
     }
+
 
     string logged_partition = usuario_loggeado.particion_loggeada;
 

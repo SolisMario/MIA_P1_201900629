@@ -318,7 +318,7 @@ CP::conseguir_bloque_carpeta(int inodo_destino, int bloque_origen, string nombre
             fwrite("1", 1, 1, file);
             fclose(file);
 
-            superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start,
+            superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count,
                                                    discos_montados[disk_pos].path);
             superBloque.s_free_blocks_count--;
 
@@ -486,7 +486,7 @@ int CP::conseguir_bloque_carpeta_ind(int nivel, int apuntador_ind, string nombre
                 fwrite("1", 1, 1, file);
                 fclose(file);
 
-                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start,
+                superBloque.s_first_blo = bitmap_libre(superBloque.s_bm_block_start, superBloque.s_bm_block_start + superBloque.s_blocks_count,
                                                        discos_montados[disk_pos].path);
                 superBloque.s_free_blocks_count--;
 

@@ -255,7 +255,8 @@ MOUNTPARAM:
 ;
 
 UMOUNTPARAM:
-	guion rid igual id_particion {mountV->setID($4);}
+	guion rid igual id_particion {mountV->setID(false, $4);}
+	guion rid igual cadena {mountV->setID(true, $4);}
 ;
 
 REPPARAMS:

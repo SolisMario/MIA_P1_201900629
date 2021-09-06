@@ -18,7 +18,7 @@ private:
 public:
     void setPath(bool comillas, const string &path_set);
     void setName(bool comillas, const string &name_set);
-    void setID(string ID);
+    void setID(bool comillas, string ID);
     void mount();
     void umount();
     bool verificar_disco(char const *path);
