@@ -421,14 +421,14 @@ string REP::graficar_inodo(int indice, int inode_start, int block_start, char co
     graph += "<TR><TD>UID:</TD><TD>" + to_string(inodo.i_uid) + "</TD></TR>\n";
     graph += "<TR><TD>GUID:</TD><TD>" + to_string(inodo.i_gid) + "</TD></TR>\n";
     graph += "<TR><TD>SIZE:</TD><TD>" + to_string(inodo.i_size) + "</TD></TR>\n";
-    //strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_atime));
-    //fecha_hora = fechayhora;
+    strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_atime));
+    fecha_hora = fechayhora;
     graph += "<TR><TD>LECTURA:</TD><TD>" + fecha_hora + "</TD></TR>\n";
-    //strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_ctime));
-    //fecha_hora = fechayhora;
+    strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_ctime));
+    fecha_hora = fechayhora;
     graph += "<TR><TD>CREACION:</TD><TD>" + fecha_hora + "</TD></TR>\n";
-    //strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_mtime));
-    //fecha_hora = fechayhora;
+    strftime(fechayhora, 20, "%d/%m/%Y %H:%M", localtime(&inodo.i_mtime));
+    fecha_hora = fechayhora;
     graph += "<TR><TD>MODIFICACION:</TD><TD>" + fecha_hora + "</TD></TR>\n";
     //FOR DE BLOQUES
     for (int i = 0; i < 15; ++i) {
