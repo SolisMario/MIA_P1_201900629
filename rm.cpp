@@ -269,6 +269,10 @@ int RM::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int bloc
     file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
     fread(&inodo, sizeof(tabla_inodos), 1, file);
+
+    super_bloque super;
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
     fclose(file);
 
     int resultado = -1;
@@ -281,6 +285,7 @@ int RM::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int bloc
             if (inodo.i_block[i] != -1) {
                 fseek(file, bm_block + inodo.i_block[i], SEEK_SET);
                 fwrite("0", 1, 1, file);
+                super.s_free_blocks_count++;
             }
         }
         fclose(file);
@@ -300,38 +305,24 @@ int RM::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int bloc
         for (int i = 0; i < 12; ++i) {
             if (inodo.i_block[i] != -1) {
                 resultado = recorrer_carpeta(inodo.i_block[i], disk_pos, inode_start, block_start, bm_inode, bm_block, part_start);
-                if(resultado != 0) {
-                    return  -1;
-                }
             }
         }
 
         if (inodo.i_block[12] != -1) {
             resultado = recorrer_apuntadores(inodo.i_block[12], disk_pos, inode_start, block_start, 1, '0', bm_inode, bm_block, part_start);
-            if(resultado != 0) {
-                return  -1;
-            }
         }
 
         if (inodo.i_block[13] != -1) {
             resultado = recorrer_apuntadores(inodo.i_block[13], disk_pos, inode_start, block_start, 2, '0', bm_inode, bm_block, part_start);
-            if(resultado != 0) {
-                return  -1;
-            }
         }
 
         if (inodo.i_block[14] != -1) {
             resultado  = recorrer_apuntadores(inodo.i_block[14], disk_pos, inode_start, block_start, 3, '0', bm_inode, bm_block, part_start);
-            if(resultado != 0) {
-                return  -1;
-            }
         }
     }
 
     file = fopen(discos_montados[disk_pos].path, "rb+");
-    super_bloque super;
-    fseek(file, part_start, SEEK_SET);
-    fread(&super, sizeof(super_bloque), 1, file);
+
     super.s_free_inodes_count++;
     fseek(file, part_start, SEEK_SET);
     fwrite(&super, sizeof(super_bloque), 1, file);
@@ -364,7 +355,7 @@ int RM::recorrer_carpeta(int indice_bloque, int disk_pos, int inode_start, int b
     super_bloque super;
     fseek(file, part_start, SEEK_SET);
     fread(&super, sizeof(super_bloque), 1, file);
-    super.s_free_inodes_count++;
+    super.s_free_blocks_count++;
     fseek(file, part_start, SEEK_SET);
     fwrite(&super, sizeof(super_bloque), 1, file);
 
@@ -417,7 +408,7 @@ int RM::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start, i
     super_bloque super;
     fseek(file, part_start, SEEK_SET);
     fread(&super, sizeof(super_bloque), 1, file);
-    super.s_free_inodes_count++;
+    super.s_free_blocks_count++;
     fseek(file, part_start, SEEK_SET);
     fwrite(&super, sizeof(super_bloque), 1, file);
 

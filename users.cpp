@@ -689,9 +689,13 @@ void USERS::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int 
     file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
     fread(&inodo, sizeof(tabla_inodos), 1, file);
+
+    super_bloque super;
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
+
     fclose(file);
 
-    int resultado = -1;
 
     //******************************************AQUI VA EL IF DE PERIMISOS********************************************//
 
@@ -701,11 +705,17 @@ void USERS::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int 
             fseek(file, bm_block + inodo.i_block[i], SEEK_SET);
             fwrite("0", 1, 1, file);
             inodo.i_block[i] = -1;
+            super.s_free_blocks_count++;
         }
     }
     fclose(file);
 
     file = fopen(discos_montados[disk_pos].path, "rb+");
+
+
+    fseek(file, part_start, SEEK_SET);
+    fwrite(&super, sizeof(super_bloque), 1, file);
+
     fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
     fwrite(&inodo, sizeof(tabla_inodos), 1, file);
     fclose(file);

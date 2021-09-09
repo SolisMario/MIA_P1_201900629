@@ -269,6 +269,10 @@ int EDIT::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int bl
     file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
     fread(&inodo, sizeof(tabla_inodos), 1, file);
+
+    super_bloque super;
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
     fclose(file);
 
     int resultado = -1;
@@ -281,6 +285,8 @@ int EDIT::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int bl
             fseek(file, bm_block + inodo.i_block[i], SEEK_SET);
             fwrite("0", 1, 1, file);
             inodo.i_block[i] = -1;
+            super.s_free_blocks_count++;
+
         }
     }
     fclose(file);
@@ -304,6 +310,10 @@ int EDIT::recorrer_inodo(int indice_inodo, int disk_pos, int inode_start, int bl
     }
 
     file = fopen(discos_montados[disk_pos].path, "rb+");
+
+    fseek(file, part_start, SEEK_SET);
+    fwrite(&super, sizeof(super_bloque), 1, file);
+
     fseek(file, inode_start + sizeof(tabla_inodos) * indice_inodo, SEEK_SET);
     fwrite(&inodo, sizeof(tabla_inodos), 1, file);
     fclose(file);
@@ -318,6 +328,10 @@ int EDIT::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start,
     FILE *file = fopen(discos_montados[disk_pos].path, "rb+");
     fseek(file, block_start + sizeof(bloque_apuntadores) * indice_bloque, SEEK_SET);
     fread(&apuntadores, sizeof(bloque_apuntadores), 1, file);
+    super_bloque super;
+    fseek(file, part_start, SEEK_SET);
+    fread(&super, sizeof(super_bloque), 1, file);
+
     fclose(file);
 
     for (int i = 0; i < 16; ++i) {
@@ -326,6 +340,7 @@ int EDIT::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start,
                 file = fopen(discos_montados[disk_pos].path, "rb+");
                 fseek(file, bm_block + apuntadores.b_pointers[i], SEEK_SET);
                 fwrite("0", 1, 1, file);
+                super.s_free_blocks_count++;
                 fclose(file);
             }
         } else {
@@ -335,10 +350,8 @@ int EDIT::recorrer_apuntadores(int indice_bloque, int disk_pos, int inode_start,
     }
 
     file = fopen(discos_montados[disk_pos].path, "rb+");
-    super_bloque super;
-    fseek(file, part_start, SEEK_SET);
-    fread(&super, sizeof(super_bloque), 1, file);
-    super.s_free_inodes_count++;
+
+    super.s_free_blocks_count++;
     fseek(file, part_start, SEEK_SET);
     fwrite(&super, sizeof(super_bloque), 1, file);
 
